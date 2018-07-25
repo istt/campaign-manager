@@ -1,0 +1,149 @@
+{
+    "name": "Campaign",
+    "fields": [
+        {
+            "fieldName": "name",
+            "javadoc": "The name of the campaign",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "code",
+            "javadoc": "The code used to identify this campaign on report or CDR",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": 80
+        },
+        {
+            "fieldName": "externalId",
+            "javadoc": "External ID on other remote system",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "channel",
+            "javadoc": "The Channel to use for broadcasting, SMS / USSD",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "state",
+            "javadoc": "state code, 0 = Pending for Approval, 1 = Approved, 9 = Success, -9 = Expired",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "shortCode",
+            "javadoc": "The USSD shortcode used to send out messages",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": 40
+        },
+        {
+            "fieldName": "callbackUrl",
+            "javadoc": "Callback URL for VXML under USSD Network Browser",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdBy",
+            "javadoc": "Refer to User account which create this campaign",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "approvedBy",
+            "javadoc": "Refer to User account Who approve this campaign",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "approvedAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "shortMsg",
+            "javadoc": "First SMS or USSD messages to send to customers",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "msisdnList",
+            "javadoc": "List of MSISDN to be send",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "startAt",
+            "javadoc": "Sending time window",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "expiredAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "workingHours",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "workingWeekdays",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "workingDays",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "spSvc",
+            "javadoc": "Target Services to be broadcast related info, should be logged into CDR",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "spId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cpId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "msgQuota",
+            "javadoc": "Total messages allow to broadcast",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "subQuota",
+            "javadoc": "Total messages per subscriber allow to broadcast",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "rateLimit",
+            "javadoc": "SMS or USSD message broadcast per second",
+            "fieldType": "Double"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20180724175821",
+    "entityTableName": "campaign",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

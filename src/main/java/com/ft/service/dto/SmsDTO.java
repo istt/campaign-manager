@@ -1,0 +1,192 @@
+package com.ft.service.dto;
+
+import java.time.ZonedDateTime;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * A DTO for the Sms entity.
+ */
+public class SmsDTO implements Serializable {
+
+    private String id;
+
+    private String source;
+
+    private String destination;
+
+    private Integer state;
+
+    private String campaignId;
+
+    private String cpId;
+
+    private String spId;
+
+    private String spSvc;
+
+    private ZonedDateTime submitAt;
+
+    private ZonedDateTime expiredAt;
+
+    private String submitRequestPayload;
+
+    private String submitResponsePayload;
+
+    private ZonedDateTime deliveredAt;
+
+    private String deliveryReportPayload;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getCampaignId() {
+        return campaignId;
+    }
+
+    public void setCampaignId(String campaignId) {
+        this.campaignId = campaignId;
+    }
+
+    public String getCpId() {
+        return cpId;
+    }
+
+    public void setCpId(String cpId) {
+        this.cpId = cpId;
+    }
+
+    public String getSpId() {
+        return spId;
+    }
+
+    public void setSpId(String spId) {
+        this.spId = spId;
+    }
+
+    public String getSpSvc() {
+        return spSvc;
+    }
+
+    public void setSpSvc(String spSvc) {
+        this.spSvc = spSvc;
+    }
+
+    public ZonedDateTime getSubmitAt() {
+        return submitAt;
+    }
+
+    public void setSubmitAt(ZonedDateTime submitAt) {
+        this.submitAt = submitAt;
+    }
+
+    public ZonedDateTime getExpiredAt() {
+        return expiredAt;
+    }
+
+    public void setExpiredAt(ZonedDateTime expiredAt) {
+        this.expiredAt = expiredAt;
+    }
+
+    public String getSubmitRequestPayload() {
+        return submitRequestPayload;
+    }
+
+    public void setSubmitRequestPayload(String submitRequestPayload) {
+        this.submitRequestPayload = submitRequestPayload;
+    }
+
+    public String getSubmitResponsePayload() {
+        return submitResponsePayload;
+    }
+
+    public void setSubmitResponsePayload(String submitResponsePayload) {
+        this.submitResponsePayload = submitResponsePayload;
+    }
+
+    public ZonedDateTime getDeliveredAt() {
+        return deliveredAt;
+    }
+
+    public void setDeliveredAt(ZonedDateTime deliveredAt) {
+        this.deliveredAt = deliveredAt;
+    }
+
+    public String getDeliveryReportPayload() {
+        return deliveryReportPayload;
+    }
+
+    public void setDeliveryReportPayload(String deliveryReportPayload) {
+        this.deliveryReportPayload = deliveryReportPayload;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SmsDTO smsDTO = (SmsDTO) o;
+        if (smsDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), smsDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "SmsDTO{" +
+            "id=" + getId() +
+            ", source='" + getSource() + "'" +
+            ", destination='" + getDestination() + "'" +
+            ", state=" + getState() +
+            ", campaignId='" + getCampaignId() + "'" +
+            ", cpId='" + getCpId() + "'" +
+            ", spId='" + getSpId() + "'" +
+            ", spSvc='" + getSpSvc() + "'" +
+            ", submitAt='" + getSubmitAt() + "'" +
+            ", expiredAt='" + getExpiredAt() + "'" +
+            ", submitRequestPayload='" + getSubmitRequestPayload() + "'" +
+            ", submitResponsePayload='" + getSubmitResponsePayload() + "'" +
+            ", deliveredAt='" + getDeliveredAt() + "'" +
+            ", deliveryReportPayload='" + getDeliveryReportPayload() + "'" +
+            "}";
+    }
+}

@@ -1,0 +1,95 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-sms-heading" jhiTranslate="campaignManagerApp.sms.home.createOrEditLabel">Create or edit a Sms</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!sms.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="sms.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.source" for="field_source" [ngbTooltip]="'campaignManagerApp.sms.help.source' | translate">Source</label>
+                    <input type="text" class="form-control" name="source" id="field_source"
+                        [(ngModel)]="sms.source" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.destination" for="field_destination" [ngbTooltip]="'campaignManagerApp.sms.help.destination' | translate">Destination</label>
+                    <input type="text" class="form-control" name="destination" id="field_destination"
+                        [(ngModel)]="sms.destination" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.state" for="field_state" [ngbTooltip]="'campaignManagerApp.sms.help.state' | translate">State</label>
+                    <input type="number" class="form-control" name="state" id="field_state"
+                        [(ngModel)]="sms.state" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.campaignId" for="field_campaignId" [ngbTooltip]="'campaignManagerApp.sms.help.campaignId' | translate">Campaign Id</label>
+                    <input type="text" class="form-control" name="campaignId" id="field_campaignId"
+                        [(ngModel)]="sms.campaignId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.cpId" for="field_cpId" [ngbTooltip]="'campaignManagerApp.sms.help.cpId' | translate">Cp Id</label>
+                    <input type="text" class="form-control" name="cpId" id="field_cpId"
+                        [(ngModel)]="sms.cpId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.spId" for="field_spId">Sp Id</label>
+                    <input type="text" class="form-control" name="spId" id="field_spId"
+                        [(ngModel)]="sms.spId" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.spSvc" for="field_spSvc">Sp Svc</label>
+                    <input type="text" class="form-control" name="spSvc" id="field_spSvc"
+                        [(ngModel)]="sms.spSvc" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.submitAt" for="field_submitAt" [ngbTooltip]="'campaignManagerApp.sms.help.submitAt' | translate">Submit At</label>
+                    <div class="d-flex">
+                        <input id="field_submitAt" type="datetime-local" class="form-control" name="submitAt" [(ngModel)]="submitAt"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.expiredAt" for="field_expiredAt" [ngbTooltip]="'campaignManagerApp.sms.help.expiredAt' | translate">Expired At</label>
+                    <div class="d-flex">
+                        <input id="field_expiredAt" type="datetime-local" class="form-control" name="expiredAt" [(ngModel)]="expiredAt"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.submitRequestPayload" for="field_submitRequestPayload" [ngbTooltip]="'campaignManagerApp.sms.help.submitRequestPayload' | translate">Submit Request Payload</label>
+                    <textarea class="form-control" name="submitRequestPayload" id="field_submitRequestPayload"
+                        [(ngModel)]="sms.submitRequestPayload" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.submitResponsePayload" for="field_submitResponsePayload" [ngbTooltip]="'campaignManagerApp.sms.help.submitResponsePayload' | translate">Submit Response Payload</label>
+                    <textarea class="form-control" name="submitResponsePayload" id="field_submitResponsePayload"
+                        [(ngModel)]="sms.submitResponsePayload" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.deliveredAt" for="field_deliveredAt" [ngbTooltip]="'campaignManagerApp.sms.help.deliveredAt' | translate">Delivered At</label>
+                    <div class="d-flex">
+                        <input id="field_deliveredAt" type="datetime-local" class="form-control" name="deliveredAt" [(ngModel)]="deliveredAt"
+                        />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.deliveryReportPayload" for="field_deliveryReportPayload" [ngbTooltip]="'campaignManagerApp.sms.help.deliveryReportPayload' | translate">Delivery Report Payload</label>
+                    <textarea class="form-control" name="deliveryReportPayload" id="field_deliveryReportPayload"
+                        [(ngModel)]="sms.deliveryReportPayload" ></textarea>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

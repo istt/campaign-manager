@@ -1,0 +1,47 @@
+
+{
+    "campaignManagerApp": {
+        "sms" : {
+            "home": {
+                "title": "Sms",
+                "createLabel": "Thêm mới một Sms",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Sms"
+            },
+            "created": "Một Sms mới được tạo với định danh {{ param }}",
+            "updated": "Một Sms cập nhật với định danh {{ param }}",
+            "deleted": "Một Sms đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Sms {{ id }}?"
+            },
+            "detail": {
+                "title": "Sms"
+            },
+            "source": "Source",
+            "destination": "Destination",
+            "state": "State",
+            "campaignId": "Campaign Id",
+            "cpId": "Cp Id",
+            "spId": "Sp Id",
+            "spSvc": "Sp Svc",
+            "submitAt": "Submit At",
+            "expiredAt": "Expired At",
+            "submitRequestPayload": "Submit Request Payload",
+            "submitResponsePayload": "Submit Response Payload",
+            "deliveredAt": "Delivered At",
+            "deliveryReportPayload": "Delivery Report Payload",
+            "help": {
+                "source": "Source Address",
+                "destination": "Destination Address",
+                "state": "state code, 0 = Pending, 1 = Submitted, 9 = Success, -1 - -8 = Failed, -9 = Do not retry anymore",
+                "campaignId": "Related Campaign",
+                "cpId": "Management Metadata",
+                "submitAt": "Sending process begin to send if NOW() &gt; submitAt",
+                "expiredAt": "Sending process ignore this message if NOW() &gt; expiredAt",
+                "submitRequestPayload": "Last Submission payload",
+                "submitResponsePayload": "Last Result from submission",
+                "deliveredAt": "Did remote endpoint response back?",
+                "deliveryReportPayload": "Delivery Report payload"
+            }
+        }
+    }
+}

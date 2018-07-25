@@ -1,0 +1,64 @@
+
+{
+    "campaignManagerApp": {
+        "campaign" : {
+            "home": {
+                "title": "Campaigns",
+                "createLabel": "Thêm mới một Campaign",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Campaign"
+            },
+            "created": "Một Campaign mới được tạo với định danh {{ param }}",
+            "updated": "Một Campaign cập nhật với định danh {{ param }}",
+            "deleted": "Một Campaign đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Campaign {{ id }}?"
+            },
+            "detail": {
+                "title": "Campaign"
+            },
+            "name": "Name",
+            "description": "Description",
+            "code": "Code",
+            "externalId": "External Id",
+            "channel": "Channel",
+            "state": "State",
+            "shortCode": "Short Code",
+            "callbackUrl": "Callback Url",
+            "createdBy": "Created By",
+            "createdAt": "Created At",
+            "approvedBy": "Approved By",
+            "approvedAt": "Approved At",
+            "shortMsg": "Short Msg",
+            "msisdnList": "Msisdn List",
+            "startAt": "Start At",
+            "expiredAt": "Expired At",
+            "workingHours": "Working Hours",
+            "workingWeekdays": "Working Weekdays",
+            "workingDays": "Working Days",
+            "spSvc": "Sp Svc",
+            "spId": "Sp Id",
+            "cpId": "Cp Id",
+            "msgQuota": "Msg Quota",
+            "subQuota": "Sub Quota",
+            "rateLimit": "Rate Limit",
+            "help": {
+                "name": "The name of the campaign",
+                "code": "The code used to identify this campaign on report or CDR",
+                "externalId": "External ID on other remote system",
+                "channel": "The Channel to use for broadcasting, SMS / USSD",
+                "state": "state code, 0 = Pending for Approval, 1 = Approved, 9 = Success, -9 = Expired",
+                "shortCode": "The USSD shortcode used to send out messages",
+                "callbackUrl": "Callback URL for VXML under USSD Network Browser",
+                "createdBy": "Refer to User account which create this campaign",
+                "approvedBy": "Refer to User account Who approve this campaign",
+                "shortMsg": "First SMS or USSD messages to send to customers",
+                "msisdnList": "List of MSISDN to be send",
+                "startAt": "Sending time window",
+                "spSvc": "Target Services to be broadcast related info, should be logged into CDR",
+                "msgQuota": "Total messages allow to broadcast",
+                "subQuota": "Total messages per subscriber allow to broadcast",
+                "rateLimit": "SMS or USSD message broadcast per second"
+            }
+        }
+    }
+}

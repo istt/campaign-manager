@@ -1,0 +1,126 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="campaign">
+            <h2><span jhiTranslate="campaignManagerApp.campaign.detail.title">Campaign</span> {{campaign.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="campaignManagerApp.campaign.name" [ngbTooltip]="'campaignManagerApp.campaign.help.name' | translate">Name</span></dt>
+                <dd>
+                    <span>{{campaign.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.description">Description</span></dt>
+                <dd>
+                    <span>{{campaign.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.code" [ngbTooltip]="'campaignManagerApp.campaign.help.code' | translate">Code</span></dt>
+                <dd>
+                    <span>{{campaign.code}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.externalId" [ngbTooltip]="'campaignManagerApp.campaign.help.externalId' | translate">External Id</span></dt>
+                <dd>
+                    <span>{{campaign.externalId}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.channel" [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</span></dt>
+                <dd>
+                    <span>{{campaign.channel}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</span></dt>
+                <dd>
+                    <span>{{campaign.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.shortCode" [ngbTooltip]="'campaignManagerApp.campaign.help.shortCode' | translate">Short Code</span></dt>
+                <dd>
+                    <span>{{campaign.shortCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.callbackUrl" [ngbTooltip]="'campaignManagerApp.campaign.help.callbackUrl' | translate">Callback Url</span></dt>
+                <dd>
+                    <span>{{campaign.callbackUrl}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.createdBy" [ngbTooltip]="'campaignManagerApp.campaign.help.createdBy' | translate">Created By</span></dt>
+                <dd>
+                    <span>{{campaign.createdBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.createdAt">Created At</span></dt>
+                <dd>
+                    <span>{{campaign.createdAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.approvedBy" [ngbTooltip]="'campaignManagerApp.campaign.help.approvedBy' | translate">Approved By</span></dt>
+                <dd>
+                    <span>{{campaign.approvedBy}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.approvedAt">Approved At</span></dt>
+                <dd>
+                    <span>{{campaign.approvedAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.shortMsg" [ngbTooltip]="'campaignManagerApp.campaign.help.shortMsg' | translate">Short Msg</span></dt>
+                <dd>
+                    <span>{{campaign.shortMsg}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.msisdnList" [ngbTooltip]="'campaignManagerApp.campaign.help.msisdnList' | translate">Msisdn List</span></dt>
+                <dd>
+                    <div *ngIf="campaign.msisdnList">
+                        <a (click)="openFile(campaign.msisdnListContentType, campaign.msisdnList)" jhiTranslate="entity.action.open">open</a>
+                        {{campaign.msisdnListContentType}}, {{byteSize(campaign.msisdnList)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.startAt" [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</span></dt>
+                <dd>
+                    <span>{{campaign.startAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.expiredAt">Expired At</span></dt>
+                <dd>
+                    <span>{{campaign.expiredAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.workingHours">Working Hours</span></dt>
+                <dd>
+                    <span>{{campaign.workingHours}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.workingWeekdays">Working Weekdays</span></dt>
+                <dd>
+                    <span>{{campaign.workingWeekdays}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.workingDays">Working Days</span></dt>
+                <dd>
+                    <span>{{campaign.workingDays}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.spSvc" [ngbTooltip]="'campaignManagerApp.campaign.help.spSvc' | translate">Sp Svc</span></dt>
+                <dd>
+                    <span>{{campaign.spSvc}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.spId">Sp Id</span></dt>
+                <dd>
+                    <span>{{campaign.spId}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.cpId">Cp Id</span></dt>
+                <dd>
+                    <span>{{campaign.cpId}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.msgQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.msgQuota' | translate">Msg Quota</span></dt>
+                <dd>
+                    <span>{{campaign.msgQuota}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.subQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.subQuota' | translate">Sub Quota</span></dt>
+                <dd>
+                    <span>{{campaign.subQuota}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.rateLimit" [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</span></dt>
+                <dd>
+                    <span>{{campaign.rateLimit}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/campaign', campaign.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

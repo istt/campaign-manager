@@ -1,0 +1,75 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="sms">
+            <h2><span jhiTranslate="campaignManagerApp.sms.detail.title">Sms</span> {{sms.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="campaignManagerApp.sms.source" [ngbTooltip]="'campaignManagerApp.sms.help.source' | translate">Source</span></dt>
+                <dd>
+                    <span>{{sms.source}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.destination" [ngbTooltip]="'campaignManagerApp.sms.help.destination' | translate">Destination</span></dt>
+                <dd>
+                    <span>{{sms.destination}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.state" [ngbTooltip]="'campaignManagerApp.sms.help.state' | translate">State</span></dt>
+                <dd>
+                    <span>{{sms.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.campaignId" [ngbTooltip]="'campaignManagerApp.sms.help.campaignId' | translate">Campaign Id</span></dt>
+                <dd>
+                    <span>{{sms.campaignId}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.cpId" [ngbTooltip]="'campaignManagerApp.sms.help.cpId' | translate">Cp Id</span></dt>
+                <dd>
+                    <span>{{sms.cpId}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.spId">Sp Id</span></dt>
+                <dd>
+                    <span>{{sms.spId}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.spSvc">Sp Svc</span></dt>
+                <dd>
+                    <span>{{sms.spSvc}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.submitAt" [ngbTooltip]="'campaignManagerApp.sms.help.submitAt' | translate">Submit At</span></dt>
+                <dd>
+                    <span>{{sms.submitAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.expiredAt" [ngbTooltip]="'campaignManagerApp.sms.help.expiredAt' | translate">Expired At</span></dt>
+                <dd>
+                    <span>{{sms.expiredAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.submitRequestPayload" [ngbTooltip]="'campaignManagerApp.sms.help.submitRequestPayload' | translate">Submit Request Payload</span></dt>
+                <dd>
+                    <span>{{sms.submitRequestPayload}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.submitResponsePayload" [ngbTooltip]="'campaignManagerApp.sms.help.submitResponsePayload' | translate">Submit Response Payload</span></dt>
+                <dd>
+                    <span>{{sms.submitResponsePayload}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.deliveredAt" [ngbTooltip]="'campaignManagerApp.sms.help.deliveredAt' | translate">Delivered At</span></dt>
+                <dd>
+                    <span>{{sms.deliveredAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.sms.deliveryReportPayload" [ngbTooltip]="'campaignManagerApp.sms.help.deliveryReportPayload' | translate">Delivery Report Payload</span></dt>
+                <dd>
+                    <span>{{sms.deliveryReportPayload}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/sms', sms.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

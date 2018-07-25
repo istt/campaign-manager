@@ -47,12 +47,17 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
+    undertow:
+        max-http-post-size: 300MB
 
 server:
     servlet:
         session:
             cookie:
                 http-only: true
+        multipart:
+            max-file-size: 200MB
+            max-request-size: 300MB
 
 # Properties to be exposed on the /info management endpoint
 info:

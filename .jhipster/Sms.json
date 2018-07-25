@@ -1,0 +1,82 @@
+{
+    "name": "Sms",
+    "fields": [
+        {
+            "fieldName": "source",
+            "javadoc": "Source Address",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "destination",
+            "javadoc": "Destination Address",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "state",
+            "javadoc": "state code, 0 = Pending, 1 = Submitted, 9 = Success, -1 - -8 = Failed, -9 = Do not retry anymore",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "campaignId",
+            "javadoc": "Related Campaign",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cpId",
+            "javadoc": "Management Metadata",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "spId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "spSvc",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "submitAt",
+            "javadoc": "Sending process begin to send if NOW() > submitAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "expiredAt",
+            "javadoc": "Sending process ignore this message if NOW() > expiredAt",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "submitRequestPayload",
+            "javadoc": "Last Submission payload",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "submitResponsePayload",
+            "javadoc": "Last Result from submission",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "deliveredAt",
+            "javadoc": "Did remote endpoint response back?",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "deliveryReportPayload",
+            "javadoc": "Delivery Report payload",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20180724175822",
+    "javadoc": "The actual SMS messages to send out",
+    "entityTableName": "sms",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
