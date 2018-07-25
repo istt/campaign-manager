@@ -1,0 +1,102 @@
+entity Campaign {
+  /* The name of the campaign */
+  name String required,
+  description TextBlob,
+
+  /* The code used to identify this campaign on report or CDR */
+  code String maxlength(80) required,
+
+  /* External ID on other remote system */
+  externalId String,
+
+  /* The Channel to use for broadcasting, SMS / USSD */
+  channel String required,
+
+  /* state code, 0 = Pending for Approval, 1 = Approved, 9 = Success, -9 = Expired */
+  state Integer,
+
+  /* The USSD shortcode used to send out messages */
+  shortCode String maxlength(40) required,
+
+  /* Callback URL for VXML under USSD Network Browser */
+  callbackUrl String,
+
+  /* Refer to User account which create this campaign */
+  createdBy String,
+  createdAt ZonedDateTime,
+
+  /* Refer to User account Who approve this campaign */
+  approvedBy String,
+  approvedAt ZonedDateTime,
+
+  /* First SMS or USSD messages to send to customers */
+  shortMsg String,
+
+  /* List of MSISDN to be send */
+  msisdnList Blob,
+
+  /* Sending time window */
+  startAt ZonedDateTime,
+  expiredAt ZonedDateTime,
+  workingHours String,
+  workingWeekdays String,
+  workingDays String,
+
+
+  /* Target Services to be broadcast related info, should be logged into CDR */
+  spSvc String,
+  spId String,
+  cpId String,
+
+  /* Total messages allow to broadcast */
+  msgQuota Integer,
+
+  /* Total messages per subscriber allow to broadcast */
+  subQuota Integer,
+
+  /* SMS or USSD message broadcast per second */
+  rateLimit Double,
+
+}
+
+/* The actual SMS messages to send out */
+entity Sms {
+  /* Source Address */
+  source String,
+
+  /* Destination Address */
+  destination String,
+
+  /* state code, 0 = Pending, 1 = Submitted, 9 = Success, -1 - -8 = Failed, -9 = Do not retry anymore */
+  state Integer,
+
+  /* Related Campaign */
+  campaignId String,
+
+  /* Management Metadata */
+  cpId String,
+  spId String,
+  spSvc String,
+
+  /* Sending process begin to send if NOW() > submitAt  */
+  submitAt ZonedDateTime,
+  /* Sending process ignore this message if NOW() > expiredAt */
+  expiredAt ZonedDateTime,
+
+  /* Last Submission payload */
+  submitRequestPayload TextBlob,
+
+  /* Last Result from submission */
+  submitResponsePayload TextBlob,
+
+  /* Did remote endpoint response back? */
+  deliveredAt ZonedDateTime,
+
+  /* Delivery Report payload */
+  deliveryReportPayload TextBlob,
+
+}
+
+paginate all with pager
+dto all with mapstruct
+service all with serviceClass
