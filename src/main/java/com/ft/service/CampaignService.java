@@ -1,18 +1,22 @@
 package com.ft.service;
 
 import com.ft.domain.Campaign;
+import com.ft.domain.Sms;
 import com.ft.repository.CampaignRepository;
+import com.ft.repository.SmsRepository;
 import com.ft.service.dto.CampaignDTO;
 import com.ft.service.mapper.CampaignMapper;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 /**
  * Service Implementation for managing Campaign.
  */
@@ -77,4 +81,55 @@ public class CampaignService {
         log.debug("Request to delete Campaign : {}", id);
         campaignRepository.deleteById(id);
     }
+
+    final static Pattern patt = Pattern.compile("[0-9]{8,12}");
+
+    @Autowired
+    SmsRepository smsRepo;
+
+    public int processDataFile(CampaignDTO cp) {
+    	int result = 0;
+    	if (cp.getMsisdnListContentType().contains("text")) {
+    		Matcher m = patt.matcher(new String(cp.getMsisdnList()));
+            while (m.find()) {
+                    String msisdn = msisdnFormat(m.group());
+                    result++;
+                    smsRepo.save(
+                    		new Sms()
+                    		.source(cp.getShortCode())
+                    		.destination(msisdn)
+                    		// FIXME: Provide available template engines
+                    		.shortMsg(cp.getShortMsg().replaceAll("[MSISDN]", msisdn))
+                    		// Campaign related info
+                    		.campaignId(cp.getId())
+                    		.submitAt(cp.getStartAt())
+                    		.expiredAt(cp.getExpiredAt())
+                    		.state(0)
+                    		// CDR Repo info
+                    		.spSvc(cp.getSpSvc())
+                    		.spId(cp.getSpId())
+                    		.cpId(cp.getCpId())
+                    );
+            }
+
+    	}
+    	return result;
+    }
+
+    /**
+     * Return the correct MSISDN format for the whole number
+     *
+     * @param msisdn
+     * @return
+     */
+    public String msisdnFormat(String msisdn) {
+            try {
+                    msisdn = "" + Long.parseLong(msisdn.trim());
+                    if (!msisdn.substring(0, "84".length()).equalsIgnoreCase("84")) {
+                            msisdn = "84" + msisdn;
+                    }
+            } catch (Exception e) {}
+            return String.valueOf(Long.parseLong(msisdn));
+    }
+
 }

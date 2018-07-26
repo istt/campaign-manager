@@ -1,0 +1,43 @@
+{
+    "name": "VasCloudConfiguration",
+    "fields": [
+        {
+            "fieldName": "endPoint",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "username",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "password",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "serviceCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cpCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "cpCharge",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "serviceId",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20180725024004",
+    "entityTableName": "vas_cloud_configuration",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -70,6 +70,9 @@ entity Sms {
   /* state code, 0 = Pending, 1 = Submitted, 9 = Success, -1 - -8 = Failed, -9 = Do not retry anymore */
   state Integer,
 
+  /* First SMS or USSD messages to send to customers */
+  shortMsg String,
+
   /* Related Campaign */
   campaignId String,
 

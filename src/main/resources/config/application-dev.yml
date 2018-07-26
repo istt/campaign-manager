@@ -113,4 +113,12 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    vas-cloud:
+        end-point: https://virtserver.swaggerhub.com/foxtechvn/vinaphone-vascloud/1.0.0/services/SMS_GW_MT_PROXY
+        username: tranhtaitrithuc
+        password: Tranhtai@Trithuc@123
+        cp-code: HOHUY
+        cp-charge: HOHUY-TRANHTAITRITHUC
+        service-code: TRANHTAITRITHUC
+        service-id: 5-TRANHTAITRITHUC

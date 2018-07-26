@@ -1,6 +1,7 @@
 package com.ft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.ft.security.SecurityUtils;
 import com.ft.service.CampaignService;
 import com.ft.web.rest.errors.BadRequestAlertException;
 import com.ft.web.rest.util.HeaderUtil;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +55,14 @@ public class CampaignResource {
         if (campaignDTO.getId() != null) {
             throw new BadRequestAlertException("A new campaign cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        campaignDTO.setCreatedAt(ZonedDateTime.now());
+        campaignDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin().get());
+
         CampaignDTO result = campaignService.save(campaignDTO);
+        // Process file uploading if need
+        if (campaignDTO.getMsisdnListContentType() != null) {
+        	campaignService.processDataFile(result);
+        }
         return ResponseEntity.created(new URI("/api/campaigns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -77,6 +85,10 @@ public class CampaignResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         CampaignDTO result = campaignService.save(campaignDTO);
+     // Process file uploading if need
+        if (campaignDTO.getMsisdnListContentType() != null) {
+        	campaignService.processDataFile(result);
+        }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, campaignDTO.getId().toString()))
             .body(result);

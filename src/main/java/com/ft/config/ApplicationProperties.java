@@ -2,6 +2,8 @@ package com.ft.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import com.ft.service.dto.VasCloudConfigurationDTO;
+
 /**
  * Properties specific to Campaign Manager.
  * <p>
@@ -10,5 +12,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
+
+	private VasCloudConfigurationDTO vasCloud;
+
+	public VasCloudConfigurationDTO getVasCloud() {
+		return vasCloud;
+	}
+
+	public void setVasCloud(VasCloudConfigurationDTO vasCloud) {
+		this.vasCloud = vasCloud;
+	}
+
 
 }

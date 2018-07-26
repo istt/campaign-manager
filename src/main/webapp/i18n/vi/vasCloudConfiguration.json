@@ -1,0 +1,28 @@
+
+{
+    "campaignManagerApp": {
+        "vasCloudConfiguration" : {
+            "home": {
+                "title": "Vas Cloud Configurations",
+                "createLabel": "Thêm mới một Vas Cloud Configuration",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Vas Cloud Configuration"
+            },
+            "created": "Một Vas Cloud Configuration mới được tạo với định danh {{ param }}",
+            "updated": "Một Vas Cloud Configuration cập nhật với định danh {{ param }}",
+            "deleted": "Một Vas Cloud Configuration đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Vas Cloud Configuration {{ id }}?"
+            },
+            "detail": {
+                "title": "Vas Cloud Configuration"
+            },
+            "endPoint": "End Point",
+            "username": "Username",
+            "password": "Password",
+            "serviceCode": "Service Code",
+            "cpCode": "Cp Code",
+            "cpCharge": "Cp Charge",
+            "serviceId": "Service Id"
+        }
+    }
+}

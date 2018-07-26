@@ -1,0 +1,66 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="campaignManagerApp.vasCloudConfiguration.home.title">Vas Cloud Configurations</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-vas-cloud-configuration" [routerLink]="['/vas-cloud-configuration/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="campaignManagerApp.vasCloudConfiguration.home.createLabel">
+            Create new Vas Cloud Configuration
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="vasCloudConfigurations">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.endPoint">End Point</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.username">Username</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.password">Password</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceCode">Service Code</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCode">Cp Code</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCharge">Cp Charge</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceId">Service Id</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let vasCloudConfiguration of vasCloudConfigurations ;trackBy: trackId">
+                <td><a [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'view' ]">{{vasCloudConfiguration.id}}</a></td>
+                <td>{{vasCloudConfiguration.endPoint}}</td>
+                <td>{{vasCloudConfiguration.username}}</td>
+                <td>{{vasCloudConfiguration.password}}</td>
+                <td>{{vasCloudConfiguration.serviceCode}}</td>
+                <td>{{vasCloudConfiguration.cpCode}}</td>
+                <td>{{vasCloudConfiguration.cpCharge}}</td>
+                <td>{{vasCloudConfiguration.serviceId}}</td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'vas-cloud-configuration/'+ vasCloudConfiguration.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

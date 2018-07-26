@@ -1,0 +1,14 @@
+entity VasCloudConfiguration {
+
+  endPoint String, // ==http://10.144.18.112/services/SMS_GW_MT_PROXY
+  username String, // ==tranhtaitrithuc
+  password String, // ==Tranhtai@Trithuc@123
+  serviceCode String, // ==TRANHTAITRITHUC
+  cpCode String, // ==HOHUY
+  cpCharge String, // ==HOHUY-TRANHTAITRITHUC
+  serviceId String, // ==5-TRANHTAITRITHUC
+
+}
+
+service all with serviceClass
+dto all with mapstruct

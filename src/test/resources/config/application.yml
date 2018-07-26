@@ -85,10 +85,10 @@ jhipster:
 
 application:
     vas-cloud:
-        end-point: http://10.144.18.112/services/SMS_GW_MT_PROXY
+        end-point: http://vascloud.sclip.vn/services/SMS_GW_MT_PROXY
         username: tranhtaitrithuc
         password: Tranhtai@Trithuc@123
-        service-code: TRANHTAITRITHUC
         cp-code: HOHUY
         cp-charge: HOHUY-TRANHTAITRITHUC
+        service-code: TRANHTAITRITHUC
         service-id: 5-TRANHTAITRITHUC

@@ -44,6 +44,13 @@ public class Sms implements Serializable {
     private Integer state;
 
     /**
+     * First SMS or USSD messages to send to customers
+     */
+    @ApiModelProperty(value = "First SMS or USSD messages to send to customers")
+    @Field("short_msg")
+    private String shortMsg;
+
+    /**
      * Related Campaign
      */
     @ApiModelProperty(value = "Related Campaign")
@@ -138,6 +145,19 @@ public class Sms implements Serializable {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public String getShortMsg() {
+        return shortMsg;
+    }
+
+    public Sms shortMsg(String shortMsg) {
+        this.shortMsg = shortMsg;
+        return this;
+    }
+
+    public void setShortMsg(String shortMsg) {
+        this.shortMsg = shortMsg;
     }
 
     public Integer getState() {
@@ -311,6 +331,7 @@ public class Sms implements Serializable {
             ", source='" + getSource() + "'" +
             ", destination='" + getDestination() + "'" +
             ", state=" + getState() +
+            ", shortMsg='" + getShortMsg() + "'" +
             ", campaignId='" + getCampaignId() + "'" +
             ", cpId='" + getCpId() + "'" +
             ", spId='" + getSpId() + "'" +

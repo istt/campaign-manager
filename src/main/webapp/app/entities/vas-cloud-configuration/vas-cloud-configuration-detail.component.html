@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="vasCloudConfiguration">
+            <h2><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.detail.title">Vas Cloud Configuration</span> {{vasCloudConfiguration.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.endPoint">End Point</span></dt>
+                <dd>
+                    <span>{{vasCloudConfiguration.endPoint}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.username">Username</span></dt>
+                <dd>
+                    <span>{{vasCloudConfiguration.username}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.password">Password</span></dt>
+                <dd>
+                    <span>{{vasCloudConfiguration.password}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceCode">Service Code</span></dt>
+                <dd>
+                    <span>{{vasCloudConfiguration.serviceCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCode">Cp Code</span></dt>
+                <dd>
+                    <span>{{vasCloudConfiguration.cpCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCharge">Cp Charge</span></dt>
+                <dd>
+                    <span>{{vasCloudConfiguration.cpCharge}}</span>
+                </dd>
+                <dt><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceId">Service Id</span></dt>
+                <dd>
+                    <span>{{vasCloudConfiguration.serviceId}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

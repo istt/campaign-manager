@@ -9,6 +9,7 @@
                 "main": "Thực thể",
                 "campaign": "Campaign",
                 "sms": "Sms",
+                "vasCloudConfiguration": "Vas Cloud Configuration",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

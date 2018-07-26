@@ -1,0 +1,59 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-vas-cloud-configuration-heading" jhiTranslate="campaignManagerApp.vasCloudConfiguration.home.createOrEditLabel">Create or edit a Vas Cloud Configuration</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!vasCloudConfiguration.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id"
+                        [(ngModel)]="vasCloudConfiguration.id" readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.endPoint" for="field_endPoint">End Point</label>
+                    <input type="text" class="form-control" name="endPoint" id="field_endPoint"
+                        [(ngModel)]="vasCloudConfiguration.endPoint" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.username" for="field_username">Username</label>
+                    <input type="text" class="form-control" name="username" id="field_username"
+                        [(ngModel)]="vasCloudConfiguration.username" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.password" for="field_password">Password</label>
+                    <input type="text" class="form-control" name="password" id="field_password"
+                        [(ngModel)]="vasCloudConfiguration.password" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceCode" for="field_serviceCode">Service Code</label>
+                    <input type="text" class="form-control" name="serviceCode" id="field_serviceCode"
+                        [(ngModel)]="vasCloudConfiguration.serviceCode" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCode" for="field_cpCode">Cp Code</label>
+                    <input type="text" class="form-control" name="cpCode" id="field_cpCode"
+                        [(ngModel)]="vasCloudConfiguration.cpCode" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCharge" for="field_cpCharge">Cp Charge</label>
+                    <input type="text" class="form-control" name="cpCharge" id="field_cpCharge"
+                        [(ngModel)]="vasCloudConfiguration.cpCharge" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceId" for="field_serviceId">Service Id</label>
+                    <input type="text" class="form-control" name="serviceId" id="field_serviceId"
+                        [(ngModel)]="vasCloudConfiguration.serviceId" />
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
