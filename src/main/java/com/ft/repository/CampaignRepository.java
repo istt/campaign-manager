@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CampaignRepository extends MongoRepository<Campaign, String> {
+public interface CampaignRepository extends MongoRepository<Campaign, String>, CampaignCustomRepository {
 
 }

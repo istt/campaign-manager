@@ -28,6 +28,10 @@
         {
             "fieldName": "serviceId",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "packageCode",
+            "fieldType": "String"
         }
     ],
     "relationships": [],

@@ -24,6 +24,8 @@ public class VasCloudConfigurationDTO implements Serializable {
 
     private String serviceId;
 
+    private String packageCode;
+
     public String getId() {
         return id;
     }
@@ -86,6 +88,14 @@ public class VasCloudConfigurationDTO implements Serializable {
 
     public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getPackageCode() {
+        return packageCode;
+    }
+
+    public void setPackageCode(String packageCode) {
+        this.packageCode = packageCode;
     }
 
     @Override

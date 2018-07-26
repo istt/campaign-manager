@@ -8,6 +8,7 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -167,9 +168,17 @@ public class Campaign implements Serializable {
      */
     @ApiModelProperty(value = "SMS or USSD message broadcast per second")
     @Field("rate_limit")
-    private Double rateLimit;
+    private Long rateLimit;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+    /**
+     * SMS or USSD message broadcast per second
+     */
+    @ApiModelProperty(value = "SMS or USSD message broadcast per second")
+    @Field("cfg")
+    private Map<String, Object> cfg;
+
     public String getId() {
         return id;
     }
@@ -503,20 +512,32 @@ public class Campaign implements Serializable {
         this.subQuota = subQuota;
     }
 
-    public Double getRateLimit() {
+    public Long getRateLimit() {
         return rateLimit;
     }
 
-    public Campaign rateLimit(Double rateLimit) {
+    public Campaign rateLimit(Long rateLimit) {
         this.rateLimit = rateLimit;
         return this;
     }
 
-    public void setRateLimit(Double rateLimit) {
+    public void setRateLimit(Long rateLimit) {
         this.rateLimit = rateLimit;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+    public Map<String, Object> getCfg() {
+        return cfg;
+    }
+
+    public Campaign cfg(Map<String, Object> cfg) {
+        this.cfg = cfg;
+        return this;
+    }
+
+    public void setCfg(Map<String, Object> cfg) {
+        this.cfg = cfg;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

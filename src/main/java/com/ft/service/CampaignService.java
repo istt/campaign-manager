@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -123,13 +124,17 @@ public class CampaignService {
      * @return
      */
     public String msisdnFormat(String msisdn) {
-            try {
-                    msisdn = "" + Long.parseLong(msisdn.trim());
-                    if (!msisdn.substring(0, "84".length()).equalsIgnoreCase("84")) {
-                            msisdn = "84" + msisdn;
-                    }
-            } catch (Exception e) {}
-            return String.valueOf(Long.parseLong(msisdn));
+        try {
+                msisdn = "" + Long.parseLong(msisdn.trim());
+                if (!msisdn.substring(0, "84".length()).equalsIgnoreCase("84")) {
+                        msisdn = "84" + msisdn;
+                }
+        } catch (Exception e) {}
+        return String.valueOf(Long.parseLong(msisdn));
     }
+
+	public List<Campaign> getPendingCampaigns() {
+		return campaignRepository.findAllPendingCampaign();
+	}
 
 }

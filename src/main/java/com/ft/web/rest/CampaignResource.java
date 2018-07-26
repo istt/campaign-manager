@@ -136,4 +136,32 @@ public class CampaignResource {
         campaignService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
     }
+
+    /**
+     * GET  /campaigns/:id/import : get the "id" campaign.
+     *
+     * @param id the id of the campaignDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the campaignDTO, or with status 404 (Not Found)
+     */
+    @PutMapping("/campaigns/{id}/import")
+    @Timed
+    public ResponseEntity<Integer> triggerCampaignImport(@PathVariable String id) {
+        log.debug("REST request to get Campaign : {}", id);
+        Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
+        return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
+    }
+    @PutMapping("/campaigns/{id}/approve")
+    @Timed
+    public ResponseEntity<Integer> triggerCampaignApproval(@PathVariable String id) {
+        log.debug("REST request to get Campaign : {}", id);
+        Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
+        return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
+    }
+    @PutMapping("/campaigns/{id}/reject")
+    @Timed
+    public ResponseEntity<Integer> triggerCampaignReject(@PathVariable String id) {
+        log.debug("REST request to get Campaign : {}", id);
+        Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
+        return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
+    }
 }

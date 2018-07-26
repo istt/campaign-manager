@@ -55,7 +55,7 @@ entity Campaign {
   subQuota Integer,
 
   /* SMS or USSD message broadcast per second */
-  rateLimit Double,
+  rateLimit Long,
 
 }
 

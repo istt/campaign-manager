@@ -133,7 +133,7 @@
         {
             "fieldName": "rateLimit",
             "javadoc": "SMS or USSD message broadcast per second",
-            "fieldType": "Double"
+            "fieldType": "Long"
         }
     ],
     "relationships": [],

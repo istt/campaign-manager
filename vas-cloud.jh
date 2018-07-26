@@ -7,7 +7,13 @@ entity VasCloudConfiguration {
   cpCode String, // ==HOHUY
   cpCharge String, // ==HOHUY-TRANHTAITRITHUC
   serviceId String, // ==5-TRANHTAITRITHUC
+  packageCode String, // TTTT
+}
 
+entity VasCloudMsg {
+  module String,
+  messageType String,
+  command String,
 }
 
 service all with serviceClass

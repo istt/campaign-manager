@@ -39,6 +39,9 @@ public class VasCloudConfiguration implements Serializable {
     @Field("service_id")
     private String serviceId;
 
+    @Field("package_code")
+    private String packageCode;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
         return id;
@@ -137,6 +140,19 @@ public class VasCloudConfiguration implements Serializable {
 
     public void setServiceId(String serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public String getPackageCode() {
+        return packageCode;
+    }
+
+    public VasCloudConfiguration packageCode(String packageCode) {
+        this.packageCode = packageCode;
+        return this;
+    }
+
+    public void setPackageCode(String packageCode) {
+        this.packageCode = packageCode;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
