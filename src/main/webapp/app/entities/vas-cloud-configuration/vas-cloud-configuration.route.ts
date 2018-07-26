@@ -23,7 +23,13 @@ export class VasCloudConfigurationResolve implements Resolve<IVasCloudConfigurat
                 .find(id)
                 .pipe(map((vasCloudConfiguration: HttpResponse<VasCloudConfiguration>) => vasCloudConfiguration.body));
         }
-        return of(new VasCloudConfiguration());
+        return this.service.find('DEFAULT').pipe(
+            map((vasCloudConfiguration: HttpResponse<VasCloudConfiguration>) => {
+                const body = vasCloudConfiguration.body;
+                delete body.id;
+                return body;
+            })
+        );
     }
 }
 
