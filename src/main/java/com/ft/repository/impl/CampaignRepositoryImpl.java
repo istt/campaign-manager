@@ -34,6 +34,7 @@ public class CampaignRepositoryImpl implements CampaignCustomRepository {
 	@Override
 	public List<Campaign> findAllPendingCampaign() {
 		Query query = new Query().addCriteria(createPendingCriteria());
+		log.debug("Query: " + query);
 		return mongoTemplate.find(query, Campaign.class);
 	}
 
@@ -51,13 +52,13 @@ public class CampaignRepositoryImpl implements CampaignCustomRepository {
 			criteria.add(Criteria.where("start_at").lte(now));
 			criteria.add(Criteria.where("expired_at").gte(now));
 		DayOfWeek thisWeekday = now.toLocalDate().getDayOfWeek();
-		log.debug("Day of week: " + thisWeekday);
-			criteria.add(Criteria.where("working_weekdays").in(thisWeekday.getValue()));
+		log.debug("Day of week: " + thisWeekday + " : " + thisWeekday.getValue());
+			criteria.add(Criteria.where("working_weekdays").is(thisWeekday.getValue()));
 		int thisHour = now.toLocalDateTime().getHour();
 		log.debug("This Hour: " + thisHour);
-			criteria.add(Criteria.where("working_hours").in(thisWeekday.getValue()));
-		LocalDate today = now.toLocalDate();
-		log.debug("Today: " + today);
+			criteria.add(Criteria.where("working_hours").is(thisHour));
+//		LocalDate today = now.toLocalDate();
+//		log.debug("Today: " + today);
 //			TODO: Add criteria for Holiday
 //			criteria.add(Criteria.where("working_days").nin(today));
 

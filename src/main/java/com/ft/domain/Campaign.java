@@ -7,9 +7,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A Campaign.
@@ -128,13 +131,13 @@ public class Campaign implements Serializable {
     private ZonedDateTime expiredAt;
 
     @Field("working_hours")
-    private String workingHours;
+    private List<Integer> workingHours;
 
     @Field("working_weekdays")
-    private String workingWeekdays;
+    private List<Integer> workingWeekdays;
 
     @Field("working_days")
-    private String workingDays;
+    private List<LocalDate> workingDays;
 
     /**
      * Target Services to be broadcast related info, should be logged into CDR
@@ -177,7 +180,7 @@ public class Campaign implements Serializable {
      */
     @ApiModelProperty(value = "SMS or USSD message broadcast per second")
     @Field("cfg")
-    private Map<String, Object> cfg;
+    private Map<String, Object> cfg = new ConcurrentHashMap<String, Object>();
 
     public String getId() {
         return id;
@@ -408,42 +411,42 @@ public class Campaign implements Serializable {
         this.expiredAt = expiredAt;
     }
 
-    public String getWorkingHours() {
+    public List<Integer> getWorkingHours() {
         return workingHours;
     }
 
-    public Campaign workingHours(String workingHours) {
+    public Campaign workingHours(List<Integer> workingHours) {
         this.workingHours = workingHours;
         return this;
     }
 
-    public void setWorkingHours(String workingHours) {
+    public void setWorkingHours(List<Integer> workingHours) {
         this.workingHours = workingHours;
     }
 
-    public String getWorkingWeekdays() {
+    public List<Integer> getWorkingWeekdays() {
         return workingWeekdays;
     }
 
-    public Campaign workingWeekdays(String workingWeekdays) {
+    public Campaign workingWeekdays(List<Integer> workingWeekdays) {
         this.workingWeekdays = workingWeekdays;
         return this;
     }
 
-    public void setWorkingWeekdays(String workingWeekdays) {
+    public void setWorkingWeekdays(List<Integer> workingWeekdays) {
         this.workingWeekdays = workingWeekdays;
     }
 
-    public String getWorkingDays() {
+    public List<LocalDate> getWorkingDays() {
         return workingDays;
     }
 
-    public Campaign workingDays(String workingDays) {
+    public Campaign workingDays(List<LocalDate> workingDays) {
         this.workingDays = workingDays;
         return this;
     }
 
-    public void setWorkingDays(String workingDays) {
+    public void setWorkingDays(List<LocalDate> workingDays) {
         this.workingDays = workingDays;
     }
 

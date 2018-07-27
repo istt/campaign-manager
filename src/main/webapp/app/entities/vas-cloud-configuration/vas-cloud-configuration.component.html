@@ -15,10 +15,10 @@
             <thead>
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.endPoint">End Point</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.username">Username</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.password">Password</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceCode">Service Code</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.packageCode">Package Code</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCode">Cp Code</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCharge">Cp Charge</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceId">Service Id</span></th>
@@ -28,10 +28,10 @@
             <tbody>
             <tr *ngFor="let vasCloudConfiguration of vasCloudConfigurations ;trackBy: trackId">
                 <td><a [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'view' ]">{{vasCloudConfiguration.id}}</a></td>
-                <td>{{vasCloudConfiguration.endPoint}}</td>
                 <td>{{vasCloudConfiguration.username}}</td>
                 <td>{{vasCloudConfiguration.password}}</td>
                 <td>{{vasCloudConfiguration.serviceCode}}</td>
+                <td>{{vasCloudConfiguration.packageCode}}</td>
                 <td>{{vasCloudConfiguration.cpCode}}</td>
                 <td>{{vasCloudConfiguration.cpCharge}}</td>
                 <td>{{vasCloudConfiguration.serviceId}}</td>

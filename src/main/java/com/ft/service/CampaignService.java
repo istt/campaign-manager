@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 /**
@@ -88,8 +89,8 @@ public class CampaignService {
     @Autowired
     SmsRepository smsRepo;
 
-    public int processDataFile(CampaignDTO cp) {
-    	int result = 0;
+    public long processDataFile(CampaignDTO cp) {
+    	long result = 0L;
     	if (cp.getMsisdnListContentType().contains("text")) {
     		Matcher m = patt.matcher(new String(cp.getMsisdnList()));
             while (m.find()) {
@@ -112,7 +113,8 @@ public class CampaignService {
                     		.cpId(cp.getCpId())
                     );
             }
-
+            if (cp.getCfg() == null) cp.setCfg(new ConcurrentHashMap<String, Object>());
+            cp.getCfg().put("msgCnt", result);
     	}
     	return result;
     }

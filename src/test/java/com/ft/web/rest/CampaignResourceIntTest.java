@@ -120,8 +120,8 @@ public class CampaignResourceIntTest {
     private static final Integer DEFAULT_SUB_QUOTA = 1;
     private static final Integer UPDATED_SUB_QUOTA = 2;
 
-    private static final Double DEFAULT_RATE_LIMIT = 1D;
-    private static final Double UPDATED_RATE_LIMIT = 2D;
+    private static final Long DEFAULT_RATE_LIMIT = 1L;
+    private static final Long UPDATED_RATE_LIMIT = 2L;
 
     @Autowired
     private CampaignRepository campaignRepository;
@@ -129,7 +129,7 @@ public class CampaignResourceIntTest {
 
     @Autowired
     private CampaignMapper campaignMapper;
-    
+
 
     @Autowired
     private CampaignService campaignService;
@@ -183,9 +183,9 @@ public class CampaignResourceIntTest {
             .msisdnListContentType(DEFAULT_MSISDN_LIST_CONTENT_TYPE)
             .startAt(DEFAULT_START_AT)
             .expiredAt(DEFAULT_EXPIRED_AT)
-            .workingHours(DEFAULT_WORKING_HOURS)
-            .workingWeekdays(DEFAULT_WORKING_WEEKDAYS)
-            .workingDays(DEFAULT_WORKING_DAYS)
+//            .workingHours(DEFAULT_WORKING_HOURS)
+//            .workingWeekdays(DEFAULT_WORKING_WEEKDAYS)
+//            .workingDays(DEFAULT_WORKING_DAYS)
             .spSvc(DEFAULT_SP_SVC)
             .spId(DEFAULT_SP_ID)
             .cpId(DEFAULT_CP_ID)
@@ -372,7 +372,7 @@ public class CampaignResourceIntTest {
             .andExpect(jsonPath("$.[*].subQuota").value(hasItem(DEFAULT_SUB_QUOTA)))
             .andExpect(jsonPath("$.[*].rateLimit").value(hasItem(DEFAULT_RATE_LIMIT.doubleValue())));
     }
-    
+
 
     @Test
     public void getCampaign() throws Exception {
@@ -445,9 +445,9 @@ public class CampaignResourceIntTest {
             .msisdnListContentType(UPDATED_MSISDN_LIST_CONTENT_TYPE)
             .startAt(UPDATED_START_AT)
             .expiredAt(UPDATED_EXPIRED_AT)
-            .workingHours(UPDATED_WORKING_HOURS)
-            .workingWeekdays(UPDATED_WORKING_WEEKDAYS)
-            .workingDays(UPDATED_WORKING_DAYS)
+//            .workingHours(UPDATED_WORKING_HOURS)
+//            .workingWeekdays(UPDATED_WORKING_WEEKDAYS)
+//            .workingDays(UPDATED_WORKING_DAYS)
             .spSvc(UPDATED_SP_SVC)
             .spId(UPDATED_SP_ID)
             .cpId(UPDATED_CP_ID)

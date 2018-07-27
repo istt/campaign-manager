@@ -27,7 +27,7 @@ import io.github.bucket4j.Bucket4j;
 
 @Component
 @Scope("prototype")
-public class VasCloudSmsSubmitCallable implements Callable<Integer> {
+public class VasCloudSmsSubmitCallable implements Callable<Long> {
 
     private final Logger log = LoggerFactory.getLogger(VasCloudSmsSubmitCallable.class);
 
@@ -47,28 +47,34 @@ public class VasCloudSmsSubmitCallable implements Callable<Integer> {
     private Bucket bucket;
 
     @Override
-    public Integer call() throws Exception {
-        int i = 0;
+    public Long call() throws Exception {
+        long i = 0L;
+        createBucket();
         VasCloudConfigurationDTO cfg = (VasCloudConfigurationDTO) campaign.getCfg().get("VASCLOUD");
         for (Sms sms : smsList) {
         	VasCloudMsgDTO request = createMsg(sms, campaign, cfg);
     	    try {
+    	    	bucket.asScheduler().consume(1);
     	    	VasCloudMsgDTO response = restTemplate.postForObject(cfg.getEndPoint(), request, VasCloudMsgDTO.class);
     	    	log.info("SMS VASCLOUD RESPONSE: " + response);
     	    	if (response.getCmd().get("error_id").equalsIgnoreCase("0")) {
     	    		log.info("Successful submit!!!");
     	    		i ++;
+    	    		smsRepo.save(sms.state(9));
     	    	} else {
     	    		log.error("Failed to submit SMS" + response.getCmd().get("error_id") + "|" + response.getCmd().get("error_desc"));
+    	    		smsRepo.save(sms.state(-9));
     	    	}
     	    } catch (HttpStatusCodeException s){
     	    	log.error("Cannot send message: " + s.getRawStatusCode() + " " + s.getStatusText() + ":" + s.getResponseBodyAsString());
     	    } catch (ResourceAccessException e) {
     			log.error("FAILED TO CONNECT TO ENDPOINT: " + e.getMessage());
             } catch (Exception e) {
-                log.error("CANNOT CHARGE: " + request, e);
+                log.error("Exception: " + request, e);
             }
         }
+        campaign.getCfg().put("submitCnt", campaign.getCfg().get("submitCnt") == null ? i : (long) campaign.getCfg().get("submitCnt") + i);
+        cpRepo.save(campaign);
         return i;
     }
 
@@ -103,13 +109,13 @@ public class VasCloudSmsSubmitCallable implements Callable<Integer> {
 		return msg;
 	}
 
-    public Bucket submitSmTpsBucket() {
+    public Bucket createBucket() {
         Bandwidth limit = Bandwidth.simple(campaign.getRateLimit(), Duration.ofSeconds(1));
         // construct the bucket
         Bucket bucket = Bucket4j.builder().addLimit(limit).build();
         log.info("Campaign: " + campaign.getName() + " running speed: " + campaign.getRateLimit() + " TPS");
         return bucket;
-}
+    }
 
 
     public List<Sms> getSmsList() {

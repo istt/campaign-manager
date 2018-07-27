@@ -1,0 +1,8 @@
+entity DataFile {
+  name String,
+  tags String,
+  data Blob
+}
+paginate all with pager
+dto all with mapstruct
+service all with serviceClass

@@ -1,9 +1,16 @@
 package com.ft.service.dto;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
+
+import com.ft.domain.Campaign;
+
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A DTO for the Campaign entity.
@@ -51,11 +58,11 @@ public class CampaignDTO implements Serializable {
 
     private ZonedDateTime expiredAt;
 
-    private String workingHours;
+    private List<Integer> workingHours;
 
-    private String workingWeekdays;
+    private List<Integer> workingWeekdays;
 
-    private String workingDays;
+    private List<LocalDate> workingDays;
 
     private String spSvc;
 
@@ -68,6 +75,8 @@ public class CampaignDTO implements Serializable {
     private Integer subQuota;
 
     private Double rateLimit;
+
+    private Map<String,Object> cfg = new ConcurrentHashMap<String, Object>();
 
     public String getId() {
         return id;
@@ -213,27 +222,27 @@ public class CampaignDTO implements Serializable {
         this.expiredAt = expiredAt;
     }
 
-    public String getWorkingHours() {
+    public List<Integer> getWorkingHours() {
         return workingHours;
     }
 
-    public void setWorkingHours(String workingHours) {
+    public void setWorkingHours(List<Integer> workingHours) {
         this.workingHours = workingHours;
     }
 
-    public String getWorkingWeekdays() {
+    public List<Integer> getWorkingWeekdays() {
         return workingWeekdays;
     }
 
-    public void setWorkingWeekdays(String workingWeekdays) {
+    public void setWorkingWeekdays(List<Integer> workingWeekdays) {
         this.workingWeekdays = workingWeekdays;
     }
 
-    public String getWorkingDays() {
+    public List<LocalDate> getWorkingDays() {
         return workingDays;
     }
 
-    public void setWorkingDays(String workingDays) {
+    public void setWorkingDays(List<LocalDate> workingDays) {
         this.workingDays = workingDays;
     }
 
@@ -283,6 +292,14 @@ public class CampaignDTO implements Serializable {
 
     public void setRateLimit(Double rateLimit) {
         this.rateLimit = rateLimit;
+    }
+
+    public Map<String, Object> getCfg() {
+        return cfg;
+    }
+
+    public void setCfg(Map<String, Object> cfg) {
+        this.cfg = cfg;
     }
 
     @Override

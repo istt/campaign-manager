@@ -144,13 +144,15 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingHours" for="field_workingHours">Working Hours</label>
-                    <input type="text" class="form-control" name="workingHours" id="field_workingHours"
-                        [(ngModel)]="campaign.workingHours" />
+                    <select class="form-control" name="workingHours" id="field_workingHours" [(ngModel)]="campaign.workingHours" multiple="true">
+                      <option *ngFor="let h of workingHours" value="{{h}}">{{ 'campaignManagerApp.campaign.workingHour_' + h | translate }}</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingWeekdays" for="field_workingWeekdays">Working Weekdays</label>
-                    <input type="text" class="form-control" name="workingWeekdays" id="field_workingWeekdays"
-                        [(ngModel)]="campaign.workingWeekdays" />
+                    <select multiple="true" class="form-control" name="workingWeekdays" id="field_workingWeekdays" [(ngModel)]="campaign.workingWeekdays">
+                      <option *ngFor="let w of workingWeekdays" value="{{w}}">{{ 'campaignManagerApp.campaign.workingWeekday_' + w | translate }}</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingDays" for="field_workingDays">Working Days</label>
@@ -188,6 +190,13 @@
                         [(ngModel)]="campaign.rateLimit" />
                 </div>
 
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cfg" for="field_cfg_VASCLOUD" [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</label>
+                    <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)">
+                      <option *ngFor="let i of vasCloudSvc.entities" value="{{i.id}}">{{i.serviceCode}} / {{i.packageCode}}</option>
+                    </select>
+                </div>
+
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
@@ -199,4 +208,7 @@
             </div>
         </form>
     </div>
+
+    <pre><code>{{ campaign | json }}</code></pre>
+
 </div>

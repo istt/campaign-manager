@@ -12,6 +12,12 @@ type EntityArrayResponseType = HttpResponse<IVasCloudConfiguration[]>;
 @Injectable({ providedIn: 'root' })
 export class VasCloudConfigurationService {
     private resourceUrl = SERVER_API_URL + 'api/vas-cloud-configurations';
+    // Entity and Entities shared
+    public entity: IVasCloudConfiguration;
+    public entities: IVasCloudConfiguration[];
+    // Temporary data used for store object on single and multiple select box
+    public selected;
+    public checked: string[] = [];
 
     constructor(private http: HttpClient) {}
 

@@ -3,6 +3,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CampaignManagerCampaignModule } from './campaign/campaign.module';
 import { CampaignManagerSmsModule } from './sms/sms.module';
 import { CampaignManagerVasCloudConfigurationModule } from './vas-cloud-configuration/vas-cloud-configuration.module';
+import { CampaignManagerDataFileModule } from './data-file/data-file.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -11,6 +12,7 @@ import { CampaignManagerVasCloudConfigurationModule } from './vas-cloud-configur
         CampaignManagerCampaignModule,
         CampaignManagerSmsModule,
         CampaignManagerVasCloudConfigurationModule,
+        CampaignManagerDataFileModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

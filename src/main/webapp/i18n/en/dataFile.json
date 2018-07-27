@@ -1,0 +1,24 @@
+
+{
+    "campaignManagerApp": {
+        "dataFile" : {
+            "home": {
+                "title": "Data Files",
+                "createLabel": "Create a new Data File",
+                "createOrEditLabel": "Create or edit a Data File"
+            },
+            "created": "A new Data File is created with identifier {{ param }}",
+            "updated": "A Data File is updated with identifier {{ param }}",
+            "deleted": "A Data File is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Data File {{ id }}?"
+            },
+            "detail": {
+                "title": "Data File"
+            },
+            "name": "Name",
+            "tags": "Tags",
+            "data": "Data"
+        }
+    }
+}

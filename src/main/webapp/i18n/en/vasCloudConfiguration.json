@@ -20,8 +20,9 @@
             "username": "Username",
             "password": "Password",
             "serviceCode": "Service Code",
-            "cpCode": "Cp Code",
-            "cpCharge": "Cp Charge",
+            "packageCode": "Package Code",
+            "cpCode": "CP Code",
+            "cpCharge": "CP Charge",
             "serviceId": "Service Id"
         }
     }

@@ -44,10 +44,11 @@ public class SendSmsService {
      * @throws InterruptedException
      */
     @Scheduled(fixedDelay = 60000)
-    public int submitPendingCampaign() throws InterruptedException {
+    public long submitPendingCampaign() throws InterruptedException {
     	int threads = 0;
-    	CompletionService<Integer> completionService = new ExecutorCompletionService<Integer>(taskExecutor);
+    	CompletionService<Long> completionService = new ExecutorCompletionService<Long>(taskExecutor);
     	for (Campaign cp : cpRepo.findAllPendingCampaign()) {
+    		log.debug("Prepare to submit SMS for campaign: " + cp);
     		List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndStateLessThan(cp.getId(), 1);
     		if (tobeSubmit.size() == 0) continue;
     		if (cp.getChannel().contains("VASCLOUD")) {
@@ -58,8 +59,8 @@ public class SendSmsService {
     			threads++;
     		}
     	}
-    	Future<Integer> completedFuture;
-        int submitCnt = 0;
+    	Future<Long> completedFuture;
+        long submitCnt = 0L;
         while (threads > 0) {
             // block until a callable completes
             completedFuture = completionService.take();
@@ -67,7 +68,7 @@ public class SendSmsService {
 
             // get the Widget, if the Callable was able to create it
             try {
-                Integer res = completedFuture.get();
+            	Long res = completedFuture.get();
                 if (completedFuture.isDone()) {
                         submitCnt += res;
                         log.info("=== ONE THREAD COMPLETED: " + threads + " REQUEST SEND: " + res);

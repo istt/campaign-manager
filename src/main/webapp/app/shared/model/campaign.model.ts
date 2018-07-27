@@ -28,6 +28,8 @@ export interface ICampaign {
     msgQuota?: number;
     subQuota?: number;
     rateLimit?: number;
+    // Extra properties
+    cfg?: any;
 }
 
 export class Campaign implements ICampaign {
@@ -58,6 +60,9 @@ export class Campaign implements ICampaign {
         public cpId?: string,
         public msgQuota?: number,
         public subQuota?: number,
-        public rateLimit?: number
-    ) {}
+        public rateLimit?: number,
+        public cfg?: any
+    ) {
+        this.cfg = {};
+    }
 }

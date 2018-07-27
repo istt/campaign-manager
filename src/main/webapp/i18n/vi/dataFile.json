@@ -1,0 +1,24 @@
+
+{
+    "campaignManagerApp": {
+        "dataFile" : {
+            "home": {
+                "title": "Data Files",
+                "createLabel": "Thêm mới một Data File",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật Data File"
+            },
+            "created": "Một Data File mới được tạo với định danh {{ param }}",
+            "updated": "Một Data File cập nhật với định danh {{ param }}",
+            "deleted": "Một Data File đã xóa với định danh {{ param }}",
+            "delete": {
+                "question": "Bạn có chắc là muốn xóa Data File {{ id }}?"
+            },
+            "detail": {
+                "title": "Data File"
+            },
+            "name": "Name",
+            "tags": "Tags",
+            "data": "Data"
+        }
+    }
+}

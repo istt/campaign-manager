@@ -145,21 +145,21 @@ public class CampaignResource {
      */
     @PutMapping("/campaigns/{id}/import")
     @Timed
-    public ResponseEntity<Integer> triggerCampaignImport(@PathVariable String id) {
+    public ResponseEntity<Long> triggerCampaignImport(@PathVariable String id) {
         log.debug("REST request to get Campaign : {}", id);
         Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
         return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
     }
     @PutMapping("/campaigns/{id}/approve")
     @Timed
-    public ResponseEntity<Integer> triggerCampaignApproval(@PathVariable String id) {
+    public ResponseEntity<Long> triggerCampaignApproval(@PathVariable String id) {
         log.debug("REST request to get Campaign : {}", id);
         Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
         return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
     }
     @PutMapping("/campaigns/{id}/reject")
     @Timed
-    public ResponseEntity<Integer> triggerCampaignReject(@PathVariable String id) {
+    public ResponseEntity<Long> triggerCampaignReject(@PathVariable String id) {
         log.debug("REST request to get Campaign : {}", id);
         Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
         return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
