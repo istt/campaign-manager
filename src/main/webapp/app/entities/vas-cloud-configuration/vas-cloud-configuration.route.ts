@@ -19,6 +19,15 @@ export class VasCloudConfigurationResolve implements Resolve<IVasCloudConfigurat
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
+            if (route.data['pageTitle'] === 'campaignManagerApp.vasCloudConfiguration.home.copy') {
+                return this.service.find(id).pipe(
+                    map((vasCloudConfiguration: HttpResponse<VasCloudConfiguration>) => {
+                        const body = vasCloudConfiguration.body;
+                        delete body.id;
+                        return body;
+                    })
+                );
+            }
             return this.service
                 .find(id)
                 .pipe(map((vasCloudConfiguration: HttpResponse<VasCloudConfiguration>) => vasCloudConfiguration.body));
@@ -64,6 +73,18 @@ export const vasCloudConfigurationRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'vas-cloud-configuration/:id/copy',
+        component: VasCloudConfigurationUpdateComponent,
+        resolve: {
+            vasCloudConfiguration: VasCloudConfigurationResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.copy'
         },
         canActivate: [UserRouteAccessService]
     },

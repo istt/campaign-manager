@@ -2,10 +2,16 @@ package com.ft.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A VasCloudConfiguration.
@@ -41,6 +47,22 @@ public class VasCloudConfiguration implements Serializable {
 
     @Field("package_code")
     private String packageCode;
+
+    /**
+     * The USSD shortcode used to send out messages
+     */
+    @NotNull
+    @Size(max = 40)
+    @ApiModelProperty(value = "The USSD shortcode used to send out messages", required = true)
+    @Field("short_code")
+    private String shortCode;
+
+    /**
+     * SMS or USSD message broadcast per second
+     */
+    @ApiModelProperty(value = "SMS or USSD message broadcast per second")
+    @Field("rate_limit")
+    private Long rateLimit;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
@@ -154,6 +176,32 @@ public class VasCloudConfiguration implements Serializable {
     public void setPackageCode(String packageCode) {
         this.packageCode = packageCode;
     }
+
+    public String getShortCode() {
+        return shortCode;
+    }
+
+    public VasCloudConfiguration shortCode(String shortCode) {
+        this.shortCode = shortCode;
+        return this;
+    }
+
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
+    }
+
+    public Long getRateLimit() {
+        return rateLimit;
+    }
+
+    public VasCloudConfiguration rateLimit(Long rateLimit) {
+        this.rateLimit = rateLimit;
+        return this;
+    }
+
+    public void setRateLimit(Long rateLimit) {
+        this.rateLimit = rateLimit;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -184,9 +232,11 @@ public class VasCloudConfiguration implements Serializable {
             ", username='" + getUsername() + "'" +
             ", password='" + getPassword() + "'" +
             ", serviceCode='" + getServiceCode() + "'" +
+            ", packageCode='" + getPackageCode() + "'" +
             ", cpCode='" + getCpCode() + "'" +
             ", cpCharge='" + getCpCharge() + "'" +
             ", serviceId='" + getServiceId() + "'" +
+            ", shortCode='" + getShortCode() + "'" +
             "}";
     }
 }
