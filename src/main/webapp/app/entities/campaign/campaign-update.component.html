@@ -4,198 +4,362 @@
             <h2 id="jhi-campaign-heading" jhiTranslate="campaignManagerApp.campaign.home.createOrEditLabel">Create or edit a Campaign</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!campaign.id">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id"
-                        [(ngModel)]="campaign.id" readonly />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.name" for="field_name" [ngbTooltip]="'campaignManagerApp.campaign.help.name' | translate">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name"
-                        [(ngModel)]="campaign.name" required/>
-                    <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.description" for="field_description">Description</label>
-                    <textarea class="form-control" name="description" id="field_description"
-                        [(ngModel)]="campaign.description" ></textarea>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.code" for="field_code" [ngbTooltip]="'campaignManagerApp.campaign.help.code' | translate">Code</label>
-                    <input type="text" class="form-control" name="code" id="field_code"
-                        [(ngModel)]="campaign.code" required maxlength="80"/>
-                    <div [hidden]="!(editForm.controls.code?.dirty && editForm.controls.code?.invalid)">
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.code?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.code?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 80 }">
-                        This field cannot be longer than 80 characters.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.externalId" for="field_externalId" [ngbTooltip]="'campaignManagerApp.campaign.help.externalId' | translate">External Id</label>
-                    <input type="text" class="form-control" name="externalId" id="field_externalId"
-                        [(ngModel)]="campaign.externalId" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.channel" for="field_channel" [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</label>
-                    <input type="text" class="form-control" name="channel" id="field_channel"
-                        [(ngModel)]="campaign.channel" required/>
-                    <div [hidden]="!(editForm.controls.channel?.dirty && editForm.controls.channel?.invalid)">
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.channel?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.state" for="field_state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</label>
-                    <input type="number" class="form-control" name="state" id="field_state"
-                        [(ngModel)]="campaign.state" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.shortCode" for="field_shortCode" [ngbTooltip]="'campaignManagerApp.campaign.help.shortCode' | translate">Short Code</label>
-                    <input type="text" class="form-control" name="shortCode" id="field_shortCode"
-                        [(ngModel)]="campaign.shortCode" required maxlength="40"/>
-                    <div [hidden]="!(editForm.controls.shortCode?.dirty && editForm.controls.shortCode?.invalid)">
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.shortCode?.errors?.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                        [hidden]="!editForm.controls.shortCode?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 40 }">
-                        This field cannot be longer than 40 characters.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.callbackUrl" for="field_callbackUrl" [ngbTooltip]="'campaignManagerApp.campaign.help.callbackUrl' | translate">Callback Url</label>
-                    <input type="text" class="form-control" name="callbackUrl" id="field_callbackUrl"
-                        [(ngModel)]="campaign.callbackUrl" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.createdBy" for="field_createdBy" [ngbTooltip]="'campaignManagerApp.campaign.help.createdBy' | translate">Created By</label>
-                    <input type="text" class="form-control" name="createdBy" id="field_createdBy"
-                        [(ngModel)]="campaign.createdBy" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.createdAt" for="field_createdAt">Created At</label>
-                    <div class="d-flex">
-                        <input id="field_createdAt" type="datetime-local" class="form-control" name="createdAt" [(ngModel)]="createdAt"
-                        />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.approvedBy" for="field_approvedBy" [ngbTooltip]="'campaignManagerApp.campaign.help.approvedBy' | translate">Approved By</label>
-                    <input type="text" class="form-control" name="approvedBy" id="field_approvedBy"
-                        [(ngModel)]="campaign.approvedBy" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.approvedAt" for="field_approvedAt">Approved At</label>
-                    <div class="d-flex">
-                        <input id="field_approvedAt" type="datetime-local" class="form-control" name="approvedAt" [(ngModel)]="approvedAt"
-                        />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.shortMsg" for="field_shortMsg" [ngbTooltip]="'campaignManagerApp.campaign.help.shortMsg' | translate">Short Msg</label>
-                    <input type="text" class="form-control" name="shortMsg" id="field_shortMsg"
-                        [(ngModel)]="campaign.shortMsg" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.msisdnList" for="field_msisdnList" [ngbTooltip]="'campaignManagerApp.campaign.help.msisdnList' | translate">Msisdn List</label>
-                    <div>
-                        <div *ngIf="campaign.msisdnList" class="form-text text-danger clearfix">
-                            <a class="pull-left" (click)="openFile(campaign.msisdnListContentType, campaign.msisdnList)" jhiTranslate="entity.action.open">open</a><br>
-                            <span class="pull-left">{{campaign.msisdnListContentType}}, {{byteSize(campaign.msisdnList)}}</span>
-                            <button type="button" (click)="campaign.msisdnList=null;campaign.msisdnListContentType=null;"
-                                    class="btn btn-secondary btn-xs pull-right">
-                                <fa-icon [icon]="'times'"></fa-icon>
-                            </button>
-                        </div>
-                        <input type="file" id="file_msisdnList" (change)="setFileData($event, campaign, 'msisdnList', false)" jhiTranslate="entity.action.addblob"/>
-                    </div>
-                    <input type="hidden" class="form-control" name="msisdnList" id="field_msisdnList"
-                        [(ngModel)]="campaign.msisdnList" />
-                    <input type="hidden" class="form-control" name="msisdnListContentType" id="field_msisdnListContentType"
-                        [(ngModel)]="campaign.msisdnListContentType" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.startAt" for="field_startAt" [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</label>
-                    <div class="d-flex">
-                        <input id="field_startAt" type="datetime-local" class="form-control" name="startAt" [(ngModel)]="startAt"
-                        />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.expiredAt" for="field_expiredAt">Expired At</label>
-                    <div class="d-flex">
-                        <input id="field_expiredAt" type="datetime-local" class="form-control" name="expiredAt" [(ngModel)]="expiredAt"
-                        />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingHours" for="field_workingHours">Working Hours</label>
-                    <select class="form-control" name="workingHours" id="field_workingHours" [(ngModel)]="campaign.workingHours" multiple="true">
-                      <option *ngFor="let h of workingHours" value="{{h}}">{{ 'campaignManagerApp.campaign.workingHour_' + h | translate }}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingWeekdays" for="field_workingWeekdays">Working Weekdays</label>
-                    <select multiple="true" class="form-control" name="workingWeekdays" id="field_workingWeekdays" [(ngModel)]="campaign.workingWeekdays">
-                      <option *ngFor="let w of workingWeekdays" value="{{w}}">{{ 'campaignManagerApp.campaign.workingWeekday_' + w | translate }}</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingDays" for="field_workingDays">Working Days</label>
-                    <input type="text" class="form-control" name="workingDays" id="field_workingDays"
-                        [(ngModel)]="campaign.workingDays" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.spSvc" for="field_spSvc" [ngbTooltip]="'campaignManagerApp.campaign.help.spSvc' | translate">Sp Svc</label>
-                    <input type="text" class="form-control" name="spSvc" id="field_spSvc"
-                        [(ngModel)]="campaign.spSvc" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.spId" for="field_spId">Sp Id</label>
-                    <input type="text" class="form-control" name="spId" id="field_spId"
-                        [(ngModel)]="campaign.spId" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cpId" for="field_cpId">Cp Id</label>
-                    <input type="text" class="form-control" name="cpId" id="field_cpId"
-                        [(ngModel)]="campaign.cpId" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.msgQuota" for="field_msgQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.msgQuota' | translate">Msg Quota</label>
-                    <input type="number" class="form-control" name="msgQuota" id="field_msgQuota"
-                        [(ngModel)]="campaign.msgQuota" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.subQuota" for="field_subQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.subQuota' | translate">Sub Quota</label>
-                    <input type="number" class="form-control" name="subQuota" id="field_subQuota"
-                        [(ngModel)]="campaign.subQuota" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.rateLimit" for="field_rateLimit" [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</label>
-                    <input type="number" class="form-control" name="rateLimit" id="field_rateLimit"
-                        [(ngModel)]="campaign.rateLimit" />
-                </div>
 
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cfg" for="field_cfg_VASCLOUD" [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</label>
-                    <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)">
-                      <option *ngFor="let i of vasCloudSvc.entities" value="{{i.id}}">{{i.serviceCode}} / {{i.packageCode}}</option>
-                    </select>
-                </div>
+<ngb-tabset>
+  <ngb-tab>
+    <ng-template ngbTabTitle>
+      <fa-icon [icon]="'bookmark'" [fixedWidth]="true"></fa-icon>
+      {{ 'campaignManagerApp.campaign.tabs.basicInfo' | translate }}
+    </ng-template>
+    <ng-template ngbTabContent><div class="card mt-3 mb-3">
+      <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.basicInfo' | translate }}</div>
+      <div class="card-body">
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.name" for="field_name" [ngbTooltip]="'campaignManagerApp.campaign.help.name' | translate">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name"
+              [(ngModel)]="campaign.name" required/>
+          <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+              </small>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.code" for="field_code" [ngbTooltip]="'campaignManagerApp.campaign.help.code' | translate">Code</label>
+          <input type="text" class="form-control" name="code" id="field_code"
+              [(ngModel)]="campaign.code" required maxlength="80"/>
+          <div [hidden]="!(editForm.controls.code?.dirty && editForm.controls.code?.invalid)">
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.code?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+              </small>
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.code?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 80 }">
+              This field cannot be longer than 80 characters.
+              </small>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cfg" for="field_cfg_VASCLOUD" [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</label>
+          <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)" required>
+            <option *ngFor="let i of vasCloudSvc.entities" [value]="i.id">{{i.serviceCode}} / {{i.packageCode}}</option>
+          </select>
+          <div [hidden]="!(editForm.controls.cfg?.dirty && editForm.controls.cfg?.invalid)">
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.cfg?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+              </small>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.channel" for="field_channel" [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</label>
+          <input type="text" class="form-control" name="channel" id="field_channel"
+              [(ngModel)]="campaign.channel" required/>
+          <div [hidden]="!(editForm.controls.channel?.dirty && editForm.controls.channel?.invalid)">
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.channel?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+              </small>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.shortMsg" for="field_shortMsg" [ngbTooltip]="'campaignManagerApp.campaign.help.shortMsg' | translate">Short Msg</label>
+          <textarea class="form-control" name="shortMsg" id="field_shortMsg" [(ngModel)]="campaign.shortMsg" ></textarea>
+          <p class="form-help text-muted" *ngIf="campaign.shortMsg">{{ 'campaignManagerApp.campaign.shortMsgLength' | translate }}: <code>{{campaign.shortMsg.length}}</code></p>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.rateLimit" for="field_rateLimit" [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</label>
+          <input type="number" class="form-control" name="rateLimit" id="field_rateLimit"
+              [(ngModel)]="campaign.rateLimit" />
+      </div>
+
+    </div></div></ng-template>
+  </ngb-tab>
+
+  <ngb-tab>
+    <ng-template ngbTabTitle>
+      <fa-icon [icon]="'clock'" [fixedWidth]="true"></fa-icon>
+      {{ 'campaignManagerApp.campaign.tabs.schedule' | translate }}
+    </ng-template>
+    <ng-template ngbTabContent><div class="card mt-3 mb-3">
+      <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.schedule' | translate }}</div>
+      <div class="card-body">
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.startAt" for="field_startAt" [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</label>
+          <div class="d-flex">
+              <input id="field_startAt" type="datetime-local" class="form-control" name="startAt" [(ngModel)]="startAt"
+              />
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.expiredAt" for="field_expiredAt">Expired At</label>
+          <div class="d-flex">
+              <input id="field_expiredAt" type="datetime-local" class="form-control" name="expiredAt" [(ngModel)]="expiredAt"
+              />
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingHours" for="field_workingHours">Working Hours</label>
+          <select class="form-control" name="workingHours" id="field_workingHours" [(ngModel)]="campaign.workingHours" multiple="true">
+            <option *ngFor="let h of workingHours" [value]="h">{{ 'campaignManagerApp.campaign.workingHour_' + h | translate }}</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingWeekdays" for="field_workingWeekdays">Working Weekdays</label>
+          <select multiple="true" class="form-control" name="workingWeekdays" id="field_workingWeekdays" [(ngModel)]="campaign.workingWeekdays">
+            <option *ngFor="let w of workingWeekdays" [value]="w">{{ 'campaignManagerApp.campaign.workingWeekday_' + w | translate }}</option>
+          </select>
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingDays" for="field_workingDays">Working Days</label>
+          <input type="text" class="form-control" name="workingDays" id="field_workingDays"
+              [(ngModel)]="campaign.workingDays" />
+      </div>
+
+    </div></div></ng-template>
+  </ngb-tab>
+
+  <ngb-tab>
+    <ng-template ngbTabTitle>
+      <fa-icon [icon]="'file-alt'" [fixedWidth]="true"></fa-icon>
+      {{ 'campaignManagerApp.campaign.tabs.dataSource' | translate }}
+    </ng-template>
+    <ng-template ngbTabContent><div class="card mt-3 mb-3">
+      <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.dataSource' | translate }}</div>
+      <div class="card-body">
+        <button type="button" class="btn pull-right btn-primary" (click)="openModal(dataFileModal)">
+          <fa-icon [icon]="'plus'"></fa-icon>
+          <span  jhiTranslate="campaignManagerApp.dataFile.home.createLabel">
+          Create new Data File
+          </span>
+        </button>
+
+
+        <div class="table-responsive" *ngIf="dataFileService.entities">
+            <table class="table table-striped">
+              <caption jhiTranslate="campaignManagerApp.campaign.dataFiles"></caption>
+                <thead>
+                <tr>
+                <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+                <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+                <th><span jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</span></th>
+                <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let dataFile of dataFileService.entities ;trackBy: trackId">
+                    <td>{{dataFile.name}}</td>
+                    <td>{{dataFile.tags}}</td>
+                    <td>{{dataFile.dataCsvHeaders}}</td>
+                    <td>
+                        <input type="checkbox" [value]="dataFile.id" class="form-check"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Pager is not implemented yet, so this is normal pagination instead -->
+        <div *ngIf="dataFileService.entities && dataFileService.entities.length">
+            <div class="row justify-content-center">
+                <jhi-item-count [page]="dataFileService.page" [total]="dataFileService.queryCount" [itemsPerPage]="dataFileService.itemsPerPage"></jhi-item-count>
+            </div>
+            <div class="row justify-content-center">
+                <ngb-pagination [collectionSize]="dataFileService.totalItems" [(page)]="dataFileService.page" [pageSize]="dataFileService.itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+            </div>
+        </div>
+
+<ng-template #dataFileModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" jhiTranslate="campaignManagerApp.dataFile.home.createOrEditLabel">Create or Edit Data File</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.data" for="field_data">Data</label>
+        <div>
+            <div *ngIf="dataFileService.entity.data" class="form-text text-danger clearfix">
+                <a class="pull-left" (click)="openFile(dataFileService.entity.dataContentType, dataFileService.entity.data)" jhiTranslate="entity.action.open">open</a><br>
+                <span class="pull-left">{{dataFileService.entity.dataContentType}}, {{byteSize(dataFileService.entity.data)}}</span>
+                <button type="button" (click)="dataFileService.entity.data=null;dataFileService.entity.dataContentType=null;"
+                        class="btn btn-secondary btn-xs pull-right">
+                    <fa-icon [icon]="'times'"></fa-icon>
+                </button>
+            </div>
+            <input type="file" id="file_data" (change)="setFileData($event, dataFileService.entity, 'data', false)" jhiTranslate="entity.action.addblob"/>
+        </div>
+        <input type="hidden" class="form-control" name="data" id="field_data"
+            [(ngModel)]="dataFileService.entity.data" />
+        <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
+            [(ngModel)]="dataFileService.entity.dataContentType" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.name" for="field_name">Name</label>
+        <input type="text" class="form-control" name="name" id="field_name"
+            [(ngModel)]="dataFileService.entity.name" />
+    </div>
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.tags" for="field_tags">Tags</label>
+        <input type="text" class="form-control" name="tags" id="field_tags"
+            [(ngModel)]="dataFileService.entity.tags" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</label>
+        <table *ngIf="dataFileService.entity.dataCsvHeaders">
+          <thead><tr>
+            <th *ngFor="let header of dataFileService.entity.dataCsvHeaders; let j = index">
+              <input type="text" class="form-control" name="dataCsvHeaders_{{j}}" id="field_dataCsvHeaders_{{j}}" [(ngModel)]="dataFileService.entity.dataCsvHeaders[j]" />
+            </th>
+          </tr></thead>
+        </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="d()">
+          <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+      </button>
+      <button type="button" id="save-entity" class="btn btn-primary" (click)="saveDataFile()">
+          <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+      </button>
+  </div>
+
+</ng-template>
+
+
+    </div></div></ng-template>
+  </ngb-tab>
+
+  <ngb-tab>
+    <ng-template ngbTabTitle>
+      <fa-icon [icon]="'check'" [fixedWidth]="true"></fa-icon>
+      {{ 'campaignManagerApp.campaign.tabs.otherInfo' | translate }}
+    </ng-template>
+    <ng-template ngbTabContent><div class="card mt-3 mb-3">
+      <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.otherInfo' | translate }}</div>
+      <div class="card-body">
+      <div class="form-group" [hidden]="!campaign.id">
+          <label for="id" jhiTranslate="global.field.id">ID</label>
+          <input type="text" class="form-control" id="id" name="id" [(ngModel)]="campaign.id" readonly />
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.externalId" for="field_externalId" [ngbTooltip]="'campaignManagerApp.campaign.help.externalId' | translate">External Id</label>
+          <input type="text" class="form-control" name="externalId" id="field_externalId"
+              [(ngModel)]="campaign.externalId" />
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.state" for="field_state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</label>
+          <input type="number" class="form-control" name="state" id="field_state"
+              [(ngModel)]="campaign.state" />
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.shortCode" for="field_shortCode" [ngbTooltip]="'campaignManagerApp.campaign.help.shortCode' | translate">Short Code</label>
+          <input type="text" class="form-control" name="shortCode" id="field_shortCode"
+              [(ngModel)]="campaign.shortCode" required maxlength="40"/>
+          <div [hidden]="!(editForm.controls.shortCode?.dirty && editForm.controls.shortCode?.invalid)">
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.shortCode?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+              </small>
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.shortCode?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 40 }">
+              This field cannot be longer than 40 characters.
+              </small>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.callbackUrl" for="field_callbackUrl" [ngbTooltip]="'campaignManagerApp.campaign.help.callbackUrl' | translate">Callback Url</label>
+          <input type="text" class="form-control" name="callbackUrl" id="field_callbackUrl"
+              [(ngModel)]="campaign.callbackUrl" />
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.createdBy" for="field_createdBy" [ngbTooltip]="'campaignManagerApp.campaign.help.createdBy' | translate">Created By</label>
+          <input type="text" class="form-control" name="createdBy" id="field_createdBy"
+              [(ngModel)]="campaign.createdBy" />
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.createdAt" for="field_createdAt">Created At</label>
+          <div class="d-flex">
+              <input id="field_createdAt" type="datetime-local" class="form-control" name="createdAt" [(ngModel)]="createdAt"
+              />
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.approvedBy" for="field_approvedBy" [ngbTooltip]="'campaignManagerApp.campaign.help.approvedBy' | translate">Approved By</label>
+          <input type="text" class="form-control" name="approvedBy" id="field_approvedBy" [(ngModel)]="campaign.approvedBy" />
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.approvedAt" for="field_approvedAt">Approved At</label>
+          <div class="d-flex">
+              <input id="field_approvedAt" type="datetime-local" class="form-control" name="approvedAt" [(ngModel)]="approvedAt" />
+          </div>
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.spSvc" for="field_spSvc" [ngbTooltip]="'campaignManagerApp.campaign.help.spSvc' | translate">Sp Svc</label>
+          <input type="text" class="form-control" name="spSvc" id="field_spSvc"
+              [(ngModel)]="campaign.spSvc" />
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.spId" for="field_spId">Sp Id</label>
+          <input type="text" class="form-control" name="spId" id="field_spId"
+              [(ngModel)]="campaign.spId" />
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cpId" for="field_cpId">Cp Id</label>
+          <input type="text" class="form-control" name="cpId" id="field_cpId"
+              [(ngModel)]="campaign.cpId" />
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.msgQuota" for="field_msgQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.msgQuota' | translate">Msg Quota</label>
+          <input type="number" class="form-control" name="msgQuota" id="field_msgQuota"
+              [(ngModel)]="campaign.msgQuota" />
+      </div>
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.subQuota" for="field_subQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.subQuota' | translate">Sub Quota</label>
+          <input type="number" class="form-control" name="subQuota" id="field_subQuota"
+              [(ngModel)]="campaign.subQuota" />
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.description" for="field_description">Description</label>
+          <textarea class="form-control" name="description" id="field_description" [(ngModel)]="campaign.description" ></textarea>
+      </div>
+
+    </div></div></ng-template>
+  </ngb-tab>
+</ngb-tabset>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             </div>
             <div>

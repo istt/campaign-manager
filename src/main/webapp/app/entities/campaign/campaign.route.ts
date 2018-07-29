@@ -20,6 +20,15 @@ export class CampaignResolve implements Resolve<ICampaign> {
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         const id = route.params['id'] ? route.params['id'] : null;
         if (id) {
+            if (route.data['pageTitle'] === 'campaignManagerApp.campaign.home.copy') {
+                return this.service.find(id).pipe(
+                    map((campaign: HttpResponse<Campaign>) => {
+                        const body = campaign.body;
+                        delete body.id;
+                        return body;
+                    })
+                );
+            }
             return this.service.find(id).pipe(map((campaign: HttpResponse<Campaign>) => campaign.body));
         }
         return of(new Campaign());
@@ -35,7 +44,7 @@ export const campaignRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
+            defaultSort: 'startAt,desc',
             pageTitle: 'campaignManagerApp.campaign.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -61,6 +70,18 @@ export const campaignRoute: Routes = [
         data: {
             authorities: ['ROLE_USER'],
             pageTitle: 'campaignManagerApp.campaign.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'campaign/:id/copy',
+        component: CampaignUpdateComponent,
+        resolve: {
+            campaign: CampaignResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'campaignManagerApp.campaign.home.copy'
         },
         canActivate: [UserRouteAccessService]
     },

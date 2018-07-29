@@ -14,66 +14,25 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="name"><span jhiTranslate="campaignManagerApp.campaign.name">Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="description"><span jhiTranslate="campaignManagerApp.campaign.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="code"><span jhiTranslate="campaignManagerApp.campaign.code">Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="externalId"><span jhiTranslate="campaignManagerApp.campaign.externalId">External Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="channel"><span jhiTranslate="campaignManagerApp.campaign.channel">Channel</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="state"><span jhiTranslate="campaignManagerApp.campaign.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="shortCode"><span jhiTranslate="campaignManagerApp.campaign.shortCode">Short Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="callbackUrl"><span jhiTranslate="campaignManagerApp.campaign.callbackUrl">Callback Url</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="createdBy"><span jhiTranslate="campaignManagerApp.campaign.createdBy">Created By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="createdAt"><span jhiTranslate="campaignManagerApp.campaign.createdAt">Created At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="approvedBy"><span jhiTranslate="campaignManagerApp.campaign.approvedBy">Approved By</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="approvedAt"><span jhiTranslate="campaignManagerApp.campaign.approvedAt">Approved At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="shortMsg"><span jhiTranslate="campaignManagerApp.campaign.shortMsg">Short Msg</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="msisdnList"><span jhiTranslate="campaignManagerApp.campaign.msisdnList">Msisdn List</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="startAt"><span jhiTranslate="campaignManagerApp.campaign.startAt">Start At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="expiredAt"><span jhiTranslate="campaignManagerApp.campaign.expiredAt">Expired At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="workingHours"><span jhiTranslate="campaignManagerApp.campaign.workingHours">Working Hours</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="workingWeekdays"><span jhiTranslate="campaignManagerApp.campaign.workingWeekdays">Working Weekdays</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="workingDays"><span jhiTranslate="campaignManagerApp.campaign.workingDays">Working Days</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="spSvc"><span jhiTranslate="campaignManagerApp.campaign.spSvc">Sp Svc</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="spId"><span jhiTranslate="campaignManagerApp.campaign.spId">Sp Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="cpId"><span jhiTranslate="campaignManagerApp.campaign.cpId">Cp Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="msgQuota"><span jhiTranslate="campaignManagerApp.campaign.msgQuota">Msg Quota</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="subQuota"><span jhiTranslate="campaignManagerApp.campaign.subQuota">Sub Quota</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="rateLimit"><span jhiTranslate="campaignManagerApp.campaign.rateLimit">Rate Limit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let campaign of campaigns ;trackBy: trackId">
-                <td><a [routerLink]="['/campaign', campaign.id, 'view' ]">{{campaign.id}}</a></td>
-                <td>{{campaign.name}}</td>
-                <td>{{campaign.description}}</td>
-                <td>{{campaign.code}}</td>
-                <td>{{campaign.externalId}}</td>
+                <td><a [routerLink]="['/campaign', campaign.id, 'view' ]">{{campaign.name}}</a></td>
                 <td>{{campaign.channel}}</td>
                 <td>{{campaign.state}}</td>
                 <td>{{campaign.shortCode}}</td>
-                <td>{{campaign.callbackUrl}}</td>
-                <td>{{campaign.createdBy}}</td>
-                <td>{{campaign.createdAt | date:'medium'}}</td>
-                <td>{{campaign.approvedBy}}</td>
-                <td>{{campaign.approvedAt | date:'medium'}}</td>
                 <td>{{campaign.shortMsg}}</td>
-                <td>
-                    <a *ngIf="campaign.msisdnList" (click)="openFile(campaign.msisdnListContentType, campaign.msisdnList)" jhiTranslate="entity.action.open">open</a>
-                    <span *ngIf="campaign.msisdnList">{{campaign.msisdnListContentType}}, {{byteSize(campaign.msisdnList)}}</span>
-                </td>
                 <td>{{campaign.startAt | date:'medium'}}</td>
                 <td>{{campaign.expiredAt | date:'medium'}}</td>
-                <td>{{campaign.workingHours}}</td>
-                <td>{{campaign.workingWeekdays}}</td>
-                <td>{{campaign.workingDays}}</td>
-                <td>{{campaign.spSvc}}</td>
-                <td>{{campaign.spId}}</td>
-                <td>{{campaign.cpId}}</td>
-                <td>{{campaign.msgQuota}}</td>
-                <td>{{campaign.subQuota}}</td>
-                <td>{{campaign.rateLimit}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -87,6 +46,12 @@
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/campaign', campaign.id, 'copy']"
+                                class="btn btn-success btn-sm">
+                            <fa-icon [icon]="'copy'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.copy">Copy</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'campaign/'+ campaign.id + '/delete'} }]"

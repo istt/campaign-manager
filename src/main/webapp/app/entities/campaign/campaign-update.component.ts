@@ -1,16 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable, Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiAlertService, JhiParseLinks } from 'ng-jhipster';
 
 import { ICampaign } from 'app/shared/model/campaign.model';
 import { CampaignService } from './campaign.service';
 // Extra services
 import { IVasCloudConfiguration } from 'app/shared/model/vas-cloud-configuration.model';
 import { VasCloudConfigurationService } from '../vas-cloud-configuration';
+import { ITEMS_PER_PAGE } from 'app/shared';
+import { IDataFile, DataFile } from 'app/shared/model/data-file.model';
+import { DataFileService } from '../data-file';
+import { NgbModal, NgbModalRef, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'jhi-campaign-update',
@@ -23,21 +27,37 @@ export class CampaignUpdateComponent implements OnInit {
     approvedAt: string;
     startAt: string;
     expiredAt: string;
+    // Available working hours and weekdays
     workingHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
     workingWeekdays = [0, 1, 2, 3, 4, 5, 6];
+    // Data File Service browsing
+    eventSubscriber: Subscription;
+    routeData: any;
+    modalRef: NgbModalRef;
 
     constructor(
         public campaignService: CampaignService,
         public vasCloudSvc: VasCloudConfigurationService,
+        public dataFileService: DataFileService,
+        private parseLinks: JhiParseLinks,
+        private eventManager: JhiEventManager,
+        private jhiAlertService: JhiAlertService,
+        private modalService: NgbModal,
         private dataUtils: JhiDataUtils,
         private activatedRoute: ActivatedRoute
     ) {}
 
     ngOnInit() {
         this.isSaving = false;
+        this.dataFileService.itemsPerPage = ITEMS_PER_PAGE;
         this.activatedRoute.data.subscribe(({ campaign }) => {
             this.campaign = campaign;
+            if (campaign.cfg && campaign.cfg['VASCLOUD']) {
+                this.vasCloudSvc.selected = campaign.cfg['VASCLOUD'].id;
+            }
             this.vasCloudSvc.query().subscribe(res => (this.vasCloudSvc.entities = res.body));
+            this.dataFileService.entity = new DataFile();
+            this.dataFileService.query().subscribe(res => (this.dataFileService.entities = res.body));
         });
     }
 
@@ -47,10 +67,6 @@ export class CampaignUpdateComponent implements OnInit {
 
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
-    }
-
-    setFileData(event, entity, field, isImage) {
-        this.dataUtils.setFileData(event, entity, field, isImage);
     }
 
     previousState() {
@@ -93,9 +109,124 @@ export class CampaignUpdateComponent implements OnInit {
         this.startAt = moment(campaign.startAt).format(DATE_TIME_FORMAT);
         this.expiredAt = moment(campaign.expiredAt).format(DATE_TIME_FORMAT);
     }
-
+    // Vas Cloud configuration handle
     setVasCloudCfg(cfgId) {
         this.vasCloudSvc.entity = this.vasCloudSvc.entities.filter(v => v.id === cfgId)[0];
         this.campaign.cfg['VASCLOUD'] = this.vasCloudSvc.entity;
+        this.campaign.cpId = this.vasCloudSvc.entity.cpCode;
+        this.campaign.spId = this.vasCloudSvc.entity.serviceId;
+        this.campaign.shortCode = this.vasCloudSvc.entity.shortCode;
+        this.campaign.channel = 'VASCLOUD/SMSGW/' + this.vasCloudSvc.entity.serviceCode + '/' + this.vasCloudSvc.entity.packageCode;
+    }
+    // Data File handle
+    loadAll() {
+        this.dataFileService
+            .query({
+                page: this.dataFileService.page - 1,
+                size: this.dataFileService.itemsPerPage,
+                sort: this.sort()
+            })
+            .subscribe(
+                (res: HttpResponse<IDataFile[]>) => this.paginateDataFiles(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    loadPage(page: number) {
+        if (page !== this.dataFileService.previousPage) {
+            this.dataFileService.previousPage = page;
+            this.transition();
+        }
+    }
+
+    transition() {
+        this.loadAll();
+    }
+
+    clear() {
+        this.dataFileService.page = 0;
+        this.loadAll();
+    }
+
+    registerChangeInDataFiles() {
+        this.eventSubscriber = this.eventManager.subscribe('dataFileListModification', response => this.loadAll());
+    }
+
+    sort() {
+        const result = [this.dataFileService.predicate + ',' + (this.dataFileService.reverse ? 'asc' : 'desc')];
+        if (this.dataFileService.predicate !== 'id') {
+            result.push('id');
+        }
+        return result;
+    }
+
+    private paginateDataFiles(data: IDataFile[], headers: HttpHeaders) {
+        this.dataFileService.links = this.parseLinks.parse(headers.get('link'));
+        this.dataFileService.totalItems = parseInt(headers.get('X-Total-Count'), 10);
+        this.dataFileService.queryCount = this.dataFileService.totalItems;
+        this.dataFileService.entities = data;
+    }
+
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
+    }
+    // Data File Modal handle
+    openModal(modalContent) {
+        this.modalRef = this.modalService.open(modalContent);
+        this.modalRef.result.then(
+            result => {
+                console.log(`Closed with: ${result}`);
+            },
+            reason => {
+                console.error(`Dismissed ${this.getDismissReason(reason)}`);
+            }
+        );
+    }
+
+    saveDataFile() {
+        console.log('Prepare to save data file...');
+        this.isSaving = true;
+        this.dataFileService.create(this.dataFileService.entity).subscribe(
+            res => {
+                console.log('Successfully submit data file');
+                this.isSaving = false;
+                this.loadAll();
+                this.modalRef.close();
+            },
+            err => this.onError(err)
+        );
+    }
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
+    }
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
+        // Try to extract headers from current open file
+        if (event && event.target.files && event.target.files[0]) {
+            const file_1 = event.target.files[0];
+            this.dataFileService.entity.name = file_1.name;
+            if (file_1.type.match(/text/i)) {
+                const fileReader = new FileReader();
+                fileReader.onload = e => {
+                    this.dataFileService.entity.dataCsvPreview = fileReader.result; // first line
+                    // console.log('First line', this.dataFile.dataCsvPreview);
+                    this.dataFileService.entity.dataCsvHeaders = fileReader.result
+                        .split('\n')
+                        .shift() // Extract first line
+                        .split(/[;|,]/)
+                        .map(f => f.trim()); // Extract columns
+                    // console.log('Headers', this.dataFile.dataCsvHeaders);
+                    this.dataFileService.entity.dataCsvHeaders = Object.assign([], this.dataFileService.entity.dataCsvHeaders);
+                };
+                // Read the file
+                fileReader.readAsText(file_1.slice(0, 1024));
+            }
+        }
     }
 }
