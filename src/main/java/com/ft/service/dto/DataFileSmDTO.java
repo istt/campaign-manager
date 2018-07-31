@@ -8,16 +8,13 @@ import java.util.Objects;
 /**
  * A DTO for the DataFile entity.
  */
-public class DataFileDTO implements Serializable {
+public class DataFileSmDTO implements Serializable {
 
     private String id;
 
     private String name;
 
     private String tags;
-
-    private byte[] data;
-    private String dataContentType;
 
     private ZonedDateTime uploadAt;
 
@@ -47,22 +44,6 @@ public class DataFileDTO implements Serializable {
 
     public void setTags(String tags) {
         this.tags = tags;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-
-    public String getDataContentType() {
-        return dataContentType;
-    }
-
-    public void setDataContentType(String dataContentType) {
-        this.dataContentType = dataContentType;
     }
 
     public ZonedDateTime getUploadAt() {
@@ -98,7 +79,7 @@ public class DataFileDTO implements Serializable {
             return false;
         }
 
-        DataFileDTO dataFileDTO = (DataFileDTO) o;
+        DataFileSmDTO dataFileDTO = (DataFileSmDTO) o;
         if (dataFileDTO.getId() == null || getId() == null) {
             return false;
         }
@@ -116,7 +97,6 @@ public class DataFileDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", tags='" + getTags() + "'" +
-            ", data='" + getData() + "'" +
             ", dataCsvHeaders='" + getDataCsvHeaders() + "'" +
             ", uploadAt='" + getUploadAt() + "'" +
             ", processAt='" + getProcessAt() + "'" +

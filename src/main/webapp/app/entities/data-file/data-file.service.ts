@@ -12,6 +12,22 @@ type EntityArrayResponseType = HttpResponse<IDataFile[]>;
 @Injectable({ providedIn: 'root' })
 export class DataFileService {
     private resourceUrl = SERVER_API_URL + 'api/data-files';
+    // Entity and Entities shared
+    public entity: IDataFile;
+    public entities: IDataFile[];
+    // Temporary data used for store object on single and multiple select box
+    public selected;
+    public checked: any = {};
+    // Pagination and sorting
+    public totalItems: any;
+    public queryCount: any;
+    public itemsPerPage: any;
+    public page: any;
+    public predicate: any;
+    public previousPage: any;
+    public reverse: any;
+    public links: any;
+    public dataCsvHeaders: string[];
 
     constructor(private http: HttpClient) {}
 

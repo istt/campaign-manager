@@ -26,6 +26,10 @@ public class VasCloudConfigurationDTO implements Serializable {
 
     private String packageCode;
 
+    private String shortCode;
+
+    private Long rateLimit;
+
     public String getId() {
         return id;
     }
@@ -98,7 +102,23 @@ public class VasCloudConfigurationDTO implements Serializable {
         this.packageCode = packageCode;
     }
 
-    @Override
+    public String getShortCode() {
+		return shortCode;
+	}
+
+	public void setShortCode(String shortCode) {
+		this.shortCode = shortCode;
+	}
+
+	public Long getRateLimit() {
+		return rateLimit;
+	}
+
+	public void setRateLimit(Long rateLimit) {
+		this.rateLimit = rateLimit;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

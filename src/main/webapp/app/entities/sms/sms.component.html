@@ -18,16 +18,8 @@
             <th jhiSortBy="source"><span jhiTranslate="campaignManagerApp.sms.source">Source</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="destination"><span jhiTranslate="campaignManagerApp.sms.destination">Destination</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="state"><span jhiTranslate="campaignManagerApp.sms.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="campaignId"><span jhiTranslate="campaignManagerApp.sms.campaignId">Campaign Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="cpId"><span jhiTranslate="campaignManagerApp.sms.cpId">Cp Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="spId"><span jhiTranslate="campaignManagerApp.sms.spId">Sp Id</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="spSvc"><span jhiTranslate="campaignManagerApp.sms.spSvc">Sp Svc</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="submitAt"><span jhiTranslate="campaignManagerApp.sms.submitAt">Submit At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="expiredAt"><span jhiTranslate="campaignManagerApp.sms.expiredAt">Expired At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="submitRequestPayload"><span jhiTranslate="campaignManagerApp.sms.submitRequestPayload">Submit Request Payload</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="submitResponsePayload"><span jhiTranslate="campaignManagerApp.sms.submitResponsePayload">Submit Response Payload</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="deliveredAt"><span jhiTranslate="campaignManagerApp.sms.deliveredAt">Delivered At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="deliveryReportPayload"><span jhiTranslate="campaignManagerApp.sms.deliveryReportPayload">Delivery Report Payload</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th jhiSortBy="shortMsg"><span jhiTranslate="campaignManagerApp.sms.shortMsg">Short Message</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th></th>
             </tr>
             </thead>
@@ -37,16 +29,8 @@
                 <td>{{sms.source}}</td>
                 <td>{{sms.destination}}</td>
                 <td>{{sms.state}}</td>
-                <td>{{sms.campaignId}}</td>
-                <td>{{sms.cpId}}</td>
-                <td>{{sms.spId}}</td>
-                <td>{{sms.spSvc}}</td>
                 <td>{{sms.submitAt | date:'medium'}}</td>
-                <td>{{sms.expiredAt | date:'medium'}}</td>
-                <td>{{sms.submitRequestPayload}}</td>
-                <td>{{sms.submitResponsePayload}}</td>
-                <td>{{sms.deliveredAt | date:'medium'}}</td>
-                <td>{{sms.deliveryReportPayload}}</td>
+                <td>{{sms.shortMsg}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

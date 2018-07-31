@@ -6,6 +6,8 @@ import com.ft.web.rest.errors.BadRequestAlertException;
 import com.ft.web.rest.util.HeaderUtil;
 import com.ft.web.rest.util.PaginationUtil;
 import com.ft.service.dto.DataFileDTO;
+import com.ft.service.dto.DataFileSmDTO;
+
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +55,7 @@ public class DataFileResource {
         if (dataFileDTO.getId() != null) {
             throw new BadRequestAlertException("A new dataFile cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        dataFileDTO.setUploadAt(ZonedDateTime.now());
         DataFileDTO result = dataFileService.save(dataFileDTO);
         return ResponseEntity.created(new URI("/api/data-files/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -75,6 +78,7 @@ public class DataFileResource {
         if (dataFileDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        dataFileDTO.setUploadAt(ZonedDateTime.now());
         DataFileDTO result = dataFileService.save(dataFileDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dataFileDTO.getId().toString()))
@@ -89,9 +93,9 @@ public class DataFileResource {
      */
     @GetMapping("/data-files")
     @Timed
-    public ResponseEntity<List<DataFileDTO>> getAllDataFiles(Pageable pageable) {
+    public ResponseEntity<List<DataFileSmDTO>> getAllDataFiles(Pageable pageable) {
         log.debug("REST request to get a page of DataFiles");
-        Page<DataFileDTO> page = dataFileService.findAll(pageable);
+        Page<DataFileSmDTO> page = dataFileService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/data-files");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

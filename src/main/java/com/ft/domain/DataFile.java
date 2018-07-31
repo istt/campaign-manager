@@ -2,9 +2,14 @@ package com.ft.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import io.swagger.annotations.ApiModelProperty;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -30,7 +35,19 @@ public class DataFile implements Serializable {
     @Field("data_content_type")
     private String dataContentType;
 
+    @ApiModelProperty(value = "Time when file is uploaded")
+    @Field("upload_at")
+    private ZonedDateTime uploadAt;
+
+    @ApiModelProperty(value = "Time when file is process")
+    @Field("process_at")
+    private ZonedDateTime processAt;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+
+    @Field("data_csv_headers")
+    private List<String> dataCsvHeaders;
+
     public String getId() {
         return id;
     }
@@ -90,7 +107,47 @@ public class DataFile implements Serializable {
     public void setDataContentType(String dataContentType) {
         this.dataContentType = dataContentType;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public ZonedDateTime getUploadAt() {
+		return uploadAt;
+	}
+
+    public DataFile uploadAt(ZonedDateTime uploadAt) {
+		this.uploadAt = uploadAt;
+		return this;
+	}
+
+	public void setUploadAt(ZonedDateTime uploadAt) {
+		this.uploadAt = uploadAt;
+	}
+
+	public ZonedDateTime getProcessAt() {
+		return processAt;
+	}
+
+	public DataFile processAt(ZonedDateTime processAt) {
+		this.processAt = processAt;
+		return this;
+	}
+
+	public void setProcessAt(ZonedDateTime processAt) {
+		this.processAt = processAt;
+	}
+
+	// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+	public List<String> getDataCsvHeaders() {
+		return dataCsvHeaders;
+	}
+
+	public DataFile dataCsvHeaders(List<String> dataCsvHeaders) {
+		this.dataCsvHeaders = dataCsvHeaders;
+		return this;
+	}
+
+	public void setDataCsvHeaders(List<String> dataCsvHeaders) {
+		this.dataCsvHeaders = dataCsvHeaders;
+	}
 
     @Override
     public boolean equals(Object o) {
@@ -107,7 +164,7 @@ public class DataFile implements Serializable {
         return Objects.equals(getId(), dataFile.getId());
     }
 
-    @Override
+	@Override
     public int hashCode() {
         return Objects.hashCode(getId());
     }

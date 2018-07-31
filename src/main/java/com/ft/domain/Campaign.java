@@ -3,6 +3,9 @@ package com.ft.domain;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.ft.service.dto.DataFileDTO;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.*;
 
@@ -111,16 +114,6 @@ public class Campaign implements Serializable {
     private String shortMsg;
 
     /**
-     * List of MSISDN to be send
-     */
-    @ApiModelProperty(value = "List of MSISDN to be send")
-    @Field("msisdn_list")
-    private byte[] msisdnList;
-
-    @Field("msisdn_list_content_type")
-    private String msisdnListContentType;
-
-    /**
      * Sending time window
      */
     @ApiModelProperty(value = "Sending time window")
@@ -136,8 +129,8 @@ public class Campaign implements Serializable {
     @Field("working_weekdays")
     private List<Integer> workingWeekdays;
 
-    @Field("working_days")
-    private List<LocalDate> workingDays;
+    @Field("holidays")
+    private List<LocalDate> holidays;
 
     /**
      * Target Services to be broadcast related info, should be logged into CDR
@@ -178,9 +171,12 @@ public class Campaign implements Serializable {
     /**
      * SMS or USSD message broadcast per second
      */
-    @ApiModelProperty(value = "SMS or USSD message broadcast per second")
     @Field("cfg")
     private Map<String, Object> cfg = new ConcurrentHashMap<String, Object>();
+
+    @Field("datafiles")
+    @ApiModelProperty(value = "Data Files upload and import into these campaign")
+    private List<DataFileDTO> datafiles;
 
     public String getId() {
         return id;
@@ -359,32 +355,6 @@ public class Campaign implements Serializable {
         this.shortMsg = shortMsg;
     }
 
-    public byte[] getMsisdnList() {
-        return msisdnList;
-    }
-
-    public Campaign msisdnList(byte[] msisdnList) {
-        this.msisdnList = msisdnList;
-        return this;
-    }
-
-    public void setMsisdnList(byte[] msisdnList) {
-        this.msisdnList = msisdnList;
-    }
-
-    public String getMsisdnListContentType() {
-        return msisdnListContentType;
-    }
-
-    public Campaign msisdnListContentType(String msisdnListContentType) {
-        this.msisdnListContentType = msisdnListContentType;
-        return this;
-    }
-
-    public void setMsisdnListContentType(String msisdnListContentType) {
-        this.msisdnListContentType = msisdnListContentType;
-    }
-
     public ZonedDateTime getStartAt() {
         return startAt;
     }
@@ -437,17 +407,17 @@ public class Campaign implements Serializable {
         this.workingWeekdays = workingWeekdays;
     }
 
-    public List<LocalDate> getWorkingDays() {
-        return workingDays;
+    public List<LocalDate> getHolidays() {
+        return holidays;
     }
 
-    public Campaign workingDays(List<LocalDate> workingDays) {
-        this.workingDays = workingDays;
+    public Campaign holidays(List<LocalDate> holidays) {
+        this.holidays = holidays;
         return this;
     }
 
-    public void setWorkingDays(List<LocalDate> workingDays) {
-        this.workingDays = workingDays;
+    public void setHolidays(List<LocalDate> holidays) {
+        this.holidays = holidays;
     }
 
     public String getSpSvc() {
@@ -541,7 +511,20 @@ public class Campaign implements Serializable {
     public void setCfg(Map<String, Object> cfg) {
         this.cfg = cfg;
     }
-    @Override
+    public List<DataFileDTO> getDatafiles() {
+		return datafiles;
+	}
+
+    public Campaign datafiles(List<DataFileDTO> datafiles) {
+		this.datafiles = datafiles;
+		return this;
+	}
+
+	public void setDatafiles(List<DataFileDTO> datafiles) {
+		this.datafiles = datafiles;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -578,13 +561,11 @@ public class Campaign implements Serializable {
             ", approvedBy='" + getApprovedBy() + "'" +
             ", approvedAt='" + getApprovedAt() + "'" +
             ", shortMsg='" + getShortMsg() + "'" +
-            ", msisdnList='" + getMsisdnList() + "'" +
-            ", msisdnListContentType='" + getMsisdnListContentType() + "'" +
             ", startAt='" + getStartAt() + "'" +
             ", expiredAt='" + getExpiredAt() + "'" +
             ", workingHours='" + getWorkingHours() + "'" +
             ", workingWeekdays='" + getWorkingWeekdays() + "'" +
-            ", workingDays='" + getWorkingDays() + "'" +
+            ", holidays='" + getHolidays() + "'" +
             ", spSvc='" + getSpSvc() + "'" +
             ", spId='" + getSpId() + "'" +
             ", cpId='" + getCpId() + "'" +

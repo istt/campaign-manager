@@ -10,12 +10,33 @@ import { IDataFile } from 'app/shared/model/data-file.model';
 })
 export class DataFileDetailComponent implements OnInit {
     dataFile: IDataFile;
+    csvData: string[][];
 
     constructor(private dataUtils: JhiDataUtils, private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
         this.activatedRoute.data.subscribe(({ dataFile }) => {
             this.dataFile = dataFile;
+            // if (this.dataFile.dataContentType.match(/text/i)) {
+            //   const fileReader = new FileReader();
+            //   fileReader.onload = e => {
+            //     this.csvData = fileReader.result
+            //     .split('\n')
+            //     .map(r => r.split(/[;|,]/));
+            //   };
+            //   // To support IE and Edge
+            //   const byteCharacters = atob(this.dataFile.data);
+            //   const byteNumbers = new Array(byteCharacters.length);
+            //   // for (let i = 0; i < byteCharacters.length; i++) {
+            //   for (let i = 0; i < 1024; i++) {
+            //       byteNumbers[i] = byteCharacters.charCodeAt(i);
+            //   }
+            //   const byteArray = new Uint8Array(byteNumbers);
+            //   const blob = new Blob([byteArray], {
+            //       type: this.dataFile.dataContentType
+            //   });
+            //   fileReader.readAsText(blob);
+            // }
         });
     }
 

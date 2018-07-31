@@ -1,8 +1,12 @@
 package com.ft.components;
 
 import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +18,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ft.domain.Campaign;
 import com.ft.domain.Sms;
 import com.ft.repository.CampaignRepository;
@@ -44,18 +49,37 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
     @Autowired
 	RestTemplate restTemplate;
 
+    @Autowired
+    ObjectMapper mapper;
+
     private Bucket bucket;
+
+    public static Map<String, Bucket> bucketList = new ConcurrentHashMap<String, Bucket>();
 
     @Override
     public Long call() throws Exception {
         long i = 0L;
-        createBucket();
-        VasCloudConfigurationDTO cfg = (VasCloudConfigurationDTO) campaign.getCfg().get("VASCLOUD");
+        VasCloudConfigurationDTO cfg = mapper.readValue(mapper.writeValueAsString(campaign.getCfg().get("VASCLOUD")), VasCloudConfigurationDTO.class);
+        if (cfg.getRateLimit() != null) {
+        	Bucket svcBucket = bucketList.get(cfg.getId());
+        	if (svcBucket == null ) {
+        		svcBucket = createBucket(cfg.getRateLimit());
+        		bucketList.put(cfg.getId(), svcBucket);
+        	}
+        	svcBucket.asScheduler().consume(smsList.size());
+        }
+        createBucket(campaign.getRateLimit());
         for (Sms sms : smsList) {
+        	log.debug("Gotta submit SMS: " + sms);
         	VasCloudMsgDTO request = createMsg(sms, campaign, cfg);
     	    try {
-    	    	bucket.asScheduler().consume(1);
+    	    	if (bucket != null) bucket.asScheduler().consume(1);
     	    	VasCloudMsgDTO response = restTemplate.postForObject(cfg.getEndPoint(), request, VasCloudMsgDTO.class);
+    	    	sms
+    	    	.submitRequestPayload(request.toString())
+    	    	.submitResponsePayload(response.toString())
+    	    	.submitAt(ZonedDateTime.now())
+    	    	;
     	    	log.info("SMS VASCLOUD RESPONSE: " + response);
     	    	if (response.getCmd().get("error_id").equalsIgnoreCase("0")) {
     	    		log.info("Successful submit!!!");
@@ -73,7 +97,7 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
                 log.error("Exception: " + request, e);
             }
         }
-        campaign.getCfg().put("submitCnt", campaign.getCfg().get("submitCnt") == null ? i : (long) campaign.getCfg().get("submitCnt") + i);
+        campaign.getCfg().put("submitCnt", campaign.getCfg().get("submitCnt") == null ? i : Long.parseLong(campaign.getCfg().get("submitCnt").toString()) + i);
         cpRepo.save(campaign);
         return i;
     }
@@ -82,6 +106,7 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
 		VasCloudMsgDTO msg = new VasCloudMsgDTO();
 		msg.setMsgType("REQUEST");
 		msg.setModule("SMSGW");
+		msg.setCmd(new ConcurrentHashMap<String, String>());
 
 		long id = System.currentTimeMillis();
 		String msisdn = sms.getDestination();
@@ -109,11 +134,11 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
 		return msg;
 	}
 
-    public Bucket createBucket() {
-        Bandwidth limit = Bandwidth.simple(campaign.getRateLimit(), Duration.ofSeconds(1));
+    public Bucket createBucket(Long tps) {
+    	if (tps == null) return null;
+        Bandwidth limit = Bandwidth.simple(tps, Duration.ofSeconds(1));
         // construct the bucket
         Bucket bucket = Bucket4j.builder().addLimit(limit).build();
-        log.info("Campaign: " + campaign.getName() + " running speed: " + campaign.getRateLimit() + " TPS");
         return bucket;
     }
 

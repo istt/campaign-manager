@@ -14,6 +14,7 @@ import { DataFileService } from './data-file.service';
 export class DataFileUpdateComponent implements OnInit {
     private _dataFile: IDataFile;
     isSaving: boolean;
+    dataCsvHeaders: string[] = [];
 
     constructor(private dataUtils: JhiDataUtils, private dataFileService: DataFileService, private activatedRoute: ActivatedRoute) {}
 
@@ -34,6 +35,35 @@ export class DataFileUpdateComponent implements OnInit {
 
     setFileData(event, entity, field, isImage) {
         this.dataUtils.setFileData(event, entity, field, isImage);
+        // Try to extract headers from current open file
+        if (event && event.target.files && event.target.files[0]) {
+            const file_1 = event.target.files[0];
+            this.dataFile.name = file_1.name;
+            // if (isImage && !/^image\//.test(file_1.type)) {
+            //     return;
+            // }
+            // this.toBase64(file_1, function (base64Data) {
+            //     entity[field] = base64Data;
+            //     entity[field + "ContentType"] = file_1.type;
+            // });
+            console.log(file_1.type);
+            if (file_1.type.match(/text/i)) {
+                const fileReader = new FileReader();
+                fileReader.onload = e => {
+                    this.dataFile.dataCsvPreview = fileReader.result; // first line
+                    // console.log('First line', this.dataFile.dataCsvPreview);
+                    this.dataFile.dataCsvHeaders = fileReader.result
+                        .split('\n')
+                        .shift() // Extract first line
+                        .split(/[;|,]/)
+                        .map(f => f.trim()); // Extract columns
+                    // console.log('Headers', this.dataFile.dataCsvHeaders);
+                    this.dataCsvHeaders = Object.assign([], this.dataFile.dataCsvHeaders);
+                };
+                // Read the file
+                fileReader.readAsText(file_1.slice(0, 1024));
+            }
+        }
     }
 
     previousState() {

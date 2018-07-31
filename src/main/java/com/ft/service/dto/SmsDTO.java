@@ -17,6 +17,8 @@ public class SmsDTO implements Serializable {
 
     private Integer state;
 
+    private String shortMsg;
+
     private String campaignId;
 
     private String cpId;
@@ -69,7 +71,15 @@ public class SmsDTO implements Serializable {
         this.state = state;
     }
 
-    public String getCampaignId() {
+    public String getShortMsg() {
+		return shortMsg;
+	}
+
+	public void setShortMsg(String shortMsg) {
+		this.shortMsg = shortMsg;
+	}
+
+	public String getCampaignId() {
         return campaignId;
     }
 
@@ -177,6 +187,7 @@ public class SmsDTO implements Serializable {
             ", source='" + getSource() + "'" +
             ", destination='" + getDestination() + "'" +
             ", state=" + getState() +
+            ", shortMsg=" + getShortMsg() +
             ", campaignId='" + getCampaignId() + "'" +
             ", cpId='" + getCpId() + "'" +
             ", spId='" + getSpId() + "'" +

@@ -10,16 +10,6 @@
                         [(ngModel)]="dataFile.id" readonly />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.name" for="field_name">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name"
-                        [(ngModel)]="dataFile.name" />
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.tags" for="field_tags">Tags</label>
-                    <input type="text" class="form-control" name="tags" id="field_tags"
-                        [(ngModel)]="dataFile.tags" />
-                </div>
-                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.data" for="field_data">Data</label>
                     <div>
                         <div *ngIf="dataFile.data" class="form-text text-danger clearfix">
@@ -37,6 +27,41 @@
                     <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
                         [(ngModel)]="dataFile.dataContentType" />
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.name" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                        [(ngModel)]="dataFile.name" />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.tags" for="field_tags">Tags</label>
+                    <input type="text" class="form-control" name="tags" id="field_tags"
+                        [(ngModel)]="dataFile.tags" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</label>
+                    <table>
+                      <thead *ngIf="dataCsvHeaders"><tr>
+                        <th *ngFor="let header of dataCsvHeaders; let j = index">
+                          <input type="text" class="form-control" name="dataCsvHeaders_{{j}}" id="field_dataCsvHeaders_{{j}}" [(ngModel)]="dataFile.dataCsvHeaders[j]" />
+                        </th>
+                      </tr></thead>
+                      <tbody *ngIf="dataCsvHeaders"><tr>
+                        <td *ngFor="let sample of dataCsvHeaders;">
+                          {{ sample }}
+                        </td>
+                      </tr></tbody>
+                    </table>
+                </div>
+
+
+                <code><pre>
+                  {{ dataFile.dataCsvHeaders | json }}
+                </pre></code>
+                <code><pre>
+                  {{ dataFile.dataCsvPreview }}
+                </pre></code>
 
             </div>
             <div>

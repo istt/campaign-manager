@@ -20,6 +20,10 @@
                         [(ngModel)]="sms.destination" />
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.shortMsg" for="field_shortMsg" [ngbTooltip]="'campaignManagerApp.sms.help.shortMsg' | translate">Destination</label>
+                    <textarea type="text" class="form-control" name="destination" id="field_shortMsg" [(ngModel)]="sms.shortMsg" ></textarea>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.state" for="field_state" [ngbTooltip]="'campaignManagerApp.sms.help.state' | translate">State</label>
                     <input type="number" class="form-control" name="state" id="field_state"
                         [(ngModel)]="sms.state" />

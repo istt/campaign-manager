@@ -50,14 +50,24 @@ export class CampaignUpdateComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.dataFileService.itemsPerPage = ITEMS_PER_PAGE;
+        this.dataFileService.checked = {};
         this.activatedRoute.data.subscribe(({ campaign }) => {
             this.campaign = campaign;
+            this.campaign.datafiles = [];
             if (campaign.cfg && campaign.cfg['VASCLOUD']) {
                 this.vasCloudSvc.selected = campaign.cfg['VASCLOUD'].id;
             }
             this.vasCloudSvc.query().subscribe(res => (this.vasCloudSvc.entities = res.body));
             this.dataFileService.entity = new DataFile();
-            this.dataFileService.query().subscribe(res => (this.dataFileService.entities = res.body));
+            // this.dataFileService.query().subscribe(res => {
+            //   this.dataFileService.entities = res.body;
+            //   res.body.forEach(v => {
+            //     this.dataFileService.checked[v.id] = v;
+            //   });
+            //   // this.campaign.datafiles
+            //   // .forEach(e => this.dataFileService.checked[e.id] = Object.assign(e, { checked: true }));
+            // });
+            this.loadPage(1);
         });
     }
 
@@ -79,6 +89,9 @@ export class CampaignUpdateComponent implements OnInit {
         this.campaign.approvedAt = moment(this.approvedAt, DATE_TIME_FORMAT);
         this.campaign.startAt = moment(this.startAt, DATE_TIME_FORMAT);
         this.campaign.expiredAt = moment(this.expiredAt, DATE_TIME_FORMAT);
+        this.campaign.datafiles = Object.getOwnPropertyNames(this.dataFileService.checked)
+            .map(id => (this.dataFileService.checked[id].checked ? this.dataFileService.checked[id] : false))
+            .filter(v => v);
         if (this.campaign.id !== undefined) {
             this.subscribeToSaveResponse(this.campaignService.update(this.campaign));
         } else {
@@ -135,6 +148,7 @@ export class CampaignUpdateComponent implements OnInit {
     loadPage(page: number) {
         if (page !== this.dataFileService.previousPage) {
             this.dataFileService.previousPage = page;
+            this.dataFileService.page = page;
             this.transition();
         }
     }
@@ -154,8 +168,8 @@ export class CampaignUpdateComponent implements OnInit {
 
     sort() {
         const result = [this.dataFileService.predicate + ',' + (this.dataFileService.reverse ? 'asc' : 'desc')];
-        if (this.dataFileService.predicate !== 'id') {
-            result.push('id');
+        if (this.dataFileService.predicate !== 'uploadAt') {
+            result.push('uploadAt,desc');
         }
         return result;
     }
@@ -165,6 +179,9 @@ export class CampaignUpdateComponent implements OnInit {
         this.dataFileService.totalItems = parseInt(headers.get('X-Total-Count'), 10);
         this.dataFileService.queryCount = this.dataFileService.totalItems;
         this.dataFileService.entities = data;
+        data.forEach(v => {
+            this.dataFileService.checked[v.id] = v;
+        });
     }
 
     private onError(errorMessage: string) {
@@ -220,13 +237,25 @@ export class CampaignUpdateComponent implements OnInit {
                         .split('\n')
                         .shift() // Extract first line
                         .split(/[;|,]/)
-                        .map(f => f.trim()); // Extract columns
+                        .map(f => f.replace(/[^\w]/g, '')); // Extract columns
                     // console.log('Headers', this.dataFile.dataCsvHeaders);
-                    this.dataFileService.entity.dataCsvHeaders = Object.assign([], this.dataFileService.entity.dataCsvHeaders);
+                    if (this.dataFileService.entity.dataCsvHeaders.length === 1) {
+                        this.dataFileService.entity.dataCsvHeaders = ['msisdn'];
+                    }
+                    this.dataFileService.dataCsvHeaders = Object.assign([], this.dataFileService.entity.dataCsvHeaders);
                 };
                 // Read the file
                 fileReader.readAsText(file_1.slice(0, 1024));
+            } else {
+                console.error('Cannot detect file type of the file...');
             }
         }
+    }
+
+    updateCheckedDataFile(event, item) {
+        if (!this.dataFileService.checked[item.id]) {
+            this.dataFileService.checked[item.id] = item;
+        }
+        this.dataFileService.checked[item.id].checked = event.target.checked;
     }
 }

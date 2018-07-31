@@ -22,6 +22,19 @@
                 </dd>
             </dl>
 
+            <table class="table">
+              <thead *ngIf="dataFile.dataCsvHeaders"><tr>
+                <th *ngFor="let header of dataFile.dataCsvHeaders; let j = index">
+                  {{ header }}
+                </th>
+              </tr></thead>
+              <tbody *ngIf="csvData">
+                <tr *ngFor="let i of csvData; let j=index">
+                  <td *ngFor="let v of i">{{v}}</td>
+                </tr>
+              </tbody>
+            </table>
+
             <button type="submit"
                     (click)="previousState()"
                     class="btn btn-info">

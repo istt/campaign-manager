@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * The actual SMS messages to send out
  */
@@ -27,6 +29,7 @@ public class Sms implements Serializable {
      */
     @ApiModelProperty(value = "Source Address")
     @Field("source")
+    @NotNull
     private String source;
 
     /**
@@ -34,6 +37,7 @@ public class Sms implements Serializable {
      */
     @ApiModelProperty(value = "Destination Address")
     @Field("destination")
+    @NotNull
     private String destination;
 
     /**
@@ -48,6 +52,7 @@ public class Sms implements Serializable {
      */
     @ApiModelProperty(value = "First SMS or USSD messages to send to customers")
     @Field("short_msg")
+    @NotNull
     private String shortMsg;
 
     /**

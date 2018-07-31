@@ -11,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -47,11 +50,15 @@ public class SendSmsService {
     public long submitPendingCampaign() throws InterruptedException {
     	int threads = 0;
     	CompletionService<Long> completionService = new ExecutorCompletionService<Long>(taskExecutor);
+    	Pageable pageable = PageRequest.of(0, 1000);
     	for (Campaign cp : cpRepo.findAllPendingCampaign()) {
-    		log.debug("Prepare to submit SMS for campaign: " + cp);
-    		List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndStateLessThan(cp.getId(), 1);
+//    		log.debug("Found campaign: " + cp + " -- cpid" + cp.getId());
+			List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndStateLessThan(cp.getId(), 1, pageable)
+					.getContent();
+//			log.debug("Found SMS: " + tobeSubmit);
     		if (tobeSubmit.size() == 0) continue;
     		if (cp.getChannel().contains("VASCLOUD")) {
+//    			log.debug("Campaign Channel: " + cp.getChannel());
     			VasCloudSmsSubmitCallable sendSmsTask = applicationContext.getBean(VasCloudSmsSubmitCallable.class);
     			sendSmsTask.setSmsList(tobeSubmit);
     			sendSmsTask.setCampaign(cp);

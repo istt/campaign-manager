@@ -60,8 +60,8 @@ public class CampaignResource {
 
         CampaignDTO result = campaignService.save(campaignDTO);
         // Process file uploading if need
-        if (campaignDTO.getMsisdnListContentType() != null) {
-        	campaignService.processDataFile(result);
+        if (campaignDTO.getDatafiles() != null) {
+        	result = campaignService.processDatafiles(result);
         }
         return ResponseEntity.created(new URI("/api/campaigns/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -86,8 +86,8 @@ public class CampaignResource {
         }
         CampaignDTO result = campaignService.save(campaignDTO);
      // Process file uploading if need
-        if (campaignDTO.getMsisdnListContentType() != null) {
-        	campaignService.processDataFile(result);
+        if (campaignDTO.getDatafiles() != null) {
+        	result = campaignService.processDatafiles(result);
         }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, campaignDTO.getId().toString()))
@@ -145,23 +145,9 @@ public class CampaignResource {
      */
     @PutMapping("/campaigns/{id}/import")
     @Timed
-    public ResponseEntity<Long> triggerCampaignImport(@PathVariable String id) {
+    public ResponseEntity<CampaignDTO> triggerCampaignImport(@PathVariable String id) {
         log.debug("REST request to get Campaign : {}", id);
         Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
-        return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
-    }
-    @PutMapping("/campaigns/{id}/approve")
-    @Timed
-    public ResponseEntity<Long> triggerCampaignApproval(@PathVariable String id) {
-        log.debug("REST request to get Campaign : {}", id);
-        Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
-        return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
-    }
-    @PutMapping("/campaigns/{id}/reject")
-    @Timed
-    public ResponseEntity<Long> triggerCampaignReject(@PathVariable String id) {
-        log.debug("REST request to get Campaign : {}", id);
-        Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
-        return ResponseEntity.accepted().body(campaignService.processDataFile(campaignDTO.get()));
+        return ResponseEntity.accepted().body(campaignService.processDatafiles(campaignDTO.get()));
     }
 }

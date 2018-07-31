@@ -119,9 +119,9 @@
           </select>
       </div>
       <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingDays" for="field_workingDays">Working Days</label>
-          <input type="text" class="form-control" name="workingDays" id="field_workingDays"
-              [(ngModel)]="campaign.workingDays" />
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.holidays" for="field_holidays">Holidays</label>
+          <input type="text" class="form-control" name="holidays" id="field_holidays"
+              [(ngModel)]="campaign.holidays" />
       </div>
 
     </div></div></ng-template>
@@ -155,12 +155,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let dataFile of dataFileService.entities ;trackBy: trackId">
+                <tr *ngFor="let dataFile of dataFileService.entities">
                     <td>{{dataFile.name}}</td>
                     <td>{{dataFile.tags}}</td>
                     <td>{{dataFile.dataCsvHeaders}}</td>
                     <td>
-                        <input type="checkbox" [value]="dataFile.id" class="form-check"/>
+                        <input type="checkbox" name="dataFile_checked_{{dataFile.id}}" id="dataFile_checked_{{dataFile.id}}"
+                          class="form-check" [(ngModel)]="dataFileService.checked[dataFile.id].checked"
+                          />
                     </td>
                 </tr>
                 </tbody>
@@ -172,7 +174,7 @@
                 <jhi-item-count [page]="dataFileService.page" [total]="dataFileService.queryCount" [itemsPerPage]="dataFileService.itemsPerPage"></jhi-item-count>
             </div>
             <div class="row justify-content-center">
-                <ngb-pagination [collectionSize]="dataFileService.totalItems" [(page)]="dataFileService.page" [pageSize]="dataFileService.itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+                <ngb-pagination [collectionSize]="dataFileService.totalItems" [(page)]="dataFileService.page" [pageSize]="dataFileService.itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(dataFileService.page)"></ngb-pagination>
             </div>
         </div>
 
@@ -216,9 +218,9 @@
 
     <div class="form-group">
         <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</label>
-        <table *ngIf="dataFileService.entity.dataCsvHeaders">
+        <table *ngIf="dataFileService.dataCsvHeaders">
           <thead><tr>
-            <th *ngFor="let header of dataFileService.entity.dataCsvHeaders; let j = index">
+            <th *ngFor="let header of dataFileService.dataCsvHeaders; let j = index">
               <input type="text" class="form-control" name="dataCsvHeaders_{{j}}" id="field_dataCsvHeaders_{{j}}" [(ngModel)]="dataFileService.entity.dataCsvHeaders[j]" />
             </th>
           </tr></thead>
@@ -373,6 +375,5 @@
         </form>
     </div>
 
-    <pre><code>{{ campaign | json }}</code></pre>
 
 </div>

@@ -17,7 +17,12 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class CampaignDTO implements Serializable {
 
-    private String id;
+    /**
+	 *
+	 */
+	private static final long serialVersionUID = 8819719132188767088L;
+
+	private String id;
 
     @NotNull
     private String name;
@@ -51,9 +56,6 @@ public class CampaignDTO implements Serializable {
 
     private String shortMsg;
 
-    private byte[] msisdnList;
-    private String msisdnListContentType;
-
     private ZonedDateTime startAt;
 
     private ZonedDateTime expiredAt;
@@ -62,7 +64,7 @@ public class CampaignDTO implements Serializable {
 
     private List<Integer> workingWeekdays;
 
-    private List<LocalDate> workingDays;
+    private List<LocalDate> holidays;
 
     private String spSvc;
 
@@ -77,6 +79,8 @@ public class CampaignDTO implements Serializable {
     private Double rateLimit;
 
     private Map<String,Object> cfg = new ConcurrentHashMap<String, Object>();
+
+    private List<DataFileDTO> datafiles;
 
     public String getId() {
         return id;
@@ -190,22 +194,6 @@ public class CampaignDTO implements Serializable {
         this.shortMsg = shortMsg;
     }
 
-    public byte[] getMsisdnList() {
-        return msisdnList;
-    }
-
-    public void setMsisdnList(byte[] msisdnList) {
-        this.msisdnList = msisdnList;
-    }
-
-    public String getMsisdnListContentType() {
-        return msisdnListContentType;
-    }
-
-    public void setMsisdnListContentType(String msisdnListContentType) {
-        this.msisdnListContentType = msisdnListContentType;
-    }
-
     public ZonedDateTime getStartAt() {
         return startAt;
     }
@@ -238,12 +226,12 @@ public class CampaignDTO implements Serializable {
         this.workingWeekdays = workingWeekdays;
     }
 
-    public List<LocalDate> getWorkingDays() {
-        return workingDays;
+    public List<LocalDate> getHolidays() {
+        return holidays;
     }
 
-    public void setWorkingDays(List<LocalDate> workingDays) {
-        this.workingDays = workingDays;
+    public void setHolidays(List<LocalDate> holidays) {
+        this.holidays = holidays;
     }
 
     public String getSpSvc() {
@@ -302,7 +290,15 @@ public class CampaignDTO implements Serializable {
         this.cfg = cfg;
     }
 
-    @Override
+    public List<DataFileDTO> getDatafiles() {
+		return datafiles;
+	}
+
+	public void setDatafiles(List<DataFileDTO> datafiles) {
+		this.datafiles = datafiles;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -340,12 +336,11 @@ public class CampaignDTO implements Serializable {
             ", approvedBy='" + getApprovedBy() + "'" +
             ", approvedAt='" + getApprovedAt() + "'" +
             ", shortMsg='" + getShortMsg() + "'" +
-            ", msisdnList='" + getMsisdnList() + "'" +
             ", startAt='" + getStartAt() + "'" +
             ", expiredAt='" + getExpiredAt() + "'" +
             ", workingHours='" + getWorkingHours() + "'" +
             ", workingWeekdays='" + getWorkingWeekdays() + "'" +
-            ", workingDays='" + getWorkingDays() + "'" +
+            ", holidays='" + getHolidays() + "'" +
             ", spSvc='" + getSpSvc() + "'" +
             ", spId='" + getSpId() + "'" +
             ", cpId='" + getCpId() + "'" +

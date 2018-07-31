@@ -3,7 +3,9 @@ package com.ft.service;
 import com.ft.domain.DataFile;
 import com.ft.repository.DataFileRepository;
 import com.ft.service.dto.DataFileDTO;
+import com.ft.service.dto.DataFileSmDTO;
 import com.ft.service.mapper.DataFileMapper;
+import com.ft.service.mapper.DataFileSmMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,9 +27,12 @@ public class DataFileService {
 
     private final DataFileMapper dataFileMapper;
 
-    public DataFileService(DataFileRepository dataFileRepository, DataFileMapper dataFileMapper) {
+    private final DataFileSmMapper dataFileSmMapper;
+
+    public DataFileService(DataFileRepository dataFileRepository, DataFileMapper dataFileMapper, DataFileSmMapper dataFileSmMapper) {
         this.dataFileRepository = dataFileRepository;
         this.dataFileMapper = dataFileMapper;
+        this.dataFileSmMapper = dataFileSmMapper;
     }
 
     /**
@@ -49,10 +54,10 @@ public class DataFileService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    public Page<DataFileDTO> findAll(Pageable pageable) {
+    public Page<DataFileSmDTO> findAll(Pageable pageable) {
         log.debug("Request to get all DataFiles");
         return dataFileRepository.findAll(pageable)
-            .map(dataFileMapper::toDto);
+            .map(dataFileSmMapper::toDto);
     }
 
 
