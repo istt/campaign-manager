@@ -102,7 +102,15 @@
             "edit": "Edit",
             "open": "Open",
             "save": "Save",
-            "view": "View"
+            "view": "View",
+            "copy": "Copy",
+            "process": "Process",
+            "upload": "Upload",
+            "download": "Download",
+            "search": "Search",
+            "filter": "Filter",
+            "import": "Import",
+            "export": "Export"
         },
         "detail": {
             "field": "Field",

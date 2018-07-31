@@ -5,9 +5,11 @@ export interface IVasCloudConfiguration {
     password?: string;
     serviceCode?: string;
     packageCode?: string;
+    shortCode?: string;
     cpCode?: string;
     cpCharge?: string;
     serviceId?: string;
+    rateLimit?: number;
 }
 
 export class VasCloudConfiguration implements IVasCloudConfiguration {
@@ -18,8 +20,10 @@ export class VasCloudConfiguration implements IVasCloudConfiguration {
         public password?: string,
         public serviceCode?: string,
         public packageCode?: string,
+        public shortCode?: string,
         public cpCode?: string,
         public cpCharge?: string,
-        public serviceId?: string
+        public serviceId?: string,
+        public rateLimit?: number
     ) {}
 }

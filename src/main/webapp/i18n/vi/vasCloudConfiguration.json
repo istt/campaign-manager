@@ -20,6 +20,9 @@
             "username": "Username",
             "password": "Password",
             "serviceCode": "Service Code",
+            "packageCode": "Package Code",
+            "shortCode": "Short Code",
+            "rateLimit": "Rate Limit",
             "cpCode": "Cp Code",
             "cpCharge": "Cp Charge",
             "serviceId": "Service Id"

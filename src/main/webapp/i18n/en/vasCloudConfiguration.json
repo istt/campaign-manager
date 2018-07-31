@@ -3,24 +3,26 @@
     "campaignManagerApp": {
         "vasCloudConfiguration" : {
             "home": {
-                "title": "Vas Cloud Configurations",
-                "createLabel": "Create a new Vas Cloud Configuration",
-                "createOrEditLabel": "Create or edit a Vas Cloud Configuration"
+                "title": "VAS Cloud Configurations",
+                "createLabel": "Create a new VAS Cloud Configuration",
+                "createOrEditLabel": "Create or edit a VAS Cloud Configuration"
             },
-            "created": "A new Vas Cloud Configuration is created with identifier {{ param }}",
-            "updated": "A Vas Cloud Configuration is updated with identifier {{ param }}",
-            "deleted": "A Vas Cloud Configuration is deleted with identifier {{ param }}",
+            "created": "A new VAS Cloud Configuration is created with identifier {{ param }}",
+            "updated": "A VAS Cloud Configuration is updated with identifier {{ param }}",
+            "deleted": "A VAS Cloud Configuration is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Vas Cloud Configuration {{ id }}?"
+                "question": "Are you sure you want to delete VAS Cloud Configuration {{ id }}?"
             },
             "detail": {
-                "title": "Vas Cloud Configuration"
+                "title": "VAS Cloud Configuration"
             },
             "endPoint": "End Point",
             "username": "Username",
             "password": "Password",
             "serviceCode": "Service Code",
             "packageCode": "Package Code",
+            "shortCode": "Short Code",
+            "rateLimit": "Rate Limit",
             "cpCode": "CP Code",
             "cpCharge": "CP Charge",
             "serviceId": "Service Id"

@@ -122,3 +122,5 @@ application:
         cp-charge: HOHUY-TRANHTAITRITHUC
         service-code: TRANHTAITRITHUC
         service-id: 5-TRANHTAITRITHUC
+        package-code: TTTT
+        short-code: 9305

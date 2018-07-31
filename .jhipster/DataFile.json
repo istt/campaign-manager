@@ -13,6 +13,16 @@
             "fieldName": "data",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "any"
+        },
+        {
+            "fieldName": "uploadAt",
+            "javadoc": "Time when file is uploaded",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "processAt",
+            "javadoc": "Time when file is process",
+            "fieldType": "ZonedDateTime"
         }
     ],
     "relationships": [],

@@ -20,6 +20,7 @@
             "destination": "Destination",
             "state": "State",
             "campaignId": "Campaign Id",
+            "shortMsg": "Short Message",
             "cpId": "Cp Id",
             "spId": "Sp Id",
             "spSvc": "Sp Svc",

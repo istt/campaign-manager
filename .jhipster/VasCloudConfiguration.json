@@ -32,6 +32,21 @@
         {
             "fieldName": "packageCode",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "shortCode",
+            "javadoc": "The USSD shortcode used to send out messages",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": 40
+        },
+        {
+            "fieldName": "rateLimit",
+            "javadoc": "SMS or USSD message broadcast per second",
+            "fieldType": "Long"
         }
     ],
     "relationships": [],

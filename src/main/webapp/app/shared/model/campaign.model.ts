@@ -21,7 +21,6 @@ export interface ICampaign {
     expiredAt?: Moment;
     workingHours?: string;
     workingWeekdays?: string;
-    workingDays?: string;
     spSvc?: string;
     spId?: string;
     cpId?: string;
@@ -30,6 +29,8 @@ export interface ICampaign {
     rateLimit?: number;
     // Extra properties
     cfg?: any;
+    datafiles?: any[];
+    holidays?: Moment[];
 }
 
 export class Campaign implements ICampaign {
@@ -54,15 +55,17 @@ export class Campaign implements ICampaign {
         public expiredAt?: Moment,
         public workingHours?: string,
         public workingWeekdays?: string,
-        public workingDays?: string,
+        public holidays?: Moment[],
         public spSvc?: string,
         public spId?: string,
         public cpId?: string,
         public msgQuota?: number,
         public subQuota?: number,
         public rateLimit?: number,
-        public cfg?: any
+        public cfg?: any,
+        public datafiles?: any[]
     ) {
         this.cfg = {};
+        this.datafiles = [];
     }
 }

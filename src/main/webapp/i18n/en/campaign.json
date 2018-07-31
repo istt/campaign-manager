@@ -4,6 +4,7 @@
         "campaign" : {
             "home": {
                 "title": "Campaigns",
+                "copy": "Copy Campaign",
                 "createLabel": "Create a new Campaign",
                 "createOrEditLabel": "Create or edit a Campaign"
             },
@@ -29,6 +30,8 @@
             "approvedBy": "Approved By",
             "approvedAt": "Approved At",
             "shortMsg": "Short Msg",
+            "shortMsgLength": "For SMS Content, you can use `${columnName}` to create dynamic content. E.g, if CSV have a column name `msisdn`, use `${msisdn}` to replace the actual data into this placeholder. Estimated character Count",
+            "dataFiles": "Data Files",
             "msisdnList": "Msisdn List",
             "startAt": "Start At",
             "expiredAt": "Expired At",
@@ -58,7 +61,7 @@
             "workingHour_22": "22:00 - 23:00",
             "workingHour_23": "23:00 - 00:00",
             "workingWeekdays": "Working Weekdays",
-            "workingDays": "Working Days",
+            "holidays": "Holidays",
             "workingWeekday_0": "Sunday",
             "workingWeekday_1": "Monday",
             "workingWeekday_2": "Tuesday",
@@ -66,6 +69,13 @@
             "workingWeekday_4": "Thursday",
             "workingWeekday_5": "Friday",
             "workingWeekday_6": "Saturday",
+            "cfg": "Configuration",
+            "tabs": {
+              "basicInfo": "Basic",
+              "schedule": "Scheduling",
+              "dataSource": "Data Sources",
+              "otherInfo": "Others"
+            },
             "spSvc": "Sp Svc",
             "spId": "Sp Id",
             "cpId": "Cp Id",
@@ -85,6 +95,7 @@
                 "shortMsg": "First SMS or USSD messages to send to customers",
                 "msisdnList": "List of MSISDN to be send",
                 "startAt": "Sending time window",
+                "dataFiles": "The uploaded and processed CSV files",
                 "spSvc": "Target Services to be broadcast related info, should be logged into CDR",
                 "msgQuota": "Total messages allow to broadcast",
                 "subQuota": "Total messages per subscriber allow to broadcast",

@@ -104,4 +104,7 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    vas-cloud:
+        end-point: https://virtserver.swaggerhub.com/foxtechvn/vinaphone-vascloud/1.0.0/services/SMS_GW_MT_PROXY
+        

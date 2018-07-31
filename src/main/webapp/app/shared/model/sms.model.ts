@@ -4,6 +4,7 @@ export interface ISms {
     id?: string;
     source?: string;
     destination?: string;
+    shortMsg?: string;
     state?: number;
     campaignId?: string;
     cpId?: string;
@@ -22,6 +23,7 @@ export class Sms implements ISms {
         public id?: string,
         public source?: string,
         public destination?: string,
+        public shortMsg?: string,
         public state?: number,
         public campaignId?: string,
         public cpId?: string,
