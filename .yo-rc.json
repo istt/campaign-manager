@@ -29,7 +29,9 @@
       "en"
     ],
     "clientFramework": "angularX",
-    "jhiPrefix": "jhi"
+    "jhiPrefix": "jhi",
+    "herokuDeployType": "jar",
+    "herokuAppName": "hohuymedia-campaign-manager"
   },
   "git-provider": "GitHub",
   "git-company": "istt",

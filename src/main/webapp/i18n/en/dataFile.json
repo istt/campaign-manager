@@ -18,7 +18,11 @@
             },
             "name": "Name",
             "tags": "Tags",
-            "data": "Data"
+            "data": "Data",
+            "dataCsvHeaders": "CSV Data Headers",
+            "dataCsvPreview": "CSV Data Preview",
+            "uploadAt": "Uploaded At",
+            "processAt": "Process At"
         }
     }
 }

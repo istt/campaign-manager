@@ -76,6 +76,12 @@
               "dataSource": "Data Sources",
               "otherInfo": "Others"
             },
+            "stats": {
+              "failedStats": "Failed to submit Statistic",
+              "successStats": "Successfully Submitted",
+              "pendingStats": "Pending"
+            },
+            "monitoring": "Realtime Monitoring",
             "spSvc": "Sp Svc",
             "spId": "Sp Id",
             "cpId": "Cp Id",

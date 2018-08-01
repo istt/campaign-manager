@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -52,13 +53,16 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
     @Autowired
     ObjectMapper mapper;
 
+    @Autowired
+    SimpMessageSendingOperations messagingTemplate;
+
     private Bucket bucket;
 
     public static Map<String, Bucket> bucketList = new ConcurrentHashMap<String, Bucket>();
 
     @Override
     public Long call() throws Exception {
-        long i = 0L;
+        long i = 0L; long successCnt = 0L; long errorCnt = 0L;
         VasCloudConfigurationDTO cfg = mapper.readValue(mapper.writeValueAsString(campaign.getCfg().get("VASCLOUD")), VasCloudConfigurationDTO.class);
         if (cfg.getRateLimit() != null) {
         	Bucket svcBucket = bucketList.get(cfg.getId());
@@ -81,13 +85,15 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
     	    	.submitAt(ZonedDateTime.now())
     	    	;
     	    	log.info("SMS VASCLOUD RESPONSE: " + response);
+    	    	i ++;
     	    	if (response.getCmd().get("error_id").equalsIgnoreCase("0")) {
     	    		log.info("Successful submit!!!");
-    	    		i ++;
+    	    		successCnt ++;
     	    		smsRepo.save(sms.state(9));
     	    	} else {
     	    		log.error("Failed to submit SMS" + response.getCmd().get("error_id") + "|" + response.getCmd().get("error_desc"));
     	    		smsRepo.save(sms.state(-9));
+    	    		errorCnt ++;
     	    	}
     	    } catch (HttpStatusCodeException s){
     	    	log.error("Cannot send message: " + s.getRawStatusCode() + " " + s.getStatusText() + ":" + s.getResponseBodyAsString());
@@ -97,8 +103,11 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
                 log.error("Exception: " + request, e);
             }
         }
-        campaign.getCfg().put("submitCnt", campaign.getCfg().get("submitCnt") == null ? i : Long.parseLong(campaign.getCfg().get("submitCnt").toString()) + i);
+        campaign.getStats().put("submitCnt", campaign.getStats().get("submitCnt") == null ? i : Long.parseLong(campaign.getStats().get("submitCnt").toString()) + i);
+        campaign.getStats().put("successCnt", campaign.getStats().get("successCnt") == null ? successCnt : Long.parseLong(campaign.getStats().get("successCnt").toString()) + successCnt);
+        campaign.getStats().put("failedCnt", campaign.getStats().get("failedCnt") == null ? errorCnt : Long.parseLong(campaign.getStats().get("failedCnt").toString()) + errorCnt);
         cpRepo.save(campaign);
+        messagingTemplate.convertAndSend("/topic/campaign/" + campaign.getId(), campaign.getStats());
         return i;
     }
 

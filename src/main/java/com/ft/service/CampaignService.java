@@ -111,6 +111,8 @@ public class CampaignService {
     			cp.getDatafiles().get(i).setProcessAt(ZonedDateTime.now());
     		}
     	}
+    	// Reset it back to Approved if not disabled
+    	if (result > 0) cp.setState(cp.getState() <= 0 ? 0 : 1);
     	return save(cp);
     }
     public long processDatafiles(CampaignDTO cp, DataFile dataFile) {
@@ -182,8 +184,8 @@ public class CampaignService {
 				}
 
     		}
-            if (cp.getCfg() == null) cp.setCfg(new ConcurrentHashMap<String, Object>());
-            cp.getCfg().put("msgCnt", result);
+            if (cp.getStats() == null) cp.setStats(new ConcurrentHashMap<String, Object>());
+            cp.getStats().put("msgCnt", cp.getStats().get("msgCnt") == null ? result : Long.parseLong(cp.getStats().get("msgCnt").toString()) + result);
     	}
     	return result;
     }

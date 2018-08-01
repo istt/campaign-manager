@@ -13,5 +13,7 @@ public interface CampaignCustomRepository {
 
 	Page<Campaign> findAllPendingCampaign(Pageable pageable);
 
+	long setExpiredCampaign();
+
 
 }

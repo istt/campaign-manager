@@ -29,6 +29,7 @@ export interface ICampaign {
     rateLimit?: number;
     // Extra properties
     cfg?: any;
+    stats?: any;
     datafiles?: any[];
     holidays?: Moment[];
 }
@@ -63,9 +64,11 @@ export class Campaign implements ICampaign {
         public subQuota?: number,
         public rateLimit?: number,
         public cfg?: any,
+        public stats?: any,
         public datafiles?: any[]
     ) {
         this.cfg = {};
+        this.stats = {};
         this.datafiles = [];
     }
 }

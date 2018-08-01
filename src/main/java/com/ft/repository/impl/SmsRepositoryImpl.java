@@ -14,19 +14,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.Aggregation;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ft.domain.Campaign;
-import com.ft.repository.CampaignCustomRepository;
+import com.ft.domain.Sms;
+import com.ft.repository.SmsCustomRepository;
 import com.mongodb.WriteResult;
 import com.mongodb.client.result.UpdateResult;
 
-public class CampaignRepositoryImpl implements CampaignCustomRepository {
+public class SmsRepositoryImpl implements SmsCustomRepository {
 
-	private final Logger log = LoggerFactory.getLogger(CampaignRepositoryImpl.class);
+	private final Logger log = LoggerFactory.getLogger(SmsRepositoryImpl.class);
 
 	@Autowired
     MongoTemplate mongoTemplate;
@@ -35,16 +38,16 @@ public class CampaignRepositoryImpl implements CampaignCustomRepository {
     ObjectMapper mapper;
 
 	@Override
-	public List<Campaign> findAllPendingCampaign() {
+	public List<Sms> findAllPendingSms() {
 		Query query = new Query().addCriteria(createPendingCriteria());
 		log.debug("Query: " + query);
-		return mongoTemplate.find(query, Campaign.class);
+		return mongoTemplate.find(query, Sms.class);
 	}
 
 	@Override
-	public Page<Campaign> findAllPendingCampaign(Pageable pageable) {
+	public Page<Sms> findAllPendingSms(Pageable pageable) {
 		Query query = new Query().addCriteria(createPendingCriteria());
-		return new PageImpl<Campaign>(mongoTemplate.find(query.with(pageable), Campaign.class), pageable, mongoTemplate.count(query, Campaign.class));
+		return new PageImpl<Sms>(mongoTemplate.find(query.with(pageable), Sms.class), pageable, mongoTemplate.count(query, Sms.class));
 	}
 
 	protected Criteria createPendingCriteria() {
@@ -70,7 +73,7 @@ public class CampaignRepositoryImpl implements CampaignCustomRepository {
 	}
 
 	@Override
-	public long setExpiredCampaign() {
+	public long setExpiredSms() {
 		UpdateResult result = mongoTemplate.updateMulti(new Query(
 				new Criteria().andOperator(
 						Criteria.where("expired_at").lt(ZonedDateTime.now()),
@@ -78,8 +81,25 @@ public class CampaignRepositoryImpl implements CampaignCustomRepository {
 						Criteria.where("state").gt(-9)
 				)
 				), Update.update("state", -9),
-				Campaign.class);
+				Sms.class);
 		return result.getModifiedCount();
 	}
-	
+
+	@Override
+	public List<Object> statsByCampaignAndState(String campaignId, int state) {
+		Aggregation agg = Aggregation.newAggregation(
+				Aggregation.match(
+						new Criteria().andOperator(
+								Criteria.where("campaignId").is(campaignId),
+								Criteria.where("state").is(state)
+						)
+				),
+				Aggregation.project()
+                .andExpression("dateToString('%Y-%m-%d', submitAt)").as("date"),
+                Aggregation.group("date").count().as("cnt")
+                );
+		AggregationResults<Object> result = mongoTemplate.aggregate(agg, Sms.class, Object.class);
+		return result.getMappedResults();
+	}
+
 }

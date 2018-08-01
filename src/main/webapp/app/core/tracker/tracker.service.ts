@@ -46,22 +46,19 @@ export class JhiTrackerService {
         const socket = new SockJS(url);
         this.stompClient = Stomp.over(socket);
         const headers = {};
-        this.stompClient.connect(
-            headers,
-            () => {
-                this.connectedPromise('success');
-                this.connectedPromise = null;
-                this.sendActivity();
-                if (!this.alreadyConnectedOnce) {
-                    this.subscription = this.router.events.subscribe(event => {
-                        if (event instanceof NavigationEnd) {
-                            this.sendActivity();
-                        }
-                    });
-                    this.alreadyConnectedOnce = true;
-                }
+        this.stompClient.connect(headers, () => {
+            this.connectedPromise('success');
+            this.connectedPromise = null;
+            this.sendActivity();
+            if (!this.alreadyConnectedOnce) {
+                this.subscription = this.router.events.subscribe(event => {
+                    if (event instanceof NavigationEnd) {
+                        this.sendActivity();
+                    }
+                });
+                this.alreadyConnectedOnce = true;
             }
-        );
+        });
     }
 
     disconnect() {
@@ -90,9 +87,9 @@ export class JhiTrackerService {
         }
     }
 
-    subscribe() {
+    subscribe(target?: string) {
         this.connection.then(() => {
-            this.subscriber = this.stompClient.subscribe('/topic/tracker', data => {
+            this.subscriber = this.stompClient.subscribe(target ? target : '/topic/tracker', data => {
                 this.listenerObserver.next(JSON.parse(data.body));
             });
         });

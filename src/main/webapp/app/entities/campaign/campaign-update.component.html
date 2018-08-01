@@ -159,7 +159,7 @@
                     <td>{{dataFile.name}}</td>
                     <td>{{dataFile.tags}}</td>
                     <td>{{dataFile.dataCsvHeaders}}</td>
-                    <td>
+                    <td *ngIf="dataFileService.checked[dataFile.id]">
                         <input type="checkbox" name="dataFile_checked_{{dataFile.id}}" id="dataFile_checked_{{dataFile.id}}"
                           class="form-check" [(ngModel)]="dataFileService.checked[dataFile.id].checked"
                           />

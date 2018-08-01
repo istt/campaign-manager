@@ -133,13 +133,14 @@ export class CampaignUpdateComponent implements OnInit {
     }
     // Data File handle
     loadAll() {
-        this.dataFileService
+        return this.dataFileService
             .query({
                 page: this.dataFileService.page - 1,
                 size: this.dataFileService.itemsPerPage,
                 sort: this.sort()
             })
-            .subscribe(
+            .toPromise()
+            .then(
                 (res: HttpResponse<IDataFile[]>) => this.paginateDataFiles(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
@@ -180,7 +181,10 @@ export class CampaignUpdateComponent implements OnInit {
         this.dataFileService.queryCount = this.dataFileService.totalItems;
         this.dataFileService.entities = data;
         data.forEach(v => {
-            this.dataFileService.checked[v.id] = v;
+            this.dataFileService.checked[v.id] = Object.assign(
+                this.dataFileService.checked[v.id] ? this.dataFileService.checked[v.id] : {},
+                v
+            );
         });
     }
 
@@ -189,6 +193,7 @@ export class CampaignUpdateComponent implements OnInit {
     }
     // Data File Modal handle
     openModal(modalContent) {
+        this.dataFileService.entity = new DataFile();
         this.modalRef = this.modalService.open(modalContent);
         this.modalRef.result.then(
             result => {
@@ -206,8 +211,15 @@ export class CampaignUpdateComponent implements OnInit {
         this.dataFileService.create(this.dataFileService.entity).subscribe(
             res => {
                 console.log('Successfully submit data file');
+                this.dataFileService.entity = res.body;
                 this.isSaving = false;
-                this.loadAll();
+                this.loadAll().then(
+                    resolve =>
+                        (this.dataFileService.checked[this.dataFileService.entity.id] = Object.assign(this.dataFileService.entity, {
+                            checked: true
+                        })),
+                    reject => console.error(reject)
+                );
                 this.modalRef.close();
             },
             err => this.onError(err)

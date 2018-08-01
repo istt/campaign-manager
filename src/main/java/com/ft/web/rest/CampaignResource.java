@@ -1,6 +1,7 @@
 package com.ft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.ft.repository.SmsRepository;
 import com.ft.security.SecurityUtils;
 import com.ft.service.CampaignService;
 import com.ft.web.rest.errors.BadRequestAlertException;
@@ -10,6 +11,7 @@ import com.ft.service.dto.CampaignDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -120,6 +122,15 @@ public class CampaignResource {
     public ResponseEntity<CampaignDTO> getCampaign(@PathVariable String id) {
         log.debug("REST request to get Campaign : {}", id);
         Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
+        if (campaignDTO.isPresent()) {
+        	if ((campaignDTO.get().getState() == 1 ) && campaignDTO.get().getExpiredAt().isAfter(ZonedDateTime.now())) {
+        		campaignDTO.get().getStats().put("successStats", smsRepo.statsByCampaignAndState(id, 9));
+        		campaignDTO.get().getStats().put("failedStats", smsRepo.statsByCampaignAndState(id,  -9));
+        		campaignDTO.get().getStats().put("pendingStats", smsRepo.statsByCampaignAndState(id,  0));
+        		campaignDTO.get().setState(9);
+        		campaignService.save(campaignDTO.get());
+        	}
+        }
         return ResponseUtil.wrapOrNotFound(campaignDTO);
     }
 
@@ -150,4 +161,10 @@ public class CampaignResource {
         Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
         return ResponseEntity.accepted().body(campaignService.processDatafiles(campaignDTO.get()));
     }
+
+
+    @Autowired
+    SmsRepository smsRepo;
+
+
 }

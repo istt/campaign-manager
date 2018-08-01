@@ -1,6 +1,6 @@
 <div class="row justify-content-center">
-    <div class="col-8">
-        <div *ngIf="campaign">
+    <div class="col-6"  *ngIf="campaign">
+        <div>
             <h2><span jhiTranslate="campaignManagerApp.campaign.detail.title">Campaign</span> {{campaign.id}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
@@ -122,5 +122,108 @@
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>
+    </div>
+
+    <div class="col-6">
+      <div class="card mt-3 mb-3">
+        <div class="card-header" jhiTranslate="campaignManagerApp.dataFile.home.title" [ngbTooltip]="'campaignManagerApp.campaign.help.datafiles' | translate "></div>
+        <div class="card-body">
+          <div class=" table-responsive"><table class="table table-striped" *ngIf="campaign.datafiles">
+              <thead>
+              <tr>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.uploadAt">Upload At</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.processAt">Process At</span></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let dataFile of campaign.datafiles">
+                  <td>{{dataFile.name}}</td>
+                  <td>{{dataFile.tags}}</td>
+                  <td>{{dataFile.dataCsvHeaders}}</td>
+                  <td>{{dataFile.uploadAt}}</td>
+                  <td>{{dataFile.processAt}}</td>
+              </tr>
+              </tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="card mt-3 mb-3">
+        <div class="card-header" jhiTranslate="campaignManagerApp.campaign.cfg"></div>
+        <div class="card-body">
+          <pre><code>{{ campaign.cfg | json }}</code></pre>
+        </div>
+      </div>
+
+      <div class="card mt-3 mb-3">
+        <div class="card-header bg-info" jhiTranslate="campaignManagerApp.campaign.monitoring"></div>
+        <div class="card-body">
+          <pre><code>{{ campaign.stats | json }}</code></pre>
+        </div>
+      </div>
+
+      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.successStats && campaign.stats.successStats.length">
+        <div class="card-header bg-success text-white" jhiTranslate="campaignManagerApp.campaign.stats.successStats"></div>
+        <div class="card-body">
+          <div class="table-responsive"><table class="table table-striped">
+              <thead>
+                <tr>
+                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let s of campaign.stats?.successStats" class="bg-success">
+                  <td>{{s._id}}</td>
+                  <td>{{s.cnt}}</td>
+              </tr>
+              </tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.failedStats && campaign.stats.failedStats.length">
+        <div class="card-header bg-danger text-white" jhiTranslate="campaignManagerApp.campaign.stats.failedStats"></div>
+        <div class="card-body">
+          <div class="table-responsive"><table class="table table-striped">
+              <thead>
+                <tr>
+                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+                </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let e of campaign.stats.failedStats" class="bg-error">
+                  <td>{{e._id}}</td>
+                  <td>{{e.cnt}}</td>
+              </tr>
+              </tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.pendingStats && campaign.stats.pendingStats.length">
+        <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.stats.pendingStats"></div>
+        <div class="card-body" *ngIf="campaign.stats?.pendingStats">
+          <div class="table-responsive"><table class="table table-striped">
+              <thead>
+                <tr>
+                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of campaign.stats.pendingStats" class="bg-light">
+                    <td>{{p._id}}</td>
+                    <td>{{p.cnt}}</td>
+                </tr>
+              </tbody>
+          </table></div>
+        </div>
+      </div>
+
     </div>
 </div>

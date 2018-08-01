@@ -50,7 +50,7 @@
                         [(ngModel)]="vasCloudConfiguration.serviceId" />
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="vasCloudConfigurationManagerApp.vasCloudConfiguration.shortCode" for="field_shortCode" [ngbTooltip]="'vasCloudConfigurationManagerApp.vasCloudConfiguration.help.shortCode' | translate">Short Code</label>
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.shortCode" for="field_shortCode" [ngbTooltip]="'campaignManagerApp.vasCloudConfiguration.help.shortCode' | translate">Short Code</label>
                     <input type="text" class="form-control" name="shortCode" id="field_shortCode"
                         [(ngModel)]="vasCloudConfiguration.shortCode" required maxlength="40"/>
                     <div [hidden]="!(editForm.controls.shortCode?.dirty && editForm.controls.shortCode?.invalid)">
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="vasCloudConfigurationManagerApp.vasCloudConfiguration.rateLimit" for="field_rateLimit" [ngbTooltip]="'vasCloudConfigurationManagerApp.vasCloudConfiguration.help.rateLimit' | translate">Rate Limit</label>
+                    <label class="form-control-label" jhiTranslate="campaignManagerApp.vasCloudConfiguration.rateLimit" for="field_rateLimit" [ngbTooltip]="'campaignManagerApp.vasCloudConfiguration.help.rateLimit' | translate">Rate Limit</label>
                     <input type="number" class="form-control" name="rateLimit" id="field_rateLimit"
                         [(ngModel)]="vasCloudConfiguration.rateLimit" />
                 </div>

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface SmsRepository extends MongoRepository<Sms, String> {
+public interface SmsRepository extends MongoRepository<Sms, String>, SmsCustomRepository {
 
 	List<Sms> findAllByCampaignIdAndStateLessThan(String campaignID, int state);
 

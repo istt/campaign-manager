@@ -174,6 +174,9 @@ public class Campaign implements Serializable {
     @Field("cfg")
     private Map<String, Object> cfg = new ConcurrentHashMap<String, Object>();
 
+    @Field("stats")
+    private Map<String,Object> stats = new ConcurrentHashMap<String, Object>();
+
     @Field("datafiles")
     @ApiModelProperty(value = "Data Files upload and import into these campaign")
     private List<DataFileDTO> datafiles;
@@ -511,6 +514,20 @@ public class Campaign implements Serializable {
     public void setCfg(Map<String, Object> cfg) {
         this.cfg = cfg;
     }
+
+    public Map<String, Object> getStats() {
+        return stats;
+    }
+
+    public Campaign stats(Map<String, Object> stats) {
+        this.stats = stats;
+        return this;
+    }
+
+    public void setStats(Map<String, Object> stats) {
+        this.stats = stats;
+    }
+
     public List<DataFileDTO> getDatafiles() {
 		return datafiles;
 	}

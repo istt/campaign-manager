@@ -80,6 +80,8 @@ public class CampaignDTO implements Serializable {
 
     private Map<String,Object> cfg = new ConcurrentHashMap<String, Object>();
 
+    private Map<String,Object> stats = new ConcurrentHashMap<String, Object>();
+
     private List<DataFileDTO> datafiles;
 
     public String getId() {
@@ -290,7 +292,15 @@ public class CampaignDTO implements Serializable {
         this.cfg = cfg;
     }
 
-    public List<DataFileDTO> getDatafiles() {
+    public Map<String, Object> getStats() {
+		return stats;
+	}
+
+	public void setStats(Map<String, Object> stats) {
+		this.stats = stats;
+	}
+
+	public List<DataFileDTO> getDatafiles() {
 		return datafiles;
 	}
 
