@@ -1,16 +1,19 @@
 package com.ft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.ft.domain.Sms;
 import com.ft.service.SmsService;
 import com.ft.web.rest.errors.BadRequestAlertException;
 import com.ft.web.rest.util.HeaderUtil;
 import com.ft.web.rest.util.PaginationUtil;
+import com.querydsl.core.types.Predicate;
 import com.ft.service.dto.SmsDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -122,5 +125,20 @@ public class SmsResource {
         log.debug("REST request to delete Sms : {}", id);
         smsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+    }
+
+    /**
+     * GET  /campaigns : get all the campaigns.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of campaigns in body
+     */
+    @GetMapping("/search/sms")
+    @Timed
+    public ResponseEntity<List<SmsDTO>> searchSms(@QuerydslPredicate(root = Sms.class) Predicate predicate, Pageable pageable) {
+        log.debug("REST request to get a page of Campaigns");
+        Page<SmsDTO> page = smsService.findAll(predicate, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/search/sms");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

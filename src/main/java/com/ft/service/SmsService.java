@@ -4,6 +4,8 @@ import com.ft.domain.Sms;
 import com.ft.repository.SmsRepository;
 import com.ft.service.dto.SmsDTO;
 import com.ft.service.mapper.SmsMapper;
+import com.querydsl.core.types.Predicate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,4 +79,10 @@ public class SmsService {
         log.debug("Request to delete Sms : {}", id);
         smsRepository.deleteById(id);
     }
+
+	public Page<SmsDTO> findAll(Predicate predicate, Pageable pageable) {
+		log.debug("Request to get all Sms with predicate " + predicate);
+        return smsRepository.findAll(predicate, pageable)
+            .map(smsMapper::toDto);
+	}
 }

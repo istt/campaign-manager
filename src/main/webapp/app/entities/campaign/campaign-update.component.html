@@ -43,6 +43,13 @@
       </div>
 
       <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.state" for="field_state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</label>
+          <select type="number" class="form-control" name="state" id="field_state" [(ngModel)]="campaign.state">
+            <option *ngFor="let s of campaignService.stateOptions" [value]="s" jhiTranslate="campaignManagerApp.campaign.stateOptions_{{s}}"></option>
+          </select>
+      </div>
+
+      <div class="form-group">
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cfg" for="field_cfg_VASCLOUD" [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</label>
           <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)" required>
             <option *ngFor="let i of vasCloudSvc.entities" [value]="i.id">{{i.serviceCode}} / {{i.packageCode}}</option>
@@ -259,12 +266,6 @@
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.externalId" for="field_externalId" [ngbTooltip]="'campaignManagerApp.campaign.help.externalId' | translate">External Id</label>
           <input type="text" class="form-control" name="externalId" id="field_externalId"
               [(ngModel)]="campaign.externalId" />
-      </div>
-
-      <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.state" for="field_state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</label>
-          <input type="number" class="form-control" name="state" id="field_state"
-              [(ngModel)]="campaign.state" />
       </div>
 
       <div class="form-group">

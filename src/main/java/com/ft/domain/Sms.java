@@ -2,6 +2,8 @@ package com.ft.domain;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import org.mongodb.morphia.annotations.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,6 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 @ApiModel(description = "The actual SMS messages to send out")
 @Document(collection = "sms")
+@Entity
 public class Sms implements Serializable {
 
     private static final long serialVersionUID = 1L;
