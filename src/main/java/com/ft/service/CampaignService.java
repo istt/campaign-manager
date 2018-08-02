@@ -28,6 +28,7 @@ import com.ft.repository.DataFileRepository;
 import com.ft.repository.SmsRepository;
 import com.ft.service.dto.CampaignDTO;
 import com.ft.service.mapper.CampaignMapper;
+import com.querydsl.core.types.Predicate;
 /**
  * Service Implementation for managing Campaign.
  */
@@ -208,6 +209,12 @@ public class CampaignService {
 
 	public List<Campaign> getPendingCampaigns() {
 		return campaignRepository.findAllPendingCampaign();
+	}
+
+	public Page<CampaignDTO> findAll(Predicate predicate, Pageable pageable) {
+		log.debug("Request to get all Campaigns with predicate " + predicate);
+        return campaignRepository.findAll(predicate, pageable)
+            .map(campaignMapper::toDto);
 	}
 
 }

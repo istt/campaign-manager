@@ -1,6 +1,8 @@
 package com.ft.domain;
 
 import io.swagger.annotations.ApiModelProperty;
+
+import org.mongodb.morphia.annotations.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -21,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * A Campaign.
  */
 @Document(collection = "campaign")
+@Entity
 public class Campaign implements Serializable {
 
     private static final long serialVersionUID = 1L;

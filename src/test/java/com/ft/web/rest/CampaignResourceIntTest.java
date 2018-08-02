@@ -85,11 +85,6 @@ public class CampaignResourceIntTest {
     private static final String DEFAULT_SHORT_MSG = "AAAAAAAAAA";
     private static final String UPDATED_SHORT_MSG = "BBBBBBBBBB";
 
-    private static final byte[] DEFAULT_MSISDN_LIST = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_MSISDN_LIST = TestUtil.createByteArray(2, "1");
-    private static final String DEFAULT_MSISDN_LIST_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_MSISDN_LIST_CONTENT_TYPE = "image/png";
-
     private static final ZonedDateTime DEFAULT_START_AT = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_START_AT = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
@@ -101,9 +96,6 @@ public class CampaignResourceIntTest {
 
     private static final String DEFAULT_WORKING_WEEKDAYS = "AAAAAAAAAA";
     private static final String UPDATED_WORKING_WEEKDAYS = "BBBBBBBBBB";
-
-    private static final String DEFAULT_WORKING_DAYS = "AAAAAAAAAA";
-    private static final String UPDATED_WORKING_DAYS = "BBBBBBBBBB";
 
     private static final String DEFAULT_SP_SVC = "AAAAAAAAAA";
     private static final String UPDATED_SP_SVC = "BBBBBBBBBB";
@@ -179,8 +171,8 @@ public class CampaignResourceIntTest {
             .approvedBy(DEFAULT_APPROVED_BY)
             .approvedAt(DEFAULT_APPROVED_AT)
             .shortMsg(DEFAULT_SHORT_MSG)
-            .msisdnList(DEFAULT_MSISDN_LIST)
-            .msisdnListContentType(DEFAULT_MSISDN_LIST_CONTENT_TYPE)
+//            .msisdnList(DEFAULT_MSISDN_LIST)
+//            .msisdnListContentType(DEFAULT_MSISDN_LIST_CONTENT_TYPE)
             .startAt(DEFAULT_START_AT)
             .expiredAt(DEFAULT_EXPIRED_AT)
 //            .workingHours(DEFAULT_WORKING_HOURS)
@@ -229,13 +221,13 @@ public class CampaignResourceIntTest {
         assertThat(testCampaign.getApprovedBy()).isEqualTo(DEFAULT_APPROVED_BY);
         assertThat(testCampaign.getApprovedAt()).isEqualTo(DEFAULT_APPROVED_AT);
         assertThat(testCampaign.getShortMsg()).isEqualTo(DEFAULT_SHORT_MSG);
-        assertThat(testCampaign.getMsisdnList()).isEqualTo(DEFAULT_MSISDN_LIST);
-        assertThat(testCampaign.getMsisdnListContentType()).isEqualTo(DEFAULT_MSISDN_LIST_CONTENT_TYPE);
+//        assertThat(testCampaign.getMsisdnList()).isEqualTo(DEFAULT_MSISDN_LIST);
+//        assertThat(testCampaign.getMsisdnListContentType()).isEqualTo(DEFAULT_MSISDN_LIST_CONTENT_TYPE);
         assertThat(testCampaign.getStartAt()).isEqualTo(DEFAULT_START_AT);
         assertThat(testCampaign.getExpiredAt()).isEqualTo(DEFAULT_EXPIRED_AT);
         assertThat(testCampaign.getWorkingHours()).isEqualTo(DEFAULT_WORKING_HOURS);
         assertThat(testCampaign.getWorkingWeekdays()).isEqualTo(DEFAULT_WORKING_WEEKDAYS);
-        assertThat(testCampaign.getWorkingDays()).isEqualTo(DEFAULT_WORKING_DAYS);
+//        assertThat(testCampaign.getWorkingDays()).isEqualTo(DEFAULT_WORKING_DAYS);
         assertThat(testCampaign.getSpSvc()).isEqualTo(DEFAULT_SP_SVC);
         assertThat(testCampaign.getSpId()).isEqualTo(DEFAULT_SP_ID);
         assertThat(testCampaign.getCpId()).isEqualTo(DEFAULT_CP_ID);
@@ -358,13 +350,10 @@ public class CampaignResourceIntTest {
             .andExpect(jsonPath("$.[*].approvedBy").value(hasItem(DEFAULT_APPROVED_BY.toString())))
             .andExpect(jsonPath("$.[*].approvedAt").value(hasItem(sameInstant(DEFAULT_APPROVED_AT))))
             .andExpect(jsonPath("$.[*].shortMsg").value(hasItem(DEFAULT_SHORT_MSG.toString())))
-            .andExpect(jsonPath("$.[*].msisdnListContentType").value(hasItem(DEFAULT_MSISDN_LIST_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].msisdnList").value(hasItem(Base64Utils.encodeToString(DEFAULT_MSISDN_LIST))))
             .andExpect(jsonPath("$.[*].startAt").value(hasItem(sameInstant(DEFAULT_START_AT))))
             .andExpect(jsonPath("$.[*].expiredAt").value(hasItem(sameInstant(DEFAULT_EXPIRED_AT))))
             .andExpect(jsonPath("$.[*].workingHours").value(hasItem(DEFAULT_WORKING_HOURS.toString())))
             .andExpect(jsonPath("$.[*].workingWeekdays").value(hasItem(DEFAULT_WORKING_WEEKDAYS.toString())))
-            .andExpect(jsonPath("$.[*].workingDays").value(hasItem(DEFAULT_WORKING_DAYS.toString())))
             .andExpect(jsonPath("$.[*].spSvc").value(hasItem(DEFAULT_SP_SVC.toString())))
             .andExpect(jsonPath("$.[*].spId").value(hasItem(DEFAULT_SP_ID.toString())))
             .andExpect(jsonPath("$.[*].cpId").value(hasItem(DEFAULT_CP_ID.toString())))
@@ -397,13 +386,10 @@ public class CampaignResourceIntTest {
             .andExpect(jsonPath("$.approvedBy").value(DEFAULT_APPROVED_BY.toString()))
             .andExpect(jsonPath("$.approvedAt").value(sameInstant(DEFAULT_APPROVED_AT)))
             .andExpect(jsonPath("$.shortMsg").value(DEFAULT_SHORT_MSG.toString()))
-            .andExpect(jsonPath("$.msisdnListContentType").value(DEFAULT_MSISDN_LIST_CONTENT_TYPE))
-            .andExpect(jsonPath("$.msisdnList").value(Base64Utils.encodeToString(DEFAULT_MSISDN_LIST)))
             .andExpect(jsonPath("$.startAt").value(sameInstant(DEFAULT_START_AT)))
             .andExpect(jsonPath("$.expiredAt").value(sameInstant(DEFAULT_EXPIRED_AT)))
             .andExpect(jsonPath("$.workingHours").value(DEFAULT_WORKING_HOURS.toString()))
             .andExpect(jsonPath("$.workingWeekdays").value(DEFAULT_WORKING_WEEKDAYS.toString()))
-            .andExpect(jsonPath("$.workingDays").value(DEFAULT_WORKING_DAYS.toString()))
             .andExpect(jsonPath("$.spSvc").value(DEFAULT_SP_SVC.toString()))
             .andExpect(jsonPath("$.spId").value(DEFAULT_SP_ID.toString()))
             .andExpect(jsonPath("$.cpId").value(DEFAULT_CP_ID.toString()))
@@ -441,8 +427,8 @@ public class CampaignResourceIntTest {
             .approvedBy(UPDATED_APPROVED_BY)
             .approvedAt(UPDATED_APPROVED_AT)
             .shortMsg(UPDATED_SHORT_MSG)
-            .msisdnList(UPDATED_MSISDN_LIST)
-            .msisdnListContentType(UPDATED_MSISDN_LIST_CONTENT_TYPE)
+//            .msisdnList(UPDATED_MSISDN_LIST)
+//            .msisdnListContentType(UPDATED_MSISDN_LIST_CONTENT_TYPE)
             .startAt(UPDATED_START_AT)
             .expiredAt(UPDATED_EXPIRED_AT)
 //            .workingHours(UPDATED_WORKING_HOURS)
@@ -478,13 +464,13 @@ public class CampaignResourceIntTest {
         assertThat(testCampaign.getApprovedBy()).isEqualTo(UPDATED_APPROVED_BY);
         assertThat(testCampaign.getApprovedAt()).isEqualTo(UPDATED_APPROVED_AT);
         assertThat(testCampaign.getShortMsg()).isEqualTo(UPDATED_SHORT_MSG);
-        assertThat(testCampaign.getMsisdnList()).isEqualTo(UPDATED_MSISDN_LIST);
-        assertThat(testCampaign.getMsisdnListContentType()).isEqualTo(UPDATED_MSISDN_LIST_CONTENT_TYPE);
+//        assertThat(testCampaign.getMsisdnList()).isEqualTo(UPDATED_MSISDN_LIST);
+//        assertThat(testCampaign.getMsisdnListContentType()).isEqualTo(UPDATED_MSISDN_LIST_CONTENT_TYPE);
         assertThat(testCampaign.getStartAt()).isEqualTo(UPDATED_START_AT);
         assertThat(testCampaign.getExpiredAt()).isEqualTo(UPDATED_EXPIRED_AT);
         assertThat(testCampaign.getWorkingHours()).isEqualTo(UPDATED_WORKING_HOURS);
         assertThat(testCampaign.getWorkingWeekdays()).isEqualTo(UPDATED_WORKING_WEEKDAYS);
-        assertThat(testCampaign.getWorkingDays()).isEqualTo(UPDATED_WORKING_DAYS);
+//        assertThat(testCampaign.getWorkingDays()).isEqualTo(UPDATED_WORKING_DAYS);
         assertThat(testCampaign.getSpSvc()).isEqualTo(UPDATED_SP_SVC);
         assertThat(testCampaign.getSpId()).isEqualTo(UPDATED_SP_ID);
         assertThat(testCampaign.getCpId()).isEqualTo(UPDATED_CP_ID);

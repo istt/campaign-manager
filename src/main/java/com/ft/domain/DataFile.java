@@ -1,5 +1,6 @@
 package com.ft.domain;
 
+import org.mongodb.morphia.annotations.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -16,6 +17,7 @@ import java.util.Objects;
  * A DataFile.
  */
 @Document(collection = "data_file")
+@Entity
 public class DataFile implements Serializable {
 
     private static final long serialVersionUID = 1L;

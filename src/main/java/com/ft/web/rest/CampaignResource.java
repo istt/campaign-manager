@@ -1,19 +1,23 @@
 package com.ft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.ft.domain.Campaign;
 import com.ft.repository.SmsRepository;
 import com.ft.security.SecurityUtils;
 import com.ft.service.CampaignService;
 import com.ft.web.rest.errors.BadRequestAlertException;
 import com.ft.web.rest.util.HeaderUtil;
 import com.ft.web.rest.util.PaginationUtil;
+import com.querydsl.core.types.Predicate;
 import com.ft.service.dto.CampaignDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -166,5 +170,19 @@ public class CampaignResource {
     @Autowired
     SmsRepository smsRepo;
 
+    /**
+     * GET  /campaigns : get all the campaigns.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of campaigns in body
+     */
+    @GetMapping("/search/campaigns")
+    @Timed
+    public ResponseEntity<List<CampaignDTO>> searchCampaigns(@QuerydslPredicate(root = Campaign.class) Predicate predicate, Pageable pageable) {
+        log.debug("REST request to get a page of Campaigns");
+        Page<CampaignDTO> page = campaignService.findAll(predicate, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/search/campaigns");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
 }
