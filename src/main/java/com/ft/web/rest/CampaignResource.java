@@ -127,7 +127,7 @@ public class CampaignResource {
         log.debug("REST request to get Campaign : {}", id);
         Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
         if (campaignDTO.isPresent()) {
-        	if ((campaignDTO.get().getState() == 1 ) && campaignDTO.get().getExpiredAt().isAfter(ZonedDateTime.now())) {
+        	if ((campaignDTO.get().getState() != null ) && (campaignDTO.get().getState() == 1 ) && campaignDTO.get().getExpiredAt().isAfter(ZonedDateTime.now())) {
         		campaignDTO.get().getStats().put("successStats", smsRepo.statsByCampaignAndState(id, 9));
         		campaignDTO.get().getStats().put("failedStats", smsRepo.statsByCampaignAndState(id,  -9));
         		campaignDTO.get().getStats().put("pendingStats", smsRepo.statsByCampaignAndState(id,  0));
