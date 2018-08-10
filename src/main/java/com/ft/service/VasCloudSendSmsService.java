@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -26,9 +25,9 @@ import com.ft.repository.SmsRepository;
 
 @EnableScheduling
 @Service
-public class SendSmsService {
+public class VasCloudSendSmsService {
 
-    private final Logger log = LoggerFactory.getLogger(SendSmsService.class);
+    private final Logger log = LoggerFactory.getLogger(VasCloudSendSmsService.class);
 
     @Autowired
     SmsRepository smsRepo;
@@ -44,6 +43,7 @@ public class SendSmsService {
 
     /**
      * Deliver SMS Response to customer every 10 seconds
+     * TODO: Using message broker for modern pattern
      * @throws InterruptedException
      */
     @Scheduled(fixedDelay = 60000)
@@ -53,10 +53,13 @@ public class SendSmsService {
     	Pageable pageable = PageRequest.of(0, 1000);
     	for (Campaign cp : cpRepo.findAllPendingCampaign()) {
 //    		log.debug("Found campaign: " + cp + " -- cpid" + cp.getId());
-			List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndStateLessThan(cp.getId(), 1, pageable)
+			List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndStateLessThan(cp.getId(), 2, pageable)
 					.getContent();
 //			log.debug("Found SMS: " + tobeSubmit);
-    		if (tobeSubmit.size() == 0) continue;
+    		if (tobeSubmit.size() == 0) {
+    			cpRepo.save(cp.state(9)); // No more SMS? Mark it as submitted
+    			continue;
+    		}
     		if (cp.getChannel().contains("VASCLOUD")) {
 //    			log.debug("Campaign Channel: " + cp.getChannel());
     			VasCloudSmsSubmitCallable sendSmsTask = applicationContext.getBean(VasCloudSmsSubmitCallable.class);

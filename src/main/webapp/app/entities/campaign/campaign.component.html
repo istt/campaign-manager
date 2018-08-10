@@ -24,11 +24,54 @@
             <th></th>
             </tr>
             </thead>
+            <thead><tr>
+              <th><input class="form-control" type="text" id="field_name" [(ngModel)]="searchModel.name" /></th>
+              <th><input class="form-control" type="text" id="field_channel" [(ngModel)]="searchModel.channel" /></th>
+              <th><select type="number" class="form-control" name="state" id="field_state" [(ngModel)]="searchModel.state">
+                <option *ngFor="let s of campaignService.stateOptions" [value]="s" jhiTranslate="campaignManagerApp.campaign.state_{{s}}"></option>
+              </select></th>
+              <th><input class="form-control" type="text" id="field_shortCode" [(ngModel)]="searchModel.shortCode" /></th>
+              <th><input class="form-control" type="text" id="field_shortMsg" [(ngModel)]="searchModel.shortMsg" /></th>
+              <th><input class="form-control" type="text" id="field_startAt" [(ngModel)]="searchModel.startAt" /></th>
+              <th><input class="form-control" type="text" id="field_expiredAt" [(ngModel)]="searchModel.expiredAt" /></th>
+              <th class="text-right"><div class="btn-group flex-btn-group-container">
+                <button type="button" class="btn btn-sm btn-info" (click)="search()">
+                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" (click)="searchReset()">
+                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
+                </button>
+              </div></th>
+            </tr></thead>
             <tbody>
             <tr *ngFor="let campaign of campaigns ;trackBy: trackId">
                 <td><a [routerLink]="['/campaign', campaign.id, 'view' ]">{{campaign.name}}</a></td>
-                <td>{{campaign.channel}}</td>
-                <td>{{campaign.state}}</td>
+                <td>{{ campaign.channel }}</td>
+                <td>
+                  {{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}
+                  <div class="btn-group flex-btn-group-container">
+                      <button type="submit" (click)="changeState(campaign, 2)"
+                              class="btn btn-success btn-sm">
+                          <fa-icon [icon]="'play-circle'" ></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.play">Play</span>
+                      </button>
+                      <button type="submit" (click)="changeState(campaign, 0)"
+                              class="btn btn-warning btn-sm">
+                          <fa-icon [icon]="'pause-circle'" ></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.pause">Pause</span>
+                      </button>
+                      <button type="submit" (click)="changeState(campaign, -9)"
+                              class="btn btn-danger btn-sm">
+                          <fa-icon [icon]="'stop-circle'" ></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.stop">Stop</span>
+                      </button>
+                      <button type="submit" (click)="changeState(campaign, 1)"
+                              class="btn btn-warning btn-sm">
+                          <fa-icon [icon]="'check-circle'" ></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.approve">Approve</span>
+                      </button>
+                  </div>
+                </td>
                 <td>{{campaign.shortCode}}</td>
                 <td>{{campaign.shortMsg}}</td>
                 <td>{{campaign.startAt | date:'medium'}}</td>
@@ -62,6 +105,7 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>
+                    {{ campaign.channel }}
                 </td>
             </tr>
             </tbody>

@@ -9,6 +9,8 @@ import { Principal } from 'app/core';
 
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { SmsService } from './sms.service';
+// Extra component
+import { DataFileService } from '../data-file';
 
 @Component({
     selector: 'jhi-sms',
@@ -29,9 +31,11 @@ export class SmsComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    searchModel: ISms = {};
 
     constructor(
-        private smsService: SmsService,
+        public dataFileService: DataFileService,
+        public smsService: SmsService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private principal: Principal,
@@ -122,8 +126,8 @@ export class SmsComponent implements OnInit, OnDestroy {
 
     sort() {
         const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
+        if (this.predicate !== 'startAt') {
+            result.push('startAt,desc');
         }
         return result;
     }
@@ -137,5 +141,56 @@ export class SmsComponent implements OnInit, OnDestroy {
 
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    // Extra functions
+    exportData() {
+        this.dataFileService.exportData();
+    }
+
+    saveData() {
+        this.dataFileService
+            .saveData()
+            .subscribe(res => this.jhiAlertService.success('appApp.whitelist.save'), (err: HttpErrorResponse) => this.onError(err.message));
+    }
+
+    searchReset() {
+        this.searchModel = {};
+        this.transition();
+    }
+
+    search() {
+        this.smsService
+            .query(
+                Object.assign(
+                    {
+                        page: this.page - 1,
+                        size: this.itemsPerPage,
+                        sort: this.sort()
+                    },
+                    this.searchModel
+                )
+            )
+            .subscribe(
+                (res: HttpResponse<ISms[]>) => this.paginateSms(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+    // TODO: Create the JPA Model filtering engine
+    // createSearchQuery() {
+    //     const search = {};
+    //     if (this.searchModel.id) { search['id.equals'] = this.searchModel.id; }
+    //     return search;
+    // }
+    // Reload data from file
+    reloadData() {
+        this.dataFileService.reloadData().subscribe(
+            (res: HttpResponse<any>) =>
+                this.eventManager.broadcast({
+                    name: 'whitelistListModification',
+                    content: 'Successfully restore Whitelist from system file'
+                }),
+            (err: HttpErrorResponse) => this.onError(err.message)
+        );
     }
 }

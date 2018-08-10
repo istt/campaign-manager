@@ -34,4 +34,6 @@ QuerydslPredicateExecutor<Sms>, QuerydslBinderCustomizer<QSms> {
 	    .bind(String.class)
 	    .first((StringPath path, String value) -> path.containsIgnoreCase(value));
 	  }
+
+	Page<Sms> findAllByCampaignIdAndState(String id, int i, Pageable pageable);
 }

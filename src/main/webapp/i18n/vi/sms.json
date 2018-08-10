@@ -3,7 +3,7 @@
     "campaignManagerApp": {
         "sms" : {
             "home": {
-                "title": "Sms",
+                "title": "SMS",
                 "createLabel": "Thêm mới một Sms",
                 "createOrEditLabel": "Thêm mới hoặc cập nhật Sms"
             },
@@ -14,21 +14,25 @@
                 "question": "Bạn có chắc là muốn xóa Sms {{ id }}?"
             },
             "detail": {
-                "title": "Sms"
+                "title": "SMS"
             },
-            "source": "Source",
-            "destination": "Destination",
-            "state": "State",
-            "campaignId": "Campaign Id",
-            "cpId": "Cp Id",
-            "spId": "Sp Id",
-            "spSvc": "Sp Svc",
-            "submitAt": "Submit At",
-            "expiredAt": "Expired At",
-            "submitRequestPayload": "Submit Request Payload",
-            "submitResponsePayload": "Submit Response Payload",
-            "deliveredAt": "Delivered At",
-            "deliveryReportPayload": "Delivery Report Payload",
+            "source": "Số Gửi",
+            "destination": "Số Nhận",
+            "state": "Trạng thái",
+            "state_0": "Đang chờ",
+            "state_-9": "Thất bại",
+            "state_8": "Đã gửi",
+            "state_9": "Thành công",
+            "campaignId": "Mã Chiến dịch",
+            "cpId": "Mã CP",
+            "spId": "Mã SP",
+            "spSvc": "Mã Dịch vụ",
+            "submitAt": "Bắt đầu",
+            "expiredAt": "Quá hạn",
+            "submitRequestPayload": "Bản tin gửi đi",
+            "submitResponsePayload": "Kết quả nhận về",
+            "deliveredAt": "Nhận tin lúc",
+            "deliveryReportPayload": "Xác nhận",
             "help": {
                 "source": "Source Address",
                 "destination": "Destination Address",

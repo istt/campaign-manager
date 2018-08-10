@@ -1,6 +1,8 @@
 package com.ft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ft.domain.Campaign;
 import com.ft.repository.SmsRepository;
 import com.ft.security.SecurityUtils;
@@ -24,6 +26,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
@@ -108,9 +112,9 @@ public class CampaignResource {
      */
     @GetMapping("/campaigns")
     @Timed
-    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(Pageable pageable) {
-        log.debug("REST request to get a page of Campaigns");
-        Page<CampaignDTO> page = campaignService.findAll(pageable);
+    public ResponseEntity<List<CampaignDTO>> getAllCampaigns(@QuerydslPredicate(root = Campaign.class) Predicate predicate,  Pageable pageable) {
+        log.debug("REST request to get a page of Campaigns with predicate ", predicate);
+        Page<CampaignDTO> page = (predicate == null) ? campaignService.findAll(pageable) : campaignService.findAll( predicate,pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/campaigns");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -152,37 +156,36 @@ public class CampaignResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
     }
 
+    @Autowired
+    ObjectMapper mapper;
+
     /**
      * GET  /campaigns/:id/import : get the "id" campaign.
      *
      * @param id the id of the campaignDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the campaignDTO, or with status 404 (Not Found)
+     * @throws IOException
+     * @throws JsonProcessingException
      */
-    @PutMapping("/campaigns/{id}/import")
+    @PutMapping("/campaigns/{id}")
     @Timed
-    public ResponseEntity<CampaignDTO> triggerCampaignImport(@PathVariable String id) {
-        log.debug("REST request to get Campaign : {}", id);
-        Optional<CampaignDTO> campaignDTO = campaignService.findOne(id);
-        return ResponseEntity.accepted().body(campaignService.processDatafiles(campaignDTO.get()));
+    public ResponseEntity<CampaignDTO> updateCampaign(@PathVariable String id, @RequestBody Object overrideDTO ) throws JsonProcessingException, IOException {
+        log.debug("REST request to update Campaign : {}", id, overrideDTO);
+        Optional<CampaignDTO> exists = campaignService.findOne(id);
+        if (exists.isPresent()) {
+        	CampaignDTO dto = exists.get();
+        	log.debug("Exists DTO: " + dto);
+        	dto = mapper.readerForUpdating(dto).readValue(mapper.writeValueAsString(overrideDTO));
+        	log.debug("Merging props: " + dto);
+        	CampaignDTO result = campaignService.save(dto);
+        	return ResponseEntity.ok()
+        	           .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dto.getId().toString()))
+        	           .body(result);
+        }
+        return ResponseEntity.notFound().build();
     }
 
 
     @Autowired
     SmsRepository smsRepo;
-
-    /**
-     * GET  /campaigns : get all the campaigns.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of campaigns in body
-     */
-    @GetMapping("/search/campaigns")
-    @Timed
-    public ResponseEntity<List<CampaignDTO>> searchCampaigns(@QuerydslPredicate(root = Campaign.class) Predicate predicate, Pageable pageable) {
-        log.debug("REST request to get a page of Campaigns");
-        Page<CampaignDTO> page = campaignService.findAll(predicate, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/search/campaigns");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
-
 }

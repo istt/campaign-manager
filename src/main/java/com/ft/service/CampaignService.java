@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.ft.domain.Campaign;
@@ -215,6 +216,15 @@ public class CampaignService {
 		log.debug("Request to get all Campaigns with predicate " + predicate);
         return campaignRepository.findAll(predicate, pageable)
             .map(campaignMapper::toDto);
+	}
+
+	@Scheduled(fixedDelay = 60000)
+    public long updateCampaignStates() {
+		long i = 0L;
+		// Update those campaign with state = 0 and expiredAt < now() to be -9
+		i += campaignRepository.setExpiredCampaign();
+		i += campaignRepository.setFinishCampaign();
+		return i;
 	}
 
 }

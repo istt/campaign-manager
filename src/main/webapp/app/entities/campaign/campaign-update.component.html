@@ -44,8 +44,8 @@
 
       <div class="form-group">
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.state" for="field_state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</label>
-          <select type="number" class="form-control" name="state" id="field_state" [(ngModel)]="campaign.state">
-            <option *ngFor="let s of campaignService.stateOptions" [value]="s" jhiTranslate="campaignManagerApp.campaign.stateOptions_{{s}}"></option>
+          <select type="number" class="form-control" name="state" id="field_state" [(ngModel)]="campaign.state" required>
+            <option *ngFor="let s of campaignService.stateOptions" [value]="s" jhiTranslate="campaignManagerApp.campaign.state_{{s}}"></option>
           </select>
       </div>
 

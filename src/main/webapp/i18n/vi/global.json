@@ -6,11 +6,11 @@
             "home": "Trang chủ",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
-                "main": "Thực thể",
-                "campaign": "Campaign",
-                "sms": "Sms",
-                "vasCloudConfiguration": "Vas Cloud Configuration",
-                "dataFile": "Data File",
+                "main": "Tính năng",
+                "campaign": "Chương trình nhắn tin",
+                "sms": "Tra cứu SMS",
+                "vasCloudConfiguration": "Kết nối VAS Cloud",
+                "dataFile": "Tệp dữ liệu",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -100,7 +100,16 @@
             "edit": "Sửa",
             "open": "Mở",
             "save": "Lưu",
-            "view": "Xem"
+            "view": "Xem",
+            "copy": "Copy",
+            "process": "Xử lý",
+            "upload": "Upload",
+            "download": "Download",
+            "search": "Tìm kiếm",
+            "filter": "Lọc",
+            "import": "Nhập",
+            "export": "Xuất",
+            "reset": "Đặt lại"
         },
         "detail": {
             "field": "Trường",

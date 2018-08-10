@@ -110,7 +110,8 @@
             "search": "Search",
             "filter": "Filter",
             "import": "Import",
-            "export": "Export"
+            "export": "Export",
+            "reset": "Reset"
         },
         "detail": {
             "field": "Field",

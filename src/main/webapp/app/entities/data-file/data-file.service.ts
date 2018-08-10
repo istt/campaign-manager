@@ -8,10 +8,14 @@ import { IDataFile } from 'app/shared/model/data-file.model';
 
 type EntityResponseType = HttpResponse<IDataFile>;
 type EntityArrayResponseType = HttpResponse<IDataFile[]>;
+// File Save support
+import { saveAs } from 'file-saver';
 
 @Injectable({ providedIn: 'root' })
 export class DataFileService {
     private resourceUrl = SERVER_API_URL + 'api/data-files';
+    public exportUrl = 'api/data-files/export';
+    public importUrl = 'api/data-files/import';
     // Entity and Entities shared
     public entity: IDataFile;
     public entities: IDataFile[];
@@ -50,5 +54,32 @@ export class DataFileService {
 
     delete(id: string): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+
+    /**
+     * Export data into file
+     */
+    getExportUrl(): string {
+        return SERVER_API_URL + this.exportUrl;
+    }
+    getImportUrl(): string {
+        return SERVER_API_URL + this.importUrl;
+    }
+
+    exportData() {
+        this.http
+            .get(this.getExportUrl(), { responseType: 'text' })
+            .subscribe(res =>
+                saveAs(new Blob([res], { type: 'text;charset=utf-8' }), 'whitelist.' + new Date().toISOString().substr(0, 10) + '.url')
+            );
+    }
+
+    saveData() {
+        return this.http.post(this.getExportUrl(), { observe: 'response' });
+    }
+
+    // Send a PUT request to import endpoint to reload data from static file.
+    reloadData() {
+        return this.http.put<IDataFile>(this.getImportUrl(), null, { observe: 'response' });
     }
 }

@@ -48,7 +48,11 @@ import {
     faCopy,
     faUpload,
     faDownload,
-    faCommentDots
+    faCommentDots,
+    faPlayCircle,
+    faStopCircle,
+    faPauseCircle,
+    faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
@@ -95,5 +99,9 @@ library.add(faCopy);
 library.add(faUpload);
 library.add(faDownload);
 library.add(faCommentDots);
+library.add(faPlayCircle);
+library.add(faStopCircle);
+library.add(faPauseCircle);
+library.add(faCheckCircle);
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

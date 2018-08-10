@@ -14,7 +14,6 @@
         <table class="table table-striped">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="source"><span jhiTranslate="campaignManagerApp.sms.source">Source</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="destination"><span jhiTranslate="campaignManagerApp.sms.destination">Destination</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="state"><span jhiTranslate="campaignManagerApp.sms.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
@@ -23,12 +22,26 @@
             <th></th>
             </tr>
             </thead>
+            <thead><tr>
+              <th><input class="form-control" type="text" id="field_source" [(ngModel)]="searchModel.source" /></th>
+              <th><input class="form-control" type="text" id="field_destination" [(ngModel)]="searchModel.destination" /></th>
+              <th><input class="form-control" type="text" id="field_state" [(ngModel)]="searchModel.state" /></th>
+              <th><input class="form-control" type="text" id="field_submitAt" [(ngModel)]="searchModel.submitAt" /></th>
+              <th><input class="form-control" type="text" id="field_shortMsg" [(ngModel)]="searchModel.shortMsg" /></th>
+              <th class="text-right"><div class="btn-group flex-btn-group-container">
+                <button type="button" class="btn btn-sm btn-info" (click)="search()">
+                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
+                </button>
+                <button type="button" class="btn btn-sm btn-default" (click)="searchReset()">
+                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
+                </button>
+              </div></th>
+            </tr></thead>
             <tbody>
             <tr *ngFor="let sms of sms ;trackBy: trackId">
-                <td><a [routerLink]="['/sms', sms.id, 'view' ]">{{sms.id}}</a></td>
                 <td>{{sms.source}}</td>
-                <td>{{sms.destination}}</td>
-                <td>{{sms.state}}</td>
+                <td><a [routerLink]="['/sms', sms.id, 'view' ]">{{sms.destination}}</a></td>
+                <td>{{ 'campaignManagerApp.sms.state_' + sms.state | translate }}</td>
                 <td>{{sms.submitAt | date:'medium'}}</td>
                 <td>{{sms.shortMsg}}</td>
                 <td class="text-right">

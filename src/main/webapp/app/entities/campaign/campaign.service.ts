@@ -50,6 +50,13 @@ export class CampaignService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
+    /* Toggle update */
+    changeState(id, state): Observable<EntityResponseType> {
+        return this.http
+            .put<ICampaign>(`${this.resourceUrl}/${id}`, { state }, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
+    }
+
     private convertDateFromClient(campaign: ICampaign): ICampaign {
         const copy: ICampaign = Object.assign({}, campaign, {
             createdAt: campaign.createdAt != null && campaign.createdAt.isValid() ? campaign.createdAt.toJSON() : null,

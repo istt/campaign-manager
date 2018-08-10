@@ -15,5 +15,9 @@ public interface CampaignCustomRepository {
 
 	long setExpiredCampaign();
 
+	long setFinishCampaign();
+
+	long setRunningCampaign();
+
 
 }

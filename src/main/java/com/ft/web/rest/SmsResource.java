@@ -1,6 +1,8 @@
 package com.ft.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ft.domain.Sms;
 import com.ft.service.SmsService;
 import com.ft.web.rest.errors.BadRequestAlertException;
@@ -11,6 +13,7 @@ import com.ft.service.dto.SmsDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
@@ -19,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -84,6 +88,38 @@ public class SmsResource {
             .body(result);
     }
 
+    @Autowired
+    ObjectMapper mapper;
+
+    /**
+     * PUT  /sms : Updates an existing sms.
+     *
+     * @param smsDTO the smsDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated smsDTO,
+     * or with status 400 (Bad Request) if the smsDTO is not valid,
+     * or with status 500 (Internal Server Error) if the smsDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws IOException
+     * @throws JsonProcessingException
+     */
+    @PutMapping("/sms/{id}")
+    @Timed
+    public ResponseEntity<SmsDTO> updateSms(@PathVariable String id, @RequestBody SmsDTO smsDTO) throws URISyntaxException, JsonProcessingException, IOException {
+        log.debug("REST request to update Sms : {}", smsDTO);
+        Optional<SmsDTO> exists = smsService.findOne(id);
+        if (exists.isPresent()) {
+        	SmsDTO dto = exists.get();
+        	log.debug("Exists DTO: " + dto);
+        	dto = mapper.readerForUpdating(dto).readValue(mapper.writeValueAsString(smsDTO));
+        	log.debug("Merging props: " + dto);
+        	SmsDTO result = smsService.save(dto);
+        	return ResponseEntity.ok()
+        	           .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dto.getId().toString()))
+        	           .body(result);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     /**
      * GET  /sms : get all the sms.
      *
@@ -92,9 +128,9 @@ public class SmsResource {
      */
     @GetMapping("/sms")
     @Timed
-    public ResponseEntity<List<SmsDTO>> getAllSms(Pageable pageable) {
-        log.debug("REST request to get a page of Sms");
-        Page<SmsDTO> page = smsService.findAll(pageable);
+    public ResponseEntity<List<SmsDTO>> getAllSms(@QuerydslPredicate(root = Sms.class) Predicate predicate, Pageable pageable) {
+        log.debug("REST request to get a page of Sms with predicate " + predicate);
+        Page<SmsDTO> page = (predicate == null) ? smsService.findAll(pageable) : smsService.findAll(predicate, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/sms");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -125,20 +161,5 @@ public class SmsResource {
         log.debug("REST request to delete Sms : {}", id);
         smsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
-    }
-
-    /**
-     * GET  /campaigns : get all the campaigns.
-     *
-     * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of campaigns in body
-     */
-    @GetMapping("/search/sms")
-    @Timed
-    public ResponseEntity<List<SmsDTO>> searchSms(@QuerydslPredicate(root = Sms.class) Predicate predicate, Pageable pageable) {
-        log.debug("REST request to get a page of Campaigns");
-        Page<SmsDTO> page = smsService.findAll(predicate, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/search/sms");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 }

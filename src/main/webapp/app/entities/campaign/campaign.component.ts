@@ -29,9 +29,10 @@ export class CampaignComponent implements OnInit, OnDestroy {
     predicate: any;
     previousPage: any;
     reverse: any;
+    searchModel: ICampaign = {};
 
     constructor(
-        private campaignService: CampaignService,
+        public campaignService: CampaignService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
         private principal: Principal,
@@ -122,8 +123,8 @@ export class CampaignComponent implements OnInit, OnDestroy {
 
     sort() {
         const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'id') {
-            result.push('id');
+        if (this.predicate !== 'startAt') {
+            result.push('startAt,desc');
         }
         return result;
     }
@@ -137,5 +138,38 @@ export class CampaignComponent implements OnInit, OnDestroy {
 
     private onError(errorMessage: string) {
         this.jhiAlertService.error(errorMessage, null, null);
+    }
+
+    // Extra functions
+    searchReset() {
+        this.searchModel = {};
+        this.transition();
+    }
+
+    search() {
+        this.campaignService
+            .query(
+                Object.assign(
+                    {
+                        page: this.page - 1,
+                        size: this.itemsPerPage,
+                        sort: this.sort()
+                    },
+                    this.searchModel
+                )
+            )
+            .subscribe(
+                (res: HttpResponse<ICampaign[]>) => this.paginateCampaigns(res.body, res.headers),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    changeState(cp, state) {
+        this.campaignService
+            .changeState(cp.id, state)
+            .subscribe(
+                (res: HttpResponse<ICampaign>) => Object.assign(cp, res.body),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
     }
 }

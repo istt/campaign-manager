@@ -23,10 +23,11 @@
             "externalId": "External Id",
             "channel": "Channel",
             "state": "State",
-            "stateOptions_-9": "Expired",
-            "stateOptions_9": "Finished",
-            "stateOptions_0": "On Hold",
-            "stateOptions_1": "Approved",
+            "state_-9": "Expired",
+            "state_9": "Finished",
+            "state_0": "On Hold",
+            "state_1": "Approved",
+            "state_2": "In Progress",
             "shortCode": "Short Code",
             "callbackUrl": "Callback Url",
             "createdBy": "Created By",
@@ -110,6 +111,12 @@
                 "msgQuota": "Total messages allow to broadcast",
                 "subQuota": "Total messages per subscriber allow to broadcast",
                 "rateLimit": "SMS or USSD message broadcast per second"
+            },
+            "action": {
+              "play": "Play",
+              "pause": "Pause",
+              "stop": "Stop",
+              "approve": "Approve"
             }
         }
     }
