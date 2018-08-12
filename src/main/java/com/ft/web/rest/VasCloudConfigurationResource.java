@@ -5,6 +5,7 @@ import com.ft.config.ApplicationProperties;
 import com.ft.service.VasCloudConfigurationService;
 import com.ft.web.rest.errors.BadRequestAlertException;
 import com.ft.web.rest.util.HeaderUtil;
+import com.ft.service.dto.DataFileDTO;
 import com.ft.service.dto.VasCloudConfigurationDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -120,5 +121,20 @@ public class VasCloudConfigurationResource {
         log.debug("REST request to delete VasCloudConfiguration : {}", id);
         vasCloudConfigurationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+    }
+
+    /**
+     * PUT  /vas-cloud-configurations : Updates an existing vasCloudConfiguration.
+     *
+     * @param vasCloudConfigurationDTO the vasCloudConfigurationDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated vasCloudConfigurationDTO,
+     * or with status 400 (Bad Request) if the vasCloudConfigurationDTO is not valid,
+     * or with status 500 (Internal Server Error) if the vasCloudConfigurationDTO couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/import/vas-cloud-configurations")
+    @Timed
+    public ResponseEntity<List<VasCloudConfigurationDTO>> importVasCloudConfiguration(@RequestBody DataFileDTO dataFile) throws URISyntaxException {
+    	return ResponseEntity.ok().body(vasCloudConfigurationService.importData(dataFile));
     }
 }

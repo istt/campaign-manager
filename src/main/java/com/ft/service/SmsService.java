@@ -13,7 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 /**
  * Service Implementation for managing Sms.
@@ -84,5 +85,9 @@ public class SmsService {
 		log.debug("Request to get all Sms with predicate " + predicate);
         return smsRepository.findAll(predicate, pageable)
             .map(smsMapper::toDto);
+	}
+
+	public List<Object> stats(SmsDTO predicate) {
+		return smsRepository.stats(predicate);
 	}
 }

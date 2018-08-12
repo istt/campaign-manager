@@ -4,6 +4,8 @@ import com.ft.domain.Campaign;
 import com.ft.domain.QCampaign;
 import com.querydsl.core.types.dsl.StringPath;
 
+import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -13,7 +15,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Spring Data MongoDB repository for the Campaign entity.
  */
-@SuppressWarnings("unused")
 @Repository
 public interface CampaignRepository extends MongoRepository<Campaign, String>,
 	CampaignCustomRepository,
@@ -28,4 +29,6 @@ public interface CampaignRepository extends MongoRepository<Campaign, String>,
 	    bindings.excluding(root.cfg);
 	    bindings.excluding(root.stats);
 	  }
+
+	public List<Campaign> findAllByState(int campaignState);
 }

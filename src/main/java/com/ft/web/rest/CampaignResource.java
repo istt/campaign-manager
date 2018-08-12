@@ -12,6 +12,8 @@ import com.ft.web.rest.util.HeaderUtil;
 import com.ft.web.rest.util.PaginationUtil;
 import com.querydsl.core.types.Predicate;
 import com.ft.service.dto.CampaignDTO;
+import com.ft.service.util.InflectorUtil;
+
 import io.github.jhipster.web.util.ResponseUtil;
 
 import org.slf4j.Logger;
@@ -67,6 +69,11 @@ public class CampaignResource {
         }
         campaignDTO.setCreatedAt(ZonedDateTime.now());
         campaignDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin().get());
+        if (campaignDTO.getState() == 1) {
+        	campaignDTO.setApprovedAt(ZonedDateTime.now());
+            campaignDTO.setApprovedBy(SecurityUtils.getCurrentUserLogin().get());
+        }
+        campaignDTO.setShortMsg(InflectorUtil.transliterate(campaignDTO.getShortMsg()));
 
         CampaignDTO result = campaignService.save(campaignDTO);
         // Process file uploading if need
@@ -94,6 +101,11 @@ public class CampaignResource {
         if (campaignDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        if (campaignDTO.getState() == 1) {
+        	campaignDTO.setApprovedAt(ZonedDateTime.now());
+            campaignDTO.setApprovedBy(SecurityUtils.getCurrentUserLogin().get());
+        }
+        campaignDTO.setShortMsg(InflectorUtil.transliterate(campaignDTO.getShortMsg()));
         CampaignDTO result = campaignService.save(campaignDTO);
      // Process file uploading if need
         if (campaignDTO.getDatafiles() != null) {
@@ -175,9 +187,14 @@ public class CampaignResource {
         if (exists.isPresent()) {
         	CampaignDTO dto = exists.get();
         	log.debug("Exists DTO: " + dto);
-        	dto = mapper.readerForUpdating(dto).readValue(mapper.writeValueAsString(overrideDTO));
+        	CampaignDTO campaignDTO = mapper.readerForUpdating(dto).readValue(mapper.writeValueAsString(overrideDTO));
         	log.debug("Merging props: " + dto);
-        	CampaignDTO result = campaignService.save(dto);
+        	if ((campaignDTO.getState() != dto.getState()) && (campaignDTO.getState() == 1)) {
+            	campaignDTO.setApprovedAt(ZonedDateTime.now());
+                campaignDTO.setApprovedBy(SecurityUtils.getCurrentUserLogin().get());
+            }
+            campaignDTO.setShortMsg(InflectorUtil.transliterate(campaignDTO.getShortMsg()));
+        	CampaignDTO result = campaignService.save(campaignDTO);
         	return ResponseEntity.ok()
         	           .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dto.getId().toString()))
         	           .body(result);

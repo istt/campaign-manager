@@ -3,6 +3,7 @@ package com.ft.domain;
 import io.swagger.annotations.ApiModelProperty;
 
 import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Indexed;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -37,6 +38,7 @@ public class Campaign implements Serializable {
     @NotNull
     @ApiModelProperty(value = "The name of the campaign", required = true)
     @Field("name")
+    @Indexed
     private String name;
 
     @Field("description")
@@ -49,6 +51,7 @@ public class Campaign implements Serializable {
     @Size(max = 80)
     @ApiModelProperty(value = "The code used to identify this campaign on report or CDR", required = true)
     @Field("code")
+    @Indexed
     private String code;
 
     /**
@@ -69,6 +72,7 @@ public class Campaign implements Serializable {
     /**
      * state code, 0 = Pending for Approval, 1 = Approved, 9 = Success, -9 = Expired
      */
+    @NotNull
     @ApiModelProperty(value = "state code, 0 = Pending for Approval, 1 = Approved, 9 = Success, -9 = Expired")
     @Field("state")
     private Integer state;
@@ -121,9 +125,11 @@ public class Campaign implements Serializable {
      */
     @ApiModelProperty(value = "Sending time window")
     @Field("start_at")
+    @Indexed
     private ZonedDateTime startAt;
 
     @Field("expired_at")
+    @Indexed
     private ZonedDateTime expiredAt;
 
     @Field("working_hours")

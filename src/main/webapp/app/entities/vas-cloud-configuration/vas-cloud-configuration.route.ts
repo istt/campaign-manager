@@ -47,7 +47,7 @@ export const vasCloudConfigurationRoute: Routes = [
         path: 'vas-cloud-configuration',
         component: VasCloudConfigurationComponent,
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -59,7 +59,7 @@ export const vasCloudConfigurationRoute: Routes = [
             vasCloudConfiguration: VasCloudConfigurationResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -71,7 +71,7 @@ export const vasCloudConfigurationRoute: Routes = [
             vasCloudConfiguration: VasCloudConfigurationResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -83,7 +83,7 @@ export const vasCloudConfigurationRoute: Routes = [
             vasCloudConfiguration: VasCloudConfigurationResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.copy'
         },
         canActivate: [UserRouteAccessService]
@@ -95,7 +95,7 @@ export const vasCloudConfigurationRoute: Routes = [
             vasCloudConfiguration: VasCloudConfigurationResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.title'
         },
         canActivate: [UserRouteAccessService]
@@ -110,7 +110,7 @@ export const vasCloudConfigurationPopupRoute: Routes = [
             vasCloudConfiguration: VasCloudConfigurationResolve
         },
         data: {
-            authorities: ['ROLE_USER'],
+            authorities: ['ROLE_ADMIN'],
             pageTitle: 'campaignManagerApp.vasCloudConfiguration.home.title'
         },
         canActivate: [UserRouteAccessService],

@@ -1,11 +1,9 @@
 package com.ft.repository.impl;
 
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +18,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ft.domain.Sms;
 import com.ft.repository.SmsCustomRepository;
-import com.mongodb.WriteResult;
+import com.ft.service.dto.SmsDTO;
 import com.mongodb.client.result.UpdateResult;
 
 public class SmsRepositoryImpl implements SmsCustomRepository {
@@ -101,5 +98,34 @@ public class SmsRepositoryImpl implements SmsCustomRepository {
 		AggregationResults<Object> result = mongoTemplate.aggregate(agg, Sms.class, Object.class);
 		return result.getMappedResults();
 	}
+
+	@Override
+	public List<Object> stats(SmsDTO searchModel) {
+		Aggregation agg = Aggregation.newAggregation(
+				Aggregation.match( createCriteria(searchModel) ),
+				Aggregation.project()
+                .andExpression("dateToString('%Y-%m-%d', submitAt)").as("date"),
+                Aggregation.group("date").count().as("cnt")
+                );
+		AggregationResults<Object> result = mongoTemplate.aggregate(agg, Sms.class, Object.class);
+		return result.getMappedResults();
+	}
+
+	protected Criteria createCriteria(SmsDTO searchModel) {
+		List<Criteria> criteria = new ArrayList<Criteria>();
+		if (searchModel.getCampaignId() != null) criteria.add(Criteria.where("campaignId").is(searchModel.getCampaignId()));
+		if (searchModel.getSource() != null) criteria.add(Criteria.where("source").is(searchModel.getSource()));
+		if (searchModel.getDestination() != null) criteria.add(Criteria.where("destination").is(searchModel.getDestination()));
+		if (searchModel.getState() != null) criteria.add(Criteria.where("state").is(searchModel.getState()));
+		if (searchModel.getCpId() != null) criteria.add(Criteria.where("cpId").is(searchModel.getCpId()));
+		if (searchModel.getSpId() != null) criteria.add(Criteria.where("spId").is(searchModel.getSpId()));
+		if (searchModel.getSubmitAt() != null) criteria.add(Criteria.where("submitAt").gte(searchModel.getSubmitAt()));
+		if (searchModel.getExpiredAt() != null) criteria.add(Criteria.where("submitAt").lte(searchModel.getExpiredAt()));
+
+		return (criteria.size() > 0) ? new Criteria().andOperator(criteria.toArray(new Criteria[criteria.size()])) : new Criteria();
+
+	}
+
+
 
 }

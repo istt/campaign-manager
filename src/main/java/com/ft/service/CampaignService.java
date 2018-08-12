@@ -5,7 +5,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
@@ -120,12 +122,12 @@ public class CampaignService {
     public long processDatafiles(CampaignDTO cp, DataFile dataFile) {
     	long result = 0L;
     	if (dataFile.getDataContentType().contains("text")) {
+    		Map<String, String> valueMap = new HashMap<String, String> ();
     		if (dataFile.getDataCsvHeaders().isEmpty() || (dataFile.getDataCsvHeaders().size() == 1)) {
     			Matcher m = patt.matcher(new String(dataFile.getData()));
                 while (m.find()) {
                         String msisdn = msisdnFormat(m.group());
                         result++;
-                        Properties valueMap = new Properties();
                         valueMap.put("msisdn", msisdn);
 //                        log.debug("Properties: " + valueMap);
     					smsRepo.save(
@@ -133,7 +135,7 @@ public class CampaignService {
                         		.source(cp.getShortCode())
                         		.destination(msisdn)
                         		// FIXME: Provide available template engines
-                        		.shortMsg(StringSubstitutor.replace(cp.getShortMsg(), valueMap))
+                        		.shortMsg(StringSubstitutor.replace(cp.getShortMsg(), valueMap, "{{", "}}"))
                         		// Campaign related info
                         		.campaignId(cp.getId())
                         		.submitAt(cp.getStartAt())
@@ -151,7 +153,6 @@ public class CampaignService {
     			try {
 					while ((line = reader.readLine()) != null) {
 						result++;
-						Properties valueMap = new Properties();
 						String[] fields = line.split("[;,|]");
 //						log.debug("Fields size: " + fields.length);
 						int i = 0;
@@ -166,9 +167,9 @@ public class CampaignService {
 						smsRepo.save(
                         		new Sms()
                         		.source(cp.getShortCode())
-                        		.destination(msisdnFormat(valueMap.getProperty("msisdn")))
+                        		.destination(msisdnFormat(valueMap.get("msisdn")))
                         		// FIXME: Provide available template engines
-                        		.shortMsg(StringSubstitutor.replace(cp.getShortMsg(), valueMap))
+                        		.shortMsg(StringSubstitutor.replace(cp.getShortMsg(), valueMap, "{{", "}}"))
                         		// Campaign related info
                         		.campaignId(cp.getId())
                         		.submitAt(cp.getStartAt())
@@ -181,8 +182,7 @@ public class CampaignService {
                         );
 					}
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.error("Cannot process input", e);
 				}
 
     		}

@@ -10,6 +10,9 @@ import { Principal } from 'app/core';
 import { ITEMS_PER_PAGE } from 'app/shared';
 import { CampaignService } from './campaign.service';
 
+import { IVasCloudConfiguration } from 'app/shared/model/vas-cloud-configuration.model';
+import { VasCloudConfigurationService } from '../vas-cloud-configuration';
+
 @Component({
     selector: 'jhi-campaign',
     templateUrl: './campaign.component.html'
@@ -32,6 +35,7 @@ export class CampaignComponent implements OnInit, OnDestroy {
     searchModel: ICampaign = {};
 
     constructor(
+        public vasCloudSvc: VasCloudConfigurationService,
         public campaignService: CampaignService,
         private parseLinks: JhiParseLinks,
         private jhiAlertService: JhiAlertService,
@@ -95,6 +99,7 @@ export class CampaignComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loadAll();
+        this.vasCloudSvc.query().subscribe(res => (this.vasCloudSvc.entities = res.body));
         this.principal.identity().then(account => {
             this.currentAccount = account;
         });
@@ -171,5 +176,10 @@ export class CampaignComponent implements OnInit, OnDestroy {
                 (res: HttpResponse<ICampaign>) => Object.assign(cp, res.body),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
+
+    setVasCloudCfg(value) {
+        this.searchModel.channel = value;
+        this.search();
     }
 }

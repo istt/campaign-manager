@@ -51,7 +51,7 @@ public class VasCloudSendSmsService {
     	int threads = 0;
     	CompletionService<Long> completionService = new ExecutorCompletionService<Long>(taskExecutor);
     	Pageable pageable = PageRequest.of(0, 1000);
-    	for (Campaign cp : cpRepo.findAllPendingCampaign()) {
+    	for (Campaign cp : cpRepo.findAllByState(2)) {
 //    		log.debug("Found campaign: " + cp + " -- cpid" + cp.getId());
 			List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndStateLessThan(cp.getId(), 2, pageable)
 					.getContent();

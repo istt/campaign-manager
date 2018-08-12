@@ -1,12 +1,21 @@
 <div>
+  <div class="form-inline float-right"><div class="input-group btn-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><fa-icon [icon]="'cogs'"></fa-icon></span>
+    </div>
+    <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)" >
+      <option [value]="undefined">--- {{ 'campaignManagerApp.campaign.cfg' | translate }} ---</option>
+      <option *ngFor="let i of vasCloudSvc.entities" [value]="i.serviceCode">{{i.serviceCode}} / {{i.packageCode}}</option>
+    </select>
+    <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-campaign" [routerLink]="['/campaign/new']">
+        <fa-icon [icon]="'plus'"></fa-icon>
+        <span  jhiTranslate="campaignManagerApp.campaign.home.createLabel">
+        Create new Campaign
+        </span>
+    </button>
+  </div></div>
     <h2 id="page-heading">
         <span jhiTranslate="campaignManagerApp.campaign.home.title">Campaigns</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-campaign" [routerLink]="['/campaign/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="campaignManagerApp.campaign.home.createLabel">
-            Create new Campaign
-            </span>
-        </button>
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
@@ -15,41 +24,73 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="name"><span jhiTranslate="campaignManagerApp.campaign.name">Name</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="channel"><span jhiTranslate="campaignManagerApp.campaign.channel">Channel</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="state"><span jhiTranslate="campaignManagerApp.campaign.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="shortCode"><span jhiTranslate="campaignManagerApp.campaign.shortCode">Short Code</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th jhiSortBy="shortMsg"><span jhiTranslate="campaignManagerApp.campaign.shortMsg">Short Msg</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="startAt"><span jhiTranslate="campaignManagerApp.campaign.startAt">Start At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="expiredAt"><span jhiTranslate="campaignManagerApp.campaign.expiredAt">Expired At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
+            <th jhiSortBy="startAt"><span jhiTranslate="campaignManagerApp.campaign.startAt">Start At</span> - <span jhiTranslate="campaignManagerApp.campaign.expiredAt">Expired At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th> </th>
             </tr>
             </thead>
             <thead><tr>
-              <th><input class="form-control" type="text" id="field_name" [(ngModel)]="searchModel.name" /></th>
-              <th><input class="form-control" type="text" id="field_channel" [(ngModel)]="searchModel.channel" /></th>
-              <th><select type="number" class="form-control" name="state" id="field_state" [(ngModel)]="searchModel.state">
+              <th><input class="form-control" type="text" id="field_name" [(ngModel)]="searchModel.name" />
+                <select type="number" class="form-control" name="state" id="field_state" [(ngModel)]="searchModel.state" style="display: none;">
                 <option *ngFor="let s of campaignService.stateOptions" [value]="s" jhiTranslate="campaignManagerApp.campaign.state_{{s}}"></option>
               </select></th>
-              <th><input class="form-control" type="text" id="field_shortCode" [(ngModel)]="searchModel.shortCode" /></th>
               <th><input class="form-control" type="text" id="field_shortMsg" [(ngModel)]="searchModel.shortMsg" /></th>
-              <th><input class="form-control" type="text" id="field_startAt" [(ngModel)]="searchModel.startAt" /></th>
-              <th><input class="form-control" type="text" id="field_expiredAt" [(ngModel)]="searchModel.expiredAt" /></th>
+              <th class="input-group"><input class="form-control" type="datetime-local" id="field_startAt" [(ngModel)]="searchModel.startAt" /> <input class="form-control" type="datetime-local" id="field_expiredAt" [(ngModel)]="searchModel.expiredAt" /></th>
               <th class="text-right"><div class="btn-group flex-btn-group-container">
-                <button type="button" class="btn btn-sm btn-info" (click)="search()">
+                <button type="button" class="btn btn-info" (click)="search()">
                   <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
                 </button>
-                <button type="button" class="btn btn-sm btn-default" (click)="searchReset()">
+                <button type="button" class="btn btn-default" (click)="searchReset()">
                   <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
                 </button>
               </div></th>
             </tr></thead>
             <tbody>
             <tr *ngFor="let campaign of campaigns ;trackBy: trackId">
-                <td><a [routerLink]="['/campaign', campaign.id, 'view' ]">{{campaign.name}}</a></td>
-                <td>{{ campaign.channel }}</td>
                 <td>
-                  {{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}
-                  <div class="btn-group flex-btn-group-container">
+                  <p>
+                    <a [routerLink]="['/campaign', campaign.id, 'view' ]" [ngbTooltip]="campaign.channel">{{campaign.name}}</a>
+                    <code>{{ campaign.shortCode }}</code>
+                  </p>
+                </td>
+                <td>{{campaign.shortMsg}}</td>
+                <td class="text-center">
+                  <p>
+                    <span class="badge float-right badge-{{ 'campaignManagerApp.campaign.stateClass_' + campaign.state | translate}}">{{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}</span>
+                    {{campaign.startAt | date:'short'}} - {{campaign.expiredAt | date:'short'}}
+                  </p>
+                  <p *ngIf="campaign.stats.submitCnt && campaign.stats.msgCnt"><ngb-progressbar showValue="true" type="info" [value]="campaign.stats.submitCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
+                </td>
+                <td class="text-right">
+                  <div class="btn-group my-1">
+                      <button type="submit"
+                              [routerLink]="['/campaign', campaign.id, 'view' ]"
+                              class="btn btn-info btn-sm">
+                          <fa-icon [icon]="'eye'"></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                      </button>
+                      <button type="submit"
+                              [routerLink]="['/campaign', campaign.id, 'edit']"
+                              class="btn btn-primary btn-sm">
+                          <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                      </button>
+                      <button type="submit"
+                              [routerLink]="['/campaign', campaign.id, 'copy']"
+                              class="btn btn-success btn-sm">
+                          <fa-icon [icon]="'copy'"></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="entity.action.copy">Copy</span>
+                      </button>
+                      <button type="submit"
+                              [routerLink]="['/', { outlets: { popup: 'campaign/'+ campaign.id + '/delete'} }]"
+                              replaceUrl="true"
+                              queryParamsHandling="merge"
+                              class="btn btn-danger btn-sm">
+                          <fa-icon [icon]="'times'"></fa-icon>
+                          <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                      </button>
+                  </div>
+                  <div class="btn-group  my-1">
                       <button type="submit" (click)="changeState(campaign, 2)"
                               class="btn btn-success btn-sm">
                           <fa-icon [icon]="'play-circle'" ></fa-icon>
@@ -71,41 +112,7 @@
                           <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.approve">Approve</span>
                       </button>
                   </div>
-                </td>
-                <td>{{campaign.shortCode}}</td>
-                <td>{{campaign.shortMsg}}</td>
-                <td>{{campaign.startAt | date:'medium'}}</td>
-                <td>{{campaign.expiredAt | date:'medium'}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['/campaign', campaign.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/campaign', campaign.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/campaign', campaign.id, 'copy']"
-                                class="btn btn-success btn-sm">
-                            <fa-icon [icon]="'copy'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.copy">Copy</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'campaign/'+ campaign.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                    {{ campaign.channel }}
+
                 </td>
             </tr>
             </tbody>

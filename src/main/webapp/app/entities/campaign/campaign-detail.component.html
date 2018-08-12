@@ -1,21 +1,9 @@
-<div class="pull-right">
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
 
-    <button type="button"
-            [routerLink]="['/campaign', campaign.id, 'edit']"
-            class="btn btn-primary">
-        <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
-</div>
-<h2><span jhiTranslate="campaignManagerApp.campaign.detail.title">Campaign</span> {{campaign.id}}</h2>
-<hr>
 <jhi-alert-error></jhi-alert-error>
 <div class="row justify-content-center">
-    <div class="col-6"  *ngIf="campaign">
+    <div class="col-md-5"  *ngIf="campaign">
+      <h2><small jhiTranslate="campaignManagerApp.campaign.detail.title">Campaign</small> {{campaign.name}}</h2>
+      <hr>
       <ngb-tabset>
         <ngb-tab>
           <ng-template ngbTabTitle>
@@ -32,15 +20,42 @@
                   <dd><span>{{ campaign.code }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.state"  [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</span></dt>
                   <dd><span>{{ campaign.state }}</span></dd>
+                  <dt><span jhiTranslate="campaignManagerApp.campaign.startAt"  [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</span></dt>
+                    <dd><span>{{ campaign.startAt }}</span></dd>
+                  <dt><span jhiTranslate="campaignManagerApp.campaign.expiredAt" >Expired At</span></dt>
+                    <dd><span>{{ campaign.expiredAt }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.cfg"  [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</span></dt>
                   <dd>{{ campaign.cfg }}</span></dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.channel"  [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</span></dt>
-                  <dd><span>{{ campaign.channel }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.shortMsg"  [ngbTooltip]="'campaignManagerApp.campaign.help.shortMsg' | translate">Short Msg</span></dt>
                   <dd><span>{{ campaign.shortMsg }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.rateLimit"  [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</span></dt>
                   <dd><span>{{ campaign.rateLimit }}</span></dd>
             </dl>
+            <div class="table-responsive" *ngIf="campaign.datafiles">
+                <table class="table table-striped">
+                  <caption jhiTranslate="campaignManagerApp.campaign.dataFiles"></caption>
+                    <thead>
+                    <tr>
+                    <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+                    <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+                    <th><span jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</span></th>
+                    <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let dataFile of campaign.datafiles">
+                        <td>{{dataFile.name}}</td>
+                        <td>{{dataFile.tags}}</td>
+                        <td>{{dataFile.dataCsvHeaders}}</td>
+                        <td *ngIf="dataFileService.checked[dataFile.id]">
+                            <input type="checkbox" name="dataFile_checked_{{dataFile.id}}" id="dataFile_checked_{{dataFile.id}}"
+                              class="form-check" [(ngModel)]="dataFileService.checked[dataFile.id].checked"
+                              />
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
           </div></div></ng-template>
         </ngb-tab>
@@ -54,10 +69,8 @@
             <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.schedule' | translate }}</div>
             <div class="card-body">
               <dl>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.startAt"  [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</span></dt>
-                  <dd><span>{{ campaign.startAt }}</span></dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.expiredAt" >Expired At</span></dt>
-                  <dd><span>{{ campaign.expiredAt }}</span></dd>
+                <dt><span jhiTranslate="campaignManagerApp.campaign.channel"  [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</span></dt>
+                  <dd><span>{{ campaign.channel }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.workingHours" >Working Hours</span></dt>
                   <dd><span>{{ campaign.workingHours }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.workingWeekdays" >Working Weekdays</span></dt>
@@ -77,31 +90,7 @@
           <ng-template ngbTabContent><div class="card mt-3 mb-3">
             <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.dataSource' | translate }}</div>
             <div class="card-body">
-              <div class="table-responsive" *ngIf="campaign.datafiles">
-                  <table class="table table-striped">
-                    <caption jhiTranslate="campaignManagerApp.campaign.dataFiles"></caption>
-                      <thead>
-                      <tr>
-                      <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                      <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                      <th><span jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</span></th>
-                      <th></th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr *ngFor="let dataFile of campaign.datafiles">
-                          <td>{{dataFile.name}}</td>
-                          <td>{{dataFile.tags}}</td>
-                          <td>{{dataFile.dataCsvHeaders}}</td>
-                          <td *ngIf="dataFileService.checked[dataFile.id]">
-                              <input type="checkbox" name="dataFile_checked_{{dataFile.id}}" id="dataFile_checked_{{dataFile.id}}"
-                                class="form-check" [(ngModel)]="dataFileService.checked[dataFile.id].checked"
-                                />
-                          </td>
-                      </tr>
-                      </tbody>
-                  </table>
-              </div>
+
               <!-- Pager is not implemented yet, so this is normal pagination instead -->
               <div *ngIf="dataFileService.entities && dataFileService.entities.length">
                   <div class="row justify-content-center">
@@ -118,404 +107,154 @@
 
     </div>
 
-    <div class="col-6">
+    <div class="col-md-7">
 
-      <div class="card mt-3 mb-3">
-        <div class="card-header" jhiTranslate="campaignManagerApp.campaign.cfg"></div>
-        <div class="card-body">
-          <pre><code>{{ campaign.cfg | json }}</code></pre>
-        </div>
+      <div>
+          <h3 class="text-right">
+              <span jhiTranslate="campaignManagerApp.sms.home.title">Sms</span>
+          </h3>
+          <jhi-alert></jhi-alert>
+          <div class="table-responsive mt-4" *ngIf="sms">
+              <table class="table table-striped table-bordered">
+                  <thead>
+                  <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+                  <th jhiSortBy="source"><span jhiTranslate="campaignManagerApp.sms.source">Source</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                  <th jhiSortBy="destination"><span jhiTranslate="campaignManagerApp.sms.destination">Destination</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                  <th jhiSortBy="state"><span jhiTranslate="campaignManagerApp.sms.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                  <th jhiSortBy="submitAt"><span jhiTranslate="campaignManagerApp.sms.submitAt">Submit At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                  <th jhiSortBy="shortMsg"><span jhiTranslate="campaignManagerApp.sms.shortMsg">Short Message</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                  <th></th>
+                  </tr>
+                  </thead>
+                  <thead><tr>
+                    <th><input class="form-control" type="text" id="field_source" [(ngModel)]="searchModel.source" /></th>
+                    <th><input class="form-control" type="text" id="field_destination" [(ngModel)]="searchModel.destination" /></th>
+                    <th><input class="form-control" type="text" id="field_state" [(ngModel)]="searchModel.state" /></th>
+                    <th><input class="form-control" type="text" id="field_submitAt" [(ngModel)]="searchModel.submitAt" /></th>
+                    <th><input class="form-control" type="text" id="field_shortMsg" [(ngModel)]="searchModel.shortMsg" /></th>
+                    <th class="text-right"><div class="btn-group flex-btn-group-container">
+                      <button type="button" class="btn  btn-info" (click)="search()">
+                        <fa-icon icon="search"></fa-icon>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
+                      </button>
+                      <button type="button" class="btn btn-default" (click)="searchReset()">
+                        <fa-icon icon="reset"></fa-icon>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
+                      </button>
+                    </div></th>
+                  </tr></thead>
+                  <tbody>
+                  <tr *ngFor="let sms of sms ;trackBy: trackId">
+                      <td>{{sms.source}}</td>
+                      <td><a [routerLink]="['/sms', sms.id, 'view' ]">{{sms.destination}}</a></td>
+                      <td>{{ 'campaignManagerApp.sms.state_' + sms.state | translate }}</td>
+                      <td>{{sms.submitAt | date:'medium'}}</td>
+                      <td>{{sms.shortMsg}}</td>
+                      <td class="text-right">
+                          <div class="btn-group flex-btn-group-container">
+                              <button type="submit"
+                                      [routerLink]="['/sms', sms.id, 'view' ]"
+                                      class="btn btn-info btn-sm">
+                                  <fa-icon [icon]="'eye'"></fa-icon>
+                                  <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                              </button>
+                          </div>
+                      </td>
+                  </tr>
+                  </tbody>
+              </table>
+          </div>
+          <!-- Pager is not implemented yet, so this is normal pagination instead -->
+          <div *ngIf="sms && sms.length">
+              <div class="row justify-content-center">
+                  <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+              </div>
+              <div class="row justify-content-center">
+                  <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+              </div>
+          </div>
       </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats">
-        <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.monitoring"></div>
-        <div class="card-body"  *ngIf="campaign.stats.msgCnt">
-          <p *ngIf="campaign.stats.successCnt"><ngb-progressbar showValue="true" type="success" [value]="campaign.stats.successCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.successCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
-          <p *ngIf="campaign.stats.submitCnt"><ngb-progressbar showValue="true" type="info" [value]="campaign.stats.submitCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
-          <p *ngIf="campaign.stats.failedCnt"><ngb-progressbar showValue="true" type="warning" [value]="campaign.stats.failedCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.failedCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.successStats && campaign.stats.successStats.length">
-        <div class="card-header bg-success text-white" jhiTranslate="campaignManagerApp.campaign.stats.successStats"></div>
-        <div class="card-body">
-          <div class="table-responsive"><table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let s of campaign.stats?.successStats">
-                  <td>{{s._id}}</td>
-                  <td>{{s.cnt}}</td>
-              </tr>
-              </tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.failedStats && campaign.stats.failedStats.length">
-        <div class="card-header bg-danger text-white" jhiTranslate="campaignManagerApp.campaign.stats.failedStats"></div>
-        <div class="card-body">
-          <div class="table-responsive"><table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let e of campaign.stats.failedStats">
-                  <td>{{e._id}}</td>
-                  <td>{{e.cnt}}</td>
-              </tr>
-              </tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.pendingStats && campaign.stats.pendingStats.length">
-        <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.stats.pendingStats"></div>
-        <div class="card-body" *ngIf="campaign.stats?.pendingStats">
-          <div class="table-responsive"><table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let p of campaign.stats.pendingStats" class="bg-light">
-                    <td>{{p._id}}</td>
-                    <td>{{p.cnt}}</td>
-                </tr>
-              </tbody>
-          </table></div>
-        </div>
-      </div>
-
     </div>
 </div>
 
+<div class="card mt-3 mb-3" *ngIf="campaign.stats">
+  <div class="card-header" jhiTranslate="campaignManagerApp.campaign.monitoring"></div>
+  <div class="card-body"  *ngIf="campaign.stats.msgCnt">
+    <p *ngIf="campaign.stats.successCnt"><ngb-progressbar height="40px" showValue="true" type="success" [value]="campaign.stats.successCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.successCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
+    <p *ngIf="campaign.stats.submitCnt"><ngb-progressbar height="40px" showValue="true" type="info" [value]="campaign.stats.submitCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
+    <p *ngIf="campaign.stats.failedCnt"><ngb-progressbar height="40px" showValue="true" type="warning" [value]="campaign.stats.failedCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.failedCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
+  </div>
+</div>
 
+<div class="card mt-3 mb-3" *ngIf="campaign.stats?.successStats && campaign.stats.successStats.length">
+  <div class="card-header bg-success text-white" jhiTranslate="campaignManagerApp.campaign.stats.successStats"></div>
+  <div class="card-body">
+    <div class="table-responsive"><table class="table table-striped">
+        <thead>
+          <tr>
+            <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+            <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let s of campaign.stats?.successStats">
+            <td>{{s._id}}</td>
+            <td>{{s.cnt}}</td>
+        </tr>
+        </tbody>
+    </table></div>
+  </div>
+</div>
 
-<div>
-    <h2 id="page-heading">
-        <span jhiTranslate="campaignManagerApp.sms.home.title">Sms</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-sms" [routerLink]="['/sms/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="campaignManagerApp.sms.home.createLabel">
-            Create new Sms
-            </span>
-        </button>
-    </h2>
-    <jhi-alert></jhi-alert>
-    <br/>
-    <div class="table-responsive" *ngIf="sms">
-        <table class="table table-striped">
-            <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="source"><span jhiTranslate="campaignManagerApp.sms.source">Source</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="destination"><span jhiTranslate="campaignManagerApp.sms.destination">Destination</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="state"><span jhiTranslate="campaignManagerApp.sms.state">State</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="submitAt"><span jhiTranslate="campaignManagerApp.sms.submitAt">Submit At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th jhiSortBy="shortMsg"><span jhiTranslate="campaignManagerApp.sms.shortMsg">Short Message</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th></th>
-            </tr>
-            </thead>
-            <thead><tr>
-              <th><input class="form-control" type="text" id="field_source" [(ngModel)]="searchModel.source" /></th>
-              <th><input class="form-control" type="text" id="field_destination" [(ngModel)]="searchModel.destination" /></th>
-              <th><input class="form-control" type="text" id="field_state" [(ngModel)]="searchModel.state" /></th>
-              <th><input class="form-control" type="text" id="field_submitAt" [(ngModel)]="searchModel.submitAt" /></th>
-              <th><input class="form-control" type="text" id="field_shortMsg" [(ngModel)]="searchModel.shortMsg" /></th>
-              <th class="text-right"><div class="btn-group flex-btn-group-container">
-                <button type="button" class="btn btn-sm btn-info" (click)="search()">
-                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
-                </button>
-                <button type="button" class="btn btn-sm btn-default" (click)="searchReset()">
-                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
-                </button>
-              </div></th>
-            </tr></thead>
-            <tbody>
-            <tr *ngFor="let sms of sms ;trackBy: trackId">
-                <td>{{sms.source}}</td>
-                <td><a [routerLink]="['/sms', sms.id, 'view' ]">{{sms.destination}}</a></td>
-                <td>{{ 'campaignManagerApp.sms.state_' + sms.state | translate }}</td>
-                <td>{{sms.submitAt | date:'medium'}}</td>
-                <td>{{sms.shortMsg}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['/sms', sms.id, 'view' ]"
-                                class="btn btn-info btn-sm">
-                            <fa-icon [icon]="'eye'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/sms', sms.id, 'edit']"
-                                class="btn btn-primary btn-sm">
-                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'sms/'+ sms.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <fa-icon [icon]="'times'"></fa-icon>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <!-- Pager is not implemented yet, so this is normal pagination instead -->
-    <div *ngIf="sms && sms.length">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="queryCount" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
-    </div>
+<div class="card mt-3 mb-3" *ngIf="campaign.stats?.failedStats && campaign.stats.failedStats.length">
+  <div class="card-header bg-danger text-white" jhiTranslate="campaignManagerApp.campaign.stats.failedStats"></div>
+  <div class="card-body">
+    <div class="table-responsive"><table class="table table-striped">
+        <thead>
+          <tr>
+            <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+            <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let e of campaign.stats.failedStats">
+            <td>{{e._id}}</td>
+            <td>{{e.cnt}}</td>
+        </tr>
+        </tbody>
+    </table></div>
+  </div>
+</div>
+
+<div class="card mt-3 mb-3" *ngIf="campaign.stats?.pendingStats && campaign.stats.pendingStats.length">
+  <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.stats.pendingStats"></div>
+  <div class="card-body" *ngIf="campaign.stats?.pendingStats">
+    <div class="table-responsive"><table class="table table-striped">
+        <thead>
+          <tr>
+            <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+            <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of campaign.stats.pendingStats" class="bg-light">
+              <td>{{p._id}}</td>
+              <td>{{p.cnt}}</td>
+          </tr>
+        </tbody>
+    </table></div>
+  </div>
 </div>
 
 
+<div class="row">
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
 
-<div class="row justify-content-center">
-    <div class="col-6"  *ngIf="campaign">
-        <div>
-            <h2><span jhiTranslate="campaignManagerApp.campaign.detail.title">Campaign</span> {{campaign.id}}</h2>
-            <hr>
-            <jhi-alert-error></jhi-alert-error>
-            <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="campaignManagerApp.campaign.name" [ngbTooltip]="'campaignManagerApp.campaign.help.name' | translate">Name</span></dt>
-                <dd>
-                    <span>{{campaign.name}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.description">Description</span></dt>
-                <dd>
-                    <span>{{campaign.description}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.code" [ngbTooltip]="'campaignManagerApp.campaign.help.code' | translate">Code</span></dt>
-                <dd>
-                    <span>{{campaign.code}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.externalId" [ngbTooltip]="'campaignManagerApp.campaign.help.externalId' | translate">External Id</span></dt>
-                <dd>
-                    <span>{{campaign.externalId}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.channel" [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</span></dt>
-                <dd>
-                    <span>{{campaign.channel}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</span></dt>
-                <dd>
-                    <span>{{campaign.state}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.shortCode" [ngbTooltip]="'campaignManagerApp.campaign.help.shortCode' | translate">Short Code</span></dt>
-                <dd>
-                    <span>{{campaign.shortCode}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.callbackUrl" [ngbTooltip]="'campaignManagerApp.campaign.help.callbackUrl' | translate">Callback Url</span></dt>
-                <dd>
-                    <span>{{campaign.callbackUrl}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.createdBy" [ngbTooltip]="'campaignManagerApp.campaign.help.createdBy' | translate">Created By</span></dt>
-                <dd>
-                    <span>{{campaign.createdBy}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.createdAt">Created At</span></dt>
-                <dd>
-                    <span>{{campaign.createdAt}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.approvedBy" [ngbTooltip]="'campaignManagerApp.campaign.help.approvedBy' | translate">Approved By</span></dt>
-                <dd>
-                    <span>{{campaign.approvedBy}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.approvedAt">Approved At</span></dt>
-                <dd>
-                    <span>{{campaign.approvedAt}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.shortMsg" [ngbTooltip]="'campaignManagerApp.campaign.help.shortMsg' | translate">Short Msg</span></dt>
-                <dd>
-                    <span>{{campaign.shortMsg}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.msisdnList" [ngbTooltip]="'campaignManagerApp.campaign.help.msisdnList' | translate">Msisdn List</span></dt>
-                <dd>
-                    <div *ngIf="campaign.msisdnList">
-                        <a (click)="openFile(campaign.msisdnListContentType, campaign.msisdnList)" jhiTranslate="entity.action.open">open</a>
-                        {{campaign.msisdnListContentType}}, {{byteSize(campaign.msisdnList)}}
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.startAt" [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</span></dt>
-                <dd>
-                    <span>{{campaign.startAt}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.expiredAt">Expired At</span></dt>
-                <dd>
-                    <span>{{campaign.expiredAt}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.workingHours">Working Hours</span></dt>
-                <dd>
-                    <span>{{campaign.workingHours}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.workingWeekdays">Working Weekdays</span></dt>
-                <dd>
-                    <span>{{campaign.workingWeekdays}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.holidays">Working Days</span></dt>
-                <dd>
-                    <span>{{campaign.holidays}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.spSvc" [ngbTooltip]="'campaignManagerApp.campaign.help.spSvc' | translate">Sp Svc</span></dt>
-                <dd>
-                    <span>{{campaign.spSvc}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.spId">Sp Id</span></dt>
-                <dd>
-                    <span>{{campaign.spId}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.cpId">Cp Id</span></dt>
-                <dd>
-                    <span>{{campaign.cpId}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.msgQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.msgQuota' | translate">Msg Quota</span></dt>
-                <dd>
-                    <span>{{campaign.msgQuota}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.subQuota" [ngbTooltip]="'campaignManagerApp.campaign.help.subQuota' | translate">Sub Quota</span></dt>
-                <dd>
-                    <span>{{campaign.subQuota}}</span>
-                </dd>
-                <dt><span jhiTranslate="campaignManagerApp.campaign.rateLimit" [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</span></dt>
-                <dd>
-                    <span>{{campaign.rateLimit}}</span>
-                </dd>
-            </dl>
-
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/campaign', campaign.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-            </button>
-        </div>
-    </div>
-
-    <div class="col-6">
-      <div class="card mt-3 mb-3">
-        <div class="card-header" jhiTranslate="campaignManagerApp.dataFile.home.title" [ngbTooltip]="'campaignManagerApp.campaign.help.datafiles' | translate "></div>
-        <div class="card-body">
-          <div class=" table-responsive"><table class="table table-striped" *ngIf="campaign.datafiles">
-              <thead>
-              <tr>
-              <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-              <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-              <th><span jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</span></th>
-              <th><span jhiTranslate="campaignManagerApp.dataFile.uploadAt">Upload At</span></th>
-              <th><span jhiTranslate="campaignManagerApp.dataFile.processAt">Process At</span></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let dataFile of campaign.datafiles">
-                  <td>{{dataFile.name}}</td>
-                  <td>{{dataFile.tags}}</td>
-                  <td>{{dataFile.dataCsvHeaders}}</td>
-                  <td>{{dataFile.uploadAt}}</td>
-                  <td>{{dataFile.processAt}}</td>
-              </tr>
-              </tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3">
-        <div class="card-header" jhiTranslate="campaignManagerApp.campaign.cfg"></div>
-        <div class="card-body">
-          <pre><code>{{ campaign.cfg | json }}</code></pre>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats">
-        <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.monitoring"></div>
-        <div class="card-body"  *ngIf="campaign.stats.msgCnt">
-          <p *ngIf="campaign.stats.successCnt"><ngb-progressbar showValue="true" type="success" [value]="campaign.stats.successCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.successCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
-          <p *ngIf="campaign.stats.submitCnt"><ngb-progressbar showValue="true" type="info" [value]="campaign.stats.submitCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
-          <p *ngIf="campaign.stats.failedCnt"><ngb-progressbar showValue="true" type="warning" [value]="campaign.stats.failedCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.failedCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.successStats && campaign.stats.successStats.length">
-        <div class="card-header bg-success text-white" jhiTranslate="campaignManagerApp.campaign.stats.successStats"></div>
-        <div class="card-body">
-          <div class="table-responsive"><table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let s of campaign.stats?.successStats">
-                  <td>{{s._id}}</td>
-                  <td>{{s.cnt}}</td>
-              </tr>
-              </tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.failedStats && campaign.stats.failedStats.length">
-        <div class="card-header bg-danger text-white" jhiTranslate="campaignManagerApp.campaign.stats.failedStats"></div>
-        <div class="card-body">
-          <div class="table-responsive"><table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                </tr>
-              </thead>
-              <tbody>
-              <tr *ngFor="let e of campaign.stats.failedStats">
-                  <td>{{e._id}}</td>
-                  <td>{{e.cnt}}</td>
-              </tr>
-              </tbody>
-          </table></div>
-        </div>
-      </div>
-
-      <div class="card mt-3 mb-3" *ngIf="campaign.stats?.pendingStats && campaign.stats.pendingStats.length">
-        <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.stats.pendingStats"></div>
-        <div class="card-body" *ngIf="campaign.stats?.pendingStats">
-          <div class="table-responsive"><table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                  <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let p of campaign.stats.pendingStats" class="bg-light">
-                    <td>{{p._id}}</td>
-                    <td>{{p.cnt}}</td>
-                </tr>
-              </tbody>
-          </table></div>
-        </div>
-      </div>
-
-    </div>
+    <button type="button"
+            [routerLink]="['/campaign', campaign.id, 'edit']"
+            class="btn btn-primary">
+        <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
 </div>

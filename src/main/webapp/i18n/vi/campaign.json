@@ -40,6 +40,19 @@
             "workingHours": "Khung giờ gửi tin",
             "workingWeekdays": "Ngày gửi tin",
             "holidays": "Ngày lễ",
+            "cfg": "Dịch vụ",
+            "tabs": {
+              "basicInfo": "Chung",
+              "schedule": "Đặt lịch",
+              "dataSource": "Tệp dữ liệu",
+              "otherInfo": "Khác"
+            },
+            "stats": {
+              "failedStats": "Thất bại",
+              "successStats": "Đã gửi",
+              "pendingStats": "Đang chờ"
+            },
+            "monitoring": "Theo dõi gửi tin",
             "spSvc": "Mã Dịch vụ",
             "spId": "Mã SP",
             "cpId": "Mã CP",

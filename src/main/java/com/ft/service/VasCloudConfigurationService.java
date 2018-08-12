@@ -1,14 +1,18 @@
 package com.ft.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ft.domain.VasCloudConfiguration;
 import com.ft.repository.VasCloudConfigurationRepository;
+import com.ft.service.dto.DataFileDTO;
 import com.ft.service.dto.VasCloudConfigurationDTO;
 import com.ft.service.mapper.VasCloudConfigurationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -77,4 +81,27 @@ public class VasCloudConfigurationService {
         log.debug("Request to delete VasCloudConfiguration : {}", id);
         vasCloudConfigurationRepository.deleteById(id);
     }
+
+    @Autowired
+    ObjectMapper mapper;
+
+	public List<VasCloudConfigurationDTO> importData(DataFileDTO dataFile) {
+		if (dataFile.getDataContentType().contains("json")){
+            try {
+                List<VasCloudConfigurationDTO> data = mapper.readValue(dataFile.getData(), new TypeReference<List<VasCloudConfigurationDTO>>() { });
+                return vasCloudConfigurationRepository.saveAll(
+                	data .stream()
+	                .map(vasCloudConfigurationMapper::toEntity)
+	                .collect(Collectors.toCollection(LinkedList::new))
+                )
+                .stream()
+                .map(vasCloudConfigurationMapper::toDto)
+                .collect(Collectors.toCollection(LinkedList::new));
+            } catch (IOException e) {
+                    log.error("Cannot parse JSON", e);
+            }
+		}
+
+		return null;
+	}
 }

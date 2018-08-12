@@ -16,6 +16,7 @@ export interface ISms {
     submitResponsePayload?: any;
     deliveredAt?: Moment;
     deliveryReportPayload?: any;
+    campaign?: any;
 }
 
 export class Sms implements ISms {
@@ -34,6 +35,7 @@ export class Sms implements ISms {
         public submitRequestPayload?: any,
         public submitResponsePayload?: any,
         public deliveredAt?: Moment,
-        public deliveryReportPayload?: any
+        public deliveryReportPayload?: any,
+        campaign?: any
     ) {}
 }

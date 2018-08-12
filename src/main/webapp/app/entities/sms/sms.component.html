@@ -10,6 +10,19 @@
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
+    <div class="card"> <div class="card-body form-inline">
+      <input class="form-control mr-3" type="text" id="field_destination" [(ngModel)]="searchModel.destination" placeholder="{{ 'campaignManagerApp.sms.destination' | translate }}"/>
+      <input id="field_campaignId" type="text" class="form-control mr-3" [(ngModel)]="searchModel.campaign" [ngbTypeahead]="searchCampaign" [inputFormatter]="campaignName" [resultFormatter]="campaignName" placeholder="Campaign" />
+      <div class="btn-group flex-btn-group-container">
+        <button type="button" class="btn btn-sm btn-info" (click)="search()">
+          <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
+        </button>
+        <button type="button" class="btn btn-sm btn-default" (click)="searchReset()">
+          <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
+        </button>
+      </div>
+    </div></div>
+
     <div class="table-responsive" *ngIf="sms">
         <table class="table table-striped">
             <thead>
@@ -26,14 +39,14 @@
               <th><input class="form-control" type="text" id="field_source" [(ngModel)]="searchModel.source" /></th>
               <th><input class="form-control" type="text" id="field_destination" [(ngModel)]="searchModel.destination" /></th>
               <th><input class="form-control" type="text" id="field_state" [(ngModel)]="searchModel.state" /></th>
-              <th><input class="form-control" type="text" id="field_submitAt" [(ngModel)]="searchModel.submitAt" /></th>
+              <th><input class="form-control" type="datetime-local" id="field_submitAt" [(ngModel)]="searchModel.submitAt" /></th>
               <th><input class="form-control" type="text" id="field_shortMsg" [(ngModel)]="searchModel.shortMsg" /></th>
               <th class="text-right"><div class="btn-group flex-btn-group-container">
                 <button type="button" class="btn btn-sm btn-info" (click)="search()">
-                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
+                  <fa-icon [icon]="'search'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
                 </button>
                 <button type="button" class="btn btn-sm btn-default" (click)="searchReset()">
-                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
+                  <fa-icon [icon]="'reset'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
                 </button>
               </div></th>
             </tr></thead>
@@ -42,7 +55,7 @@
                 <td>{{sms.source}}</td>
                 <td><a [routerLink]="['/sms', sms.id, 'view' ]">{{sms.destination}}</a></td>
                 <td>{{ 'campaignManagerApp.sms.state_' + sms.state | translate }}</td>
-                <td>{{sms.submitAt | date:'medium'}}</td>
+                <td>{{sms.submitAt | date:'yyyy-MM-dd HH:mm:SS'}}</td>
                 <td>{{sms.shortMsg}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

@@ -131,10 +131,6 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
     }
 
     // Extra functions
-    exportData() {
-        this.dataFileService.exportData();
-    }
-
     saveData() {
         this.dataFileService
             .saveData()

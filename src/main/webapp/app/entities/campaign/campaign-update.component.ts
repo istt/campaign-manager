@@ -51,14 +51,16 @@ export class CampaignUpdateComponent implements OnInit {
         this.isSaving = false;
         this.dataFileService.itemsPerPage = ITEMS_PER_PAGE;
         this.dataFileService.checked = {};
+        this.vasCloudSvc.selected = undefined;
         this.activatedRoute.data.subscribe(({ campaign }) => {
             this.campaign = campaign;
             this.campaign.datafiles = [];
             if (campaign.cfg && campaign.cfg['VASCLOUD']) {
                 this.vasCloudSvc.selected = campaign.cfg['VASCLOUD'].id;
+                this.setVasCloudCfg(campaign.cfg['VASCLOUD'].id);
             }
             this.vasCloudSvc.query().subscribe(res => (this.vasCloudSvc.entities = res.body));
-            this.dataFileService.entity = new DataFile();
+            // this.dataFileService.entity = new DataFile();
             // this.dataFileService.query().subscribe(res => {
             //   this.dataFileService.entities = res.body;
             //   res.body.forEach(v => {
@@ -67,7 +69,7 @@ export class CampaignUpdateComponent implements OnInit {
             //   // this.campaign.datafiles
             //   // .forEach(e => this.dataFileService.checked[e.id] = Object.assign(e, { checked: true }));
             // });
-            this.loadPage(1);
+            // this.loadDataFilePage(1);
         });
     }
 
@@ -89,6 +91,7 @@ export class CampaignUpdateComponent implements OnInit {
         this.campaign.approvedAt = moment(this.approvedAt, DATE_TIME_FORMAT);
         this.campaign.startAt = moment(this.startAt, DATE_TIME_FORMAT);
         this.campaign.expiredAt = moment(this.expiredAt, DATE_TIME_FORMAT);
+        this.campaign.code = this.campaign.name; /// OVERRIDE
         this.campaign.datafiles = Object.getOwnPropertyNames(this.dataFileService.checked)
             .map(id => (this.dataFileService.checked[id].checked ? this.dataFileService.checked[id] : false))
             .filter(v => v);
@@ -146,7 +149,7 @@ export class CampaignUpdateComponent implements OnInit {
             );
     }
 
-    loadPage(page: number) {
+    loadDataFilePage(page: number) {
         if (page !== this.dataFileService.previousPage) {
             this.dataFileService.previousPage = page;
             this.dataFileService.page = page;

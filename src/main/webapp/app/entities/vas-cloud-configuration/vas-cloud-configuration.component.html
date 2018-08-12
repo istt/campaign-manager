@@ -1,12 +1,26 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="campaignManagerApp.vasCloudConfiguration.home.title">Vas Cloud Configurations</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-vas-cloud-configuration" [routerLink]="['/vas-cloud-configuration/new']">
-            <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="campaignManagerApp.vasCloudConfiguration.home.createLabel">
-            Create new Vas Cloud Configuration
-            </span>
-        </button>
+        <div class="btn-group float-right">
+          <button id="jh-import-entity" class="btn btn-danger" (click)="openModal(dataFileModal)">
+              <fa-icon [icon]="'upload'"></fa-icon>
+              <span  jhiTranslate="entity.action.import">
+              Create new Vas Cloud Configuration
+              </span>
+          </button>
+          <button id="jh-create-entity" class="btn btn-primary jh-create-entity create-vas-cloud-configuration" [routerLink]="['/vas-cloud-configuration/new']">
+              <fa-icon [icon]="'plus'"></fa-icon>
+              <span  jhiTranslate="campaignManagerApp.vasCloudConfiguration.home.createLabel">
+              Create new Vas Cloud Configuration
+              </span>
+          </button>
+          <button id="jh-export-entity" class="btn btn-info" (click)="export()">
+              <fa-icon [icon]="'download'"></fa-icon>
+              <span  jhiTranslate="entity.action.export">
+              Create new Vas Cloud Configuration
+              </span>
+          </button>
+        </div>
     </h2>
     <jhi-alert></jhi-alert>
     <br/>
@@ -14,11 +28,9 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceCode">Service Code</span> / <span jhiTranslate="campaignManagerApp.vasCloudConfiguration.packageCode">Package Code</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.username">Username</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.password">Password</span></th>
-            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceCode">Service Code</span></th>
-            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.packageCode">Package Code</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCode">Cp Code</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCharge">Cp Charge</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceId">Service Id</span></th>
@@ -27,11 +39,9 @@
             </thead>
             <tbody>
             <tr *ngFor="let vasCloudConfiguration of vasCloudConfigurations ;trackBy: trackId">
-                <td><a [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'view' ]">{{vasCloudConfiguration.id}}</a></td>
+                <td><a [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'view' ]">{{vasCloudConfiguration.serviceCode}} / {{vasCloudConfiguration.packageCode}}</a></td>
                 <td>{{vasCloudConfiguration.username}}</td>
                 <td>{{vasCloudConfiguration.password}}</td>
-                <td>{{vasCloudConfiguration.serviceCode}}</td>
-                <td>{{vasCloudConfiguration.packageCode}}</td>
                 <td>{{vasCloudConfiguration.cpCode}}</td>
                 <td>{{vasCloudConfiguration.cpCharge}}</td>
                 <td>{{vasCloudConfiguration.serviceId}}</td>
@@ -70,3 +80,41 @@
         </table>
     </div>
 </div>
+
+
+<ng-template #dataFileModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" jhiTranslate="entity.action.import">Import Data</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.data" for="field_data">Data</label>
+        <div>
+            <div *ngIf="dataFileService.entity.data" class="form-text text-danger clearfix">
+                <a class="pull-left" (click)="openFile(dataFileService.entity.dataContentType, dataFileService.entity.data)" jhiTranslate="entity.action.open">open</a><br>
+                <span class="pull-left">{{dataFileService.entity.dataContentType}}, {{byteSize(dataFileService.entity.data)}}</span>
+                <button type="button" (click)="dataFileService.entity.data=null;dataFileService.entity.dataContentType=null;"
+                        class="btn btn-secondary btn-xs pull-right">
+                    <fa-icon [icon]="'times'"></fa-icon>
+                </button>
+            </div>
+            <input type="file" id="file_data" (change)="setFileData($event, dataFileService.entity, 'data', false)" jhiTranslate="entity.action.addblob"/>
+        </div>
+        <input type="hidden" class="form-control" name="data" id="field_data"
+            [(ngModel)]="dataFileService.entity.data" />
+        <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
+            [(ngModel)]="dataFileService.entity.dataContentType" />
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="d()">
+          <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+      </button>
+      <button type="button" id="save-entity" class="btn btn-primary" (click)="importData()">
+          <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+      </button>
+  </div>
+</ng-template>

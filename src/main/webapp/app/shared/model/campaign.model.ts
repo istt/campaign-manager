@@ -19,8 +19,8 @@ export interface ICampaign {
     msisdnList?: any;
     startAt?: Moment;
     expiredAt?: Moment;
-    workingHours?: string;
-    workingWeekdays?: string;
+    workingHours?: number[];
+    workingWeekdays?: number[];
     spSvc?: string;
     spId?: string;
     cpId?: string;
@@ -54,8 +54,8 @@ export class Campaign implements ICampaign {
         public msisdnList?: any,
         public startAt?: Moment,
         public expiredAt?: Moment,
-        public workingHours?: string,
-        public workingWeekdays?: string,
+        public workingHours?: number[],
+        public workingWeekdays?: number[],
         public holidays?: Moment[],
         public spSvc?: string,
         public spId?: string,
@@ -70,5 +70,8 @@ export class Campaign implements ICampaign {
         this.cfg = {};
         this.stats = {};
         this.datafiles = [];
+        this.state = 1;
+        this.workingHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+        this.workingWeekdays = [0, 1, 2, 3, 4, 5, 6];
     }
 }

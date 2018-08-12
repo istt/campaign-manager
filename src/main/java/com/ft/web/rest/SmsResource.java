@@ -20,6 +20,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -161,5 +163,18 @@ public class SmsResource {
         log.debug("REST request to delete Sms : {}", id);
         smsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id)).build();
+    }
+
+    /**
+     * GET  /sms : get all the sms.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of sms in body
+     */
+    @GetMapping("/stats/sms")
+    @Timed
+    public ResponseEntity<List<Object>> getStatsSms(@RequestParam MultiValueMap<String, String> predicate) {
+        List<Object> statistic = smsService.stats((SmsDTO) predicate);
+        return ResponseEntity.ok().body(statistic);
     }
 }

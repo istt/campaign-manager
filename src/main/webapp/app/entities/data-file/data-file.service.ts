@@ -59,19 +59,17 @@ export class DataFileService {
     /**
      * Export data into file
      */
-    getExportUrl(): string {
-        return SERVER_API_URL + this.exportUrl;
+    getExportUrl(apiEndpoint?: string): string {
+        return SERVER_API_URL + (apiEndpoint ? apiEndpoint : this.exportUrl);
     }
-    getImportUrl(): string {
-        return SERVER_API_URL + this.importUrl;
+    getImportUrl(apiEndpoint?: string): string {
+        return SERVER_API_URL + (apiEndpoint ? apiEndpoint : this.importUrl);
     }
 
-    exportData() {
+    exportData(fileName: string, apiEndpoint?: string) {
         this.http
-            .get(this.getExportUrl(), { responseType: 'text' })
-            .subscribe(res =>
-                saveAs(new Blob([res], { type: 'text;charset=utf-8' }), 'whitelist.' + new Date().toISOString().substr(0, 10) + '.url')
-            );
+            .get(this.getExportUrl(apiEndpoint), { responseType: 'text' })
+            .subscribe(res => saveAs(new Blob([res], { type: 'text;charset=utf-8' }), fileName));
     }
 
     saveData() {
@@ -79,7 +77,7 @@ export class DataFileService {
     }
 
     // Send a PUT request to import endpoint to reload data from static file.
-    reloadData() {
-        return this.http.put<IDataFile>(this.getImportUrl(), null, { observe: 'response' });
+    importData(dataFile: IDataFile, apiEndpoint?: string) {
+        return this.http.put<IDataFile>(this.getImportUrl(apiEndpoint), dataFile, { observe: 'response' });
     }
 }

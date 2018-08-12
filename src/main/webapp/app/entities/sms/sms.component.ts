@@ -11,6 +11,9 @@ import { ITEMS_PER_PAGE } from 'app/shared';
 import { SmsService } from './sms.service';
 // Extra component
 import { DataFileService } from '../data-file';
+import { CampaignService } from '../campaign';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 
 @Component({
     selector: 'jhi-sms',
@@ -34,6 +37,7 @@ export class SmsComponent implements OnInit, OnDestroy {
     searchModel: ISms = {};
 
     constructor(
+        public campaignService: CampaignService,
         public dataFileService: DataFileService,
         public smsService: SmsService,
         private parseLinks: JhiParseLinks,
@@ -126,8 +130,8 @@ export class SmsComponent implements OnInit, OnDestroy {
 
     sort() {
         const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-        if (this.predicate !== 'startAt') {
-            result.push('startAt,desc');
+        if (this.predicate !== 'submitAt') {
+            result.push('submitAt,desc');
         }
         return result;
     }
@@ -145,7 +149,8 @@ export class SmsComponent implements OnInit, OnDestroy {
 
     // Extra functions
     exportData() {
-        this.dataFileService.exportData();
+        this.dataFileService.exportUrl = 'api/sms/export';
+        this.dataFileService.exportData('sms');
     }
 
     saveData() {
@@ -160,6 +165,10 @@ export class SmsComponent implements OnInit, OnDestroy {
     }
 
     search() {
+        if (this.searchModel.campaign) {
+            this.searchModel.campaignId = this.searchModel.campaign.id;
+            this.searchModel.campaign = undefined;
+        }
         this.smsService
             .query(
                 Object.assign(
@@ -176,21 +185,15 @@ export class SmsComponent implements OnInit, OnDestroy {
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
     }
-    // TODO: Create the JPA Model filtering engine
-    // createSearchQuery() {
-    //     const search = {};
-    //     if (this.searchModel.id) { search['id.equals'] = this.searchModel.id; }
-    //     return search;
-    // }
-    // Reload data from file
-    reloadData() {
-        this.dataFileService.reloadData().subscribe(
-            (res: HttpResponse<any>) =>
-                this.eventManager.broadcast({
-                    name: 'whitelistListModification',
-                    content: 'Successfully restore Whitelist from system file'
-                }),
-            (err: HttpErrorResponse) => this.onError(err.message)
+
+    searchCampaign = (text$: Observable<string>) =>
+        text$.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            switchMap(name => this.campaignService.query({ name }).pipe(map(v => v.body)))
         );
-    }
+
+    campaignName = (campaign: any) => campaign.name;
+
+    campaignId = (campaign: any) => campaign.id;
 }

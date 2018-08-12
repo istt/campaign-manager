@@ -35,7 +35,7 @@ export const smsRoute: Routes = [
         },
         data: {
             authorities: ['ROLE_USER'],
-            defaultSort: 'id,asc',
+            defaultSort: 'submitAt,desc',
             pageTitle: 'campaignManagerApp.sms.home.title'
         },
         canActivate: [UserRouteAccessService]

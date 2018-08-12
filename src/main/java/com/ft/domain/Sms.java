@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.mongodb.morphia.annotations.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -33,6 +34,7 @@ public class Sms implements Serializable {
     @ApiModelProperty(value = "Source Address")
     @Field("source")
     @NotNull
+    @Indexed
     private String source;
 
     /**
@@ -41,6 +43,7 @@ public class Sms implements Serializable {
     @ApiModelProperty(value = "Destination Address")
     @Field("destination")
     @NotNull
+    @Indexed
     private String destination;
 
     /**
@@ -48,6 +51,7 @@ public class Sms implements Serializable {
      */
     @ApiModelProperty(value = "state code, 0 = Pending, 1 = Submitted, 9 = Success, -1 - -8 = Failed, -9 = Do not retry anymore")
     @Field("state")
+    @Indexed
     private Integer state;
 
     /**
@@ -63,6 +67,7 @@ public class Sms implements Serializable {
      */
     @ApiModelProperty(value = "Related Campaign")
     @Field("campaign_id")
+    @Indexed
     private String campaignId;
 
     /**

@@ -14,6 +14,27 @@
     <ng-template ngbTabContent><div class="card mt-3 mb-3">
       <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.basicInfo' | translate }}</div>
       <div class="card-body">
+<div class="row"><div class="col-md-9">
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cfg" for="field_cfg_VASCLOUD" [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</label>
+            <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)" required>
+              <option *ngFor="let i of vasCloudSvc.entities" [value]="i.id">{{i.serviceCode}} / {{i.packageCode}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.cfg?.dirty && editForm.controls.cfg?.invalid)">
+                <small class="form-text text-danger"
+                [hidden]="!editForm.controls.cfg?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+                </small>
+            </div>
+        </div>
+</div><div class="col-md-3">
+  <div class="form-group">
+      <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.rateLimit" for="field_rateLimit" [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</label>
+      <input type="number" class="form-control" name="rateLimit" id="field_rateLimit"
+          [(ngModel)]="campaign.rateLimit" />
+  </div>
+</div></div>
+        <div class="row"><div class="col-md-9">
       <div class="form-group">
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.name" for="field_name" [ngbTooltip]="'campaignManagerApp.campaign.help.name' | translate">Name</label>
           <input type="text" class="form-control" name="name" id="field_name"
@@ -25,22 +46,7 @@
               </small>
           </div>
       </div>
-
-      <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.code" for="field_code" [ngbTooltip]="'campaignManagerApp.campaign.help.code' | translate">Code</label>
-          <input type="text" class="form-control" name="code" id="field_code"
-              [(ngModel)]="campaign.code" required maxlength="80"/>
-          <div [hidden]="!(editForm.controls.code?.dirty && editForm.controls.code?.invalid)">
-              <small class="form-text text-danger"
-              [hidden]="!editForm.controls.code?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-              </small>
-              <small class="form-text text-danger"
-              [hidden]="!editForm.controls.code?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 80 }">
-              This field cannot be longer than 80 characters.
-              </small>
-          </div>
-      </div>
+    </div><div class="col-md-3">
 
       <div class="form-group">
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.state" for="field_state" [ngbTooltip]="'campaignManagerApp.campaign.help.state' | translate">State</label>
@@ -48,29 +54,35 @@
             <option *ngFor="let s of campaignService.stateOptions" [value]="s" jhiTranslate="campaignManagerApp.campaign.state_{{s}}"></option>
           </select>
       </div>
-
+</div></div>
+      <div class="row"><div class="col-md-6">
       <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cfg" for="field_cfg_VASCLOUD" [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</label>
-          <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)" required>
-            <option *ngFor="let i of vasCloudSvc.entities" [value]="i.id">{{i.serviceCode}} / {{i.packageCode}}</option>
-          </select>
-          <div [hidden]="!(editForm.controls.cfg?.dirty && editForm.controls.cfg?.invalid)">
-              <small class="form-text text-danger"
-              [hidden]="!editForm.controls.cfg?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-              </small>
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.startAt" for="field_startAt" [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</label>
+          <div class="d-flex">
+              <input id="field_startAt" type="datetime-local" class="form-control" name="startAt" [(ngModel)]="startAt"
+              />
           </div>
       </div>
-
+    </div><div class="col-md-6">
       <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.channel" for="field_channel" [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</label>
-          <input type="text" class="form-control" name="channel" id="field_channel"
-              [(ngModel)]="campaign.channel" required/>
-          <div [hidden]="!(editForm.controls.channel?.dirty && editForm.controls.channel?.invalid)">
-              <small class="form-text text-danger"
-              [hidden]="!editForm.controls.channel?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-              </small>
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.expiredAt" for="field_expiredAt">Expired At</label>
+          <div class="d-flex">
+              <input id="field_expiredAt" type="datetime-local" class="form-control" name="expiredAt" [(ngModel)]="expiredAt"
+              />
+          </div>
+      </div>
+    </div></div>
+
+
+
+
+      <!-- Pager is not implemented yet, so this is normal pagination instead -->
+      <div *ngIf="dataFileService.entities && dataFileService.entities.length">
+          <div class="row justify-content-center">
+              <jhi-item-count [page]="dataFileService.page" [total]="dataFileService.queryCount" [itemsPerPage]="dataFileService.itemsPerPage"></jhi-item-count>
+          </div>
+          <div class="row justify-content-center">
+              <ngb-pagination [collectionSize]="dataFileService.totalItems" [(page)]="dataFileService.page" [pageSize]="dataFileService.itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadDataFilePage(dataFileService.page)"></ngb-pagination>
           </div>
       </div>
 
@@ -80,10 +92,41 @@
           <p class="form-help text-muted" *ngIf="campaign.shortMsg">{{ 'campaignManagerApp.campaign.shortMsgLength' | translate }}: <code>{{campaign.shortMsg.length}}</code></p>
       </div>
 
-      <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.rateLimit" for="field_rateLimit" [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</label>
-          <input type="number" class="form-control" name="rateLimit" id="field_rateLimit"
-              [(ngModel)]="campaign.rateLimit" />
+
+      <button type="button" class="btn btn-info btn-sm" (click)="openModal(dataFileModal)">
+        <fa-icon [icon]="'upload'"></fa-icon>
+        <span  jhiTranslate="campaignManagerApp.dataFile.home.createLabel">
+        Create new Data File
+        </span>
+      </button>
+
+
+
+
+      <div class="table-responsive" *ngIf="dataFileService.entities">
+          <table class="table table-striped table-narrow">
+            <caption jhiTranslate="campaignManagerApp.campaign.dataFiles"></caption>
+              <thead>
+              <tr>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</span></th>
+              <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let dataFile of dataFileService.entities" [ngClass]="dataFileService.checked[dataFile.id].checked ? '' : 'd-none'">
+                  <td>{{dataFile.name}}</td>
+                  <td>{{dataFile.tags}}</td>
+                  <td>{{dataFile.dataCsvHeaders}}</td>
+                  <td *ngIf="dataFileService.checked[dataFile.id]">
+                      <input type="checkbox" name="dataFile_checked_{{dataFile.id}}" id="dataFile_checked_{{dataFile.id}}"
+                        class="form-check" [(ngModel)]="dataFileService.checked[dataFile.id].checked"
+                        />
+                  </td>
+              </tr>
+              </tbody>
+          </table>
       </div>
 
     </div></div></ng-template>
@@ -97,21 +140,6 @@
     <ng-template ngbTabContent><div class="card mt-3 mb-3">
       <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.schedule' | translate }}</div>
       <div class="card-body">
-
-      <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.startAt" for="field_startAt" [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</label>
-          <div class="d-flex">
-              <input id="field_startAt" type="datetime-local" class="form-control" name="startAt" [(ngModel)]="startAt"
-              />
-          </div>
-      </div>
-      <div class="form-group">
-          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.expiredAt" for="field_expiredAt">Expired At</label>
-          <div class="d-flex">
-              <input id="field_expiredAt" type="datetime-local" class="form-control" name="expiredAt" [(ngModel)]="expiredAt"
-              />
-          </div>
-      </div>
 
       <div class="form-group">
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.workingHours" for="field_workingHours">Working Hours</label>
@@ -134,120 +162,6 @@
     </div></div></ng-template>
   </ngb-tab>
 
-  <ngb-tab>
-    <ng-template ngbTabTitle>
-      <fa-icon [icon]="'file-alt'" [fixedWidth]="true"></fa-icon>
-      {{ 'campaignManagerApp.campaign.tabs.dataSource' | translate }}
-    </ng-template>
-    <ng-template ngbTabContent><div class="card mt-3 mb-3">
-      <div class="card-header">{{ 'campaignManagerApp.campaign.tabs.dataSource' | translate }}</div>
-      <div class="card-body">
-        <button type="button" class="btn pull-right btn-primary" (click)="openModal(dataFileModal)">
-          <fa-icon [icon]="'plus'"></fa-icon>
-          <span  jhiTranslate="campaignManagerApp.dataFile.home.createLabel">
-          Create new Data File
-          </span>
-        </button>
-
-
-        <div class="table-responsive" *ngIf="dataFileService.entities">
-            <table class="table table-striped">
-              <caption jhiTranslate="campaignManagerApp.campaign.dataFiles"></caption>
-                <thead>
-                <tr>
-                <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-                <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-                <th><span jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</span></th>
-                <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let dataFile of dataFileService.entities">
-                    <td>{{dataFile.name}}</td>
-                    <td>{{dataFile.tags}}</td>
-                    <td>{{dataFile.dataCsvHeaders}}</td>
-                    <td *ngIf="dataFileService.checked[dataFile.id]">
-                        <input type="checkbox" name="dataFile_checked_{{dataFile.id}}" id="dataFile_checked_{{dataFile.id}}"
-                          class="form-check" [(ngModel)]="dataFileService.checked[dataFile.id].checked"
-                          />
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- Pager is not implemented yet, so this is normal pagination instead -->
-        <div *ngIf="dataFileService.entities && dataFileService.entities.length">
-            <div class="row justify-content-center">
-                <jhi-item-count [page]="dataFileService.page" [total]="dataFileService.queryCount" [itemsPerPage]="dataFileService.itemsPerPage"></jhi-item-count>
-            </div>
-            <div class="row justify-content-center">
-                <ngb-pagination [collectionSize]="dataFileService.totalItems" [(page)]="dataFileService.page" [pageSize]="dataFileService.itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(dataFileService.page)"></ngb-pagination>
-            </div>
-        </div>
-
-<ng-template #dataFileModal let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title" jhiTranslate="campaignManagerApp.dataFile.home.createOrEditLabel">Create or Edit Data File</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="form-group">
-        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.data" for="field_data">Data</label>
-        <div>
-            <div *ngIf="dataFileService.entity.data" class="form-text text-danger clearfix">
-                <a class="pull-left" (click)="openFile(dataFileService.entity.dataContentType, dataFileService.entity.data)" jhiTranslate="entity.action.open">open</a><br>
-                <span class="pull-left">{{dataFileService.entity.dataContentType}}, {{byteSize(dataFileService.entity.data)}}</span>
-                <button type="button" (click)="dataFileService.entity.data=null;dataFileService.entity.dataContentType=null;"
-                        class="btn btn-secondary btn-xs pull-right">
-                    <fa-icon [icon]="'times'"></fa-icon>
-                </button>
-            </div>
-            <input type="file" id="file_data" (change)="setFileData($event, dataFileService.entity, 'data', false)" jhiTranslate="entity.action.addblob"/>
-        </div>
-        <input type="hidden" class="form-control" name="data" id="field_data"
-            [(ngModel)]="dataFileService.entity.data" />
-        <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
-            [(ngModel)]="dataFileService.entity.dataContentType" />
-    </div>
-
-    <div class="form-group">
-        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.name" for="field_name">Name</label>
-        <input type="text" class="form-control" name="name" id="field_name"
-            [(ngModel)]="dataFileService.entity.name" />
-    </div>
-    <div class="form-group">
-        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.tags" for="field_tags">Tags</label>
-        <input type="text" class="form-control" name="tags" id="field_tags"
-            [(ngModel)]="dataFileService.entity.tags" />
-    </div>
-
-    <div class="form-group">
-        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</label>
-        <table *ngIf="dataFileService.dataCsvHeaders">
-          <thead><tr>
-            <th *ngFor="let header of dataFileService.dataCsvHeaders; let j = index">
-              <input type="text" class="form-control" name="dataCsvHeaders_{{j}}" id="field_dataCsvHeaders_{{j}}" [(ngModel)]="dataFileService.entity.dataCsvHeaders[j]" />
-            </th>
-          </tr></thead>
-        </table>
-    </div>
-  </div>
-  <div class="modal-footer">
-      <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="d()">
-          <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-      </button>
-      <button type="button" id="save-entity" class="btn btn-primary" (click)="saveDataFile()">
-          <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-      </button>
-  </div>
-
-</ng-template>
-
-
-    </div></div></ng-template>
-  </ngb-tab>
 
   <ngb-tab>
     <ng-template ngbTabTitle>
@@ -344,25 +258,37 @@
           <textarea class="form-control" name="description" id="field_description" [(ngModel)]="campaign.description" ></textarea>
       </div>
 
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.code" for="field_code" [ngbTooltip]="'campaignManagerApp.campaign.help.code' | translate">Code</label>
+          <input type="text" class="form-control" name="code" id="field_code"
+              [(ngModel)]="campaign.code" required maxlength="80"/>
+          <div [hidden]="!(editForm.controls.code?.dirty && editForm.controls.code?.invalid)">
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.code?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+              </small>
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.code?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 80 }">
+              This field cannot be longer than 80 characters.
+              </small>
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.channel" for="field_channel" [ngbTooltip]="'campaignManagerApp.campaign.help.channel' | translate">Channel</label>
+          <input type="text" class="form-control" name="channel" id="field_channel"
+              [(ngModel)]="campaign.channel" required/>
+          <div [hidden]="!(editForm.controls.channel?.dirty && editForm.controls.channel?.invalid)">
+              <small class="form-text text-danger"
+              [hidden]="!editForm.controls.channel?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+              </small>
+          </div>
+      </div>
+
     </div></div></ng-template>
   </ngb-tab>
 </ngb-tabset>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             </div>
             <div>
@@ -378,3 +304,66 @@
 
 
 </div>
+
+
+
+
+
+<ng-template #dataFileModal let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" jhiTranslate="campaignManagerApp.dataFile.home.createOrEditLabel">Create or Edit Data File</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.data" for="field_data">Data</label>
+        <div>
+            <div *ngIf="dataFileService.entity.data" class="form-text text-danger clearfix">
+                <a class="pull-left" (click)="openFile(dataFileService.entity.dataContentType, dataFileService.entity.data)" jhiTranslate="entity.action.open">open</a><br>
+                <span class="pull-left">{{dataFileService.entity.dataContentType}}, {{byteSize(dataFileService.entity.data)}}</span>
+                <button type="button" (click)="dataFileService.entity.data=null;dataFileService.entity.dataContentType=null;"
+                        class="btn btn-secondary btn-xs pull-right">
+                    <fa-icon [icon]="'times'"></fa-icon>
+                </button>
+            </div>
+            <input type="file" id="file_data" (change)="setFileData($event, dataFileService.entity, 'data', false)" jhiTranslate="entity.action.addblob"/>
+        </div>
+        <input type="hidden" class="form-control" name="data" id="field_data"
+            [(ngModel)]="dataFileService.entity.data" />
+        <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
+            [(ngModel)]="dataFileService.entity.dataContentType" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.name" for="field_name">Name</label>
+        <input type="text" class="form-control" name="name" id="field_name"
+            [(ngModel)]="dataFileService.entity.name" />
+    </div>
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.tags" for="field_tags">Tags</label>
+        <input type="text" class="form-control" name="tags" id="field_tags"
+            [(ngModel)]="dataFileService.entity.tags" />
+    </div>
+
+    <div class="form-group">
+        <label class="form-control-label" jhiTranslate="campaignManagerApp.dataFile.dataCsvHeaders">Data CSV Headers</label>
+        <table *ngIf="dataFileService.dataCsvHeaders">
+          <thead><tr>
+            <th *ngFor="let header of dataFileService.dataCsvHeaders; let j = index">
+              <input type="text" class="form-control" name="dataCsvHeaders_{{j}}" id="field_dataCsvHeaders_{{j}}" [(ngModel)]="dataFileService.entity.dataCsvHeaders[j]" />
+            </th>
+          </tr></thead>
+        </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+      <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="d()">
+          <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+      </button>
+      <button type="button" id="save-entity" class="btn btn-primary" (click)="saveDataFile()">
+          <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+      </button>
+  </div>
+</ng-template>
