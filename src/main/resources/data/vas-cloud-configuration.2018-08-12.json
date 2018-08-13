@@ -1,0 +1,23 @@
+[ {
+  "endPoint" : "http://10.144.18.112/services/SMS_GW_MT_PROXY",
+  "username" : "tranhtaitrithuc",
+  "password" : "Tranhtai@Trithuc@123",
+  "serviceCode" : "TRANHTAITRITHUC",
+  "cpCode" : "HOHUY",
+  "cpCharge" : "HOHUY-TRANHTAITRITHUC",
+  "serviceId" : "5-TRANHTAITRITHUC",
+  "packageCode" : "TTTT",
+  "shortCode" : "9304",
+  "rateLimit" : 10
+}, {
+  "endPoint" : "http://10.144.18.112/services/SMS_GW_MT_PROXY",
+  "username" : "ochubimat",
+  "password" : "Ochu@32@91",
+  "serviceCode" : "OCHUBIMAT",
+  "cpCode" : "HOHUY-OCHUBIMAT",
+  "cpCharge" : "HOHUY-OCHUBIMAT",
+  "serviceId" : "OCHUBIMAT",
+  "packageCode" : "OCBM",
+  "shortCode" : "9035",
+  "rateLimit" : 20
+} ]
