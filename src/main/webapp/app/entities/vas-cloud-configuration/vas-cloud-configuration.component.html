@@ -114,7 +114,7 @@
           <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
       </button>
       <button type="button" id="save-entity" class="btn btn-primary" (click)="importData()">
-          <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          <fa-icon icon="save" [span]="isSaving"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
       </button>
   </div>
 </ng-template>
