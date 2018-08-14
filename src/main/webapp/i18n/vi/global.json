@@ -109,7 +109,8 @@
             "filter": "Lọc",
             "import": "Nhập",
             "export": "Xuất",
-            "reset": "Đặt lại"
+            "reset": "Đặt lại",
+            "submit": "Gưỉ"
         },
         "detail": {
             "field": "Trường",

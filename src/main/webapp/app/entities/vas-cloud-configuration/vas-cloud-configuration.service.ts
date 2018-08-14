@@ -41,4 +41,8 @@ export class VasCloudConfigurationService {
     delete(id: string): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
+
+    submit(id: string, sms: any): Observable<EntityResponseType> {
+        return this.http.post<IVasCloudConfiguration>(`${this.resourceUrl}/${id}`, sms, { observe: 'response' });
+    }
 }

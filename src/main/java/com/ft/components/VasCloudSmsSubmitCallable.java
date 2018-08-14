@@ -75,7 +75,7 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
         createBucket(campaign.getRateLimit());
         for (Sms sms : smsList) {
         	log.debug("Gotta submit SMS: " + sms);
-        	VasCloudMsgDTO request = createMsg(sms, campaign, cfg);
+        	VasCloudMsgDTO request = createMsg(sms, cfg);
     	    try {
     	    	if (bucket != null) bucket.asScheduler().consume(1);
     	    	VasCloudMsgDTO response = restTemplate.postForObject(cfg.getEndPoint(), request, VasCloudMsgDTO.class);
@@ -86,12 +86,12 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
     	    	;
     	    	log.info("SMS VASCLOUD RESPONSE: " + response);
     	    	i ++;
-    	    	if (response.getCmd().get("error_id").equalsIgnoreCase("0")) {
+    	    	if ((response != null) && response.getCmd().get("error_id").equalsIgnoreCase("0")) {
     	    		log.info("Successful submit!!!");
     	    		successCnt ++;
     	    		smsRepo.save(sms.state(9));
     	    	} else {
-    	    		log.error("Failed to submit SMS" + response.getCmd().get("error_id") + "|" + response.getCmd().get("error_desc"));
+    	    		log.error("Failed to submit SMS " + response.getCmd().get("error_id") + "|" + response.getCmd().get("error_desc"));
     	    		smsRepo.save(sms.state(-9));
     	    		errorCnt ++;
     	    	}
@@ -111,7 +111,7 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
         return i;
     }
 
-    public VasCloudMsgDTO createMsg(Sms sms, Campaign cp, VasCloudConfigurationDTO cfg)  {
+    public VasCloudMsgDTO createMsg(Sms sms, VasCloudConfigurationDTO cfg)  {
 		VasCloudMsgDTO msg = new VasCloudMsgDTO();
 		msg.setMsgType("REQUEST");
 		msg.setModule("SMSGW");
@@ -119,7 +119,7 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
 
 		long id = System.currentTimeMillis();
 		String msisdn = sms.getDestination();
-		String shortCode = cp.getShortCode();
+		String shortCode = cfg.getShortCode();
 		String authenticate = DigestUtils.md5DigestAsHex((
 				DigestUtils.md5DigestAsHex((id + cfg.getUsername()).getBytes())
 				+ DigestUtils.md5DigestAsHex(("smsgw@2016" + msisdn).getBytes())

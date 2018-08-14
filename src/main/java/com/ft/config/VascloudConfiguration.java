@@ -19,8 +19,8 @@ public class VascloudConfiguration {
 	public RestTemplate restTemplate() {
 		RestTemplate result = new RestTemplate();
 		Map<String, String> headers = new HashMap<String, String>();
-		headers.put(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_UTF8_VALUE);
-		headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
+		headers.put(HttpHeaders.ACCEPT, MediaType.APPLICATION_XML_VALUE);
+		headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE);
 		result.getInterceptors().add(new HeaderRequestInterceptor(headers));
 		return result;
 	}

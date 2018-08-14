@@ -111,7 +111,8 @@
             "filter": "Filter",
             "import": "Import",
             "export": "Export",
-            "reset": "Reset"
+            "reset": "Reset",
+            "submit": "Submit"
         },
         "detail": {
             "field": "Field",

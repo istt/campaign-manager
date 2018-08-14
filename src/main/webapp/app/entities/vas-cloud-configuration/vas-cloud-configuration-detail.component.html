@@ -1,5 +1,5 @@
 <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-md-6">
         <div *ngIf="vasCloudConfiguration">
             <h2><small jhiTranslate="campaignManagerApp.vasCloudConfiguration.detail.title">Vas Cloud Configuration</small> {{vasCloudConfiguration.serviceCode}} / {{vasCloudConfiguration.packageCode}}</h2>
             <hr>
@@ -39,17 +39,43 @@
                 </dd>
             </dl>
 
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-            </button>
         </div>
+    </div><div class="col-md-6" *ngIf="sms">
+      <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+          <h3 id="jhi-sms-heading" jhiTranslate="campaignManagerApp.sms.home.createOrEditLabel">Create or edit a Sms</h3>
+          <div>
+              <div class="form-group">
+                  <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.destination" for="field_destination" [ngbTooltip]="'campaignManagerApp.sms.help.destination' | translate">Destination</label>
+                  <input type="text" class="form-control" name="destination" id="field_destination"
+                      [(ngModel)]="sms.destination" />
+              </div>
+              <div class="form-group">
+                  <label class="form-control-label" jhiTranslate="campaignManagerApp.sms.shortMsg" for="field_shortMsg" [ngbTooltip]="'campaignManagerApp.sms.help.shortMsg' | translate">Destination</label>
+                  <textarea type="text" class="form-control" name="destination" id="field_shortMsg" [(ngModel)]="sms.shortMsg" ></textarea>
+              </div>
+          </div>
+          <div>
+              <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                  <fa-icon [icon]="'paper-plane'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.submit">Submit</span>
+              </button>
+          </div>
+      </form>
+
+<pre><code>
+REQUEST: {{ sms.submitRequestPayload }}
+
+RESPONSE: {{ sms.submitResponsePayload }}
+</code></pre>
     </div>
 </div>
+<button type="submit"
+        (click)="previousState()"
+        class="btn btn-info">
+    <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+</button>
+
+<button type="button"
+        [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'edit']"
+        class="btn btn-primary">
+    <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+</button>

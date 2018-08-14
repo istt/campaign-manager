@@ -25,7 +25,7 @@
                   <dt><span jhiTranslate="campaignManagerApp.campaign.expiredAt" >Expired At</span></dt>
                     <dd><span>{{ campaign.expiredAt }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.cfg"  [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</span></dt>
-                  <dd>{{ campaign.cfg }}</span></dd>
+                  <dd><code>{{ campaign.cfg | json}}</code></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.shortMsg"  [ngbTooltip]="'campaignManagerApp.campaign.help.shortMsg' | translate">Short Msg</span></dt>
                   <dd><span>{{ campaign.shortMsg }}</span></dd>
                 <dt><span jhiTranslate="campaignManagerApp.campaign.rateLimit"  [ngbTooltip]="'campaignManagerApp.campaign.help.rateLimit' | translate">Rate Limit</span></dt>
