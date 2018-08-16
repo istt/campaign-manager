@@ -100,6 +100,18 @@ public class SmsRepositoryImpl implements SmsCustomRepository {
 	}
 
 	@Override
+	public List<Object> statsByCampaign(String campaignId) {
+		Aggregation agg = Aggregation.newAggregation(
+				Aggregation.match(
+						Criteria.where("campaignId").is(campaignId)
+				),
+                Aggregation.group("state").count().as("cnt")
+                );
+		AggregationResults<Object> result = mongoTemplate.aggregate(agg, Sms.class, Object.class);
+		return result.getMappedResults();
+	}
+
+	@Override
 	public List<Object> stats(SmsDTO searchModel) {
 		Aggregation agg = Aggregation.newAggregation(
 				Aggregation.match( createCriteria(searchModel) ),

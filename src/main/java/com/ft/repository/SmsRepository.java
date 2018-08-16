@@ -38,4 +38,10 @@ QuerydslPredicateExecutor<Sms>, QuerydslBinderCustomizer<QSms> {
 	  }
 
 	Page<Sms> findAllByCampaignIdAndState(String id, int i, Pageable pageable);
+
+	Page<Sms> findAllByCampaignIdAndStateLessThanAndStateGreaterThan(String id, int i, int j, Pageable pageable);
+
+	Long countByCampaignIdAndState(String id, int i);
+
+	Long countByCampaignId(String id);
 }

@@ -46,14 +46,14 @@ public class VasCloudSendSmsService {
      * TODO: Using message broker for modern pattern
      * @throws InterruptedException
      */
-    @Scheduled(fixedDelay = 60000)
+    // @Scheduled(fixedDelay = 1000)
     public long submitPendingCampaign() throws InterruptedException {
     	int threads = 0;
     	CompletionService<Long> completionService = new ExecutorCompletionService<Long>(taskExecutor);
     	Pageable pageable = PageRequest.of(0, 1000);
     	for (Campaign cp : cpRepo.findAllByState(2)) {
 //    		log.debug("Found campaign: " + cp + " -- cpid" + cp.getId());
-			List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndStateLessThan(cp.getId(), 2, pageable)
+			List<Sms> tobeSubmit = smsRepo.findAllByCampaignIdAndState(cp.getId(), 0, pageable)
 					.getContent();
 //			log.debug("Found SMS: " + tobeSubmit);
     		if (tobeSubmit.size() == 0) {

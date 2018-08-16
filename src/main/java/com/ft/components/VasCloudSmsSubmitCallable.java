@@ -77,7 +77,7 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
         	log.debug("Gotta submit SMS: " + sms);
         	VasCloudMsgDTO request = createMsg(sms, cfg);
     	    try {
-    	    	if (bucket != null) bucket.asScheduler().consume(1);
+    	    	if ((cfg.getRateLimit() == null) && (bucket != null)) bucket.asScheduler().consume(1);
     	    	VasCloudMsgDTO response = restTemplate.postForObject(cfg.getEndPoint(), request, VasCloudMsgDTO.class);
     	    	sms
     	    	.submitRequestPayload(request.toString())

@@ -21,4 +21,6 @@ public interface SmsCustomRepository {
 
 	List<Object> stats(SmsDTO predicate);
 
+	List<Object> statsByCampaign(String campaignId);
+
 }
