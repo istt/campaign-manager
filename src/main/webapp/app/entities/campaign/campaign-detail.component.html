@@ -1,11 +1,30 @@
-
-<jhi-alert-error></jhi-alert-error>
+<jhi-alert></jhi-alert>
 <div class="row justify-content-center">
     <div class="col-md-5"  *ngIf="campaign">
-      <h2><small jhiTranslate="campaignManagerApp.campaign.detail.title">Campaign</small> {{campaign.name}}
-      <sup class="badge badge-pill badge-{{ 'campaignManagerApp.campaign.stateClass_' + campaign.state | translate}}">{{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}</sup>
-      </h2>
+      <h2><small jhiTranslate="campaignManagerApp.campaign.detail.title">Campaign</small> {{campaign.name}} </h2>
       <hr>
+      <div class="clearfix"><div class="btn-group">
+          <button type="submit" (click)="changeState(2)"
+                  class="btn btn-success btn-sm">
+              <fa-icon [icon]="'play-circle'" ></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.play">Play</span>
+          </button>
+          <button type="submit" (click)="changeState(0)"
+                  class="btn btn-warning btn-sm">
+              <fa-icon [icon]="'pause-circle'" ></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.pause">Pause</span>
+          </button>
+          <button type="submit" (click)="changeState(-9)"
+                  class="btn btn-danger btn-sm">
+              <fa-icon [icon]="'stop-circle'" ></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.stop">Stop</span>
+          </button>
+          <button type="submit" (click)="changeState(1)"
+                  class="btn btn-warning btn-sm">
+              <fa-icon [icon]="'check-circle'" ></fa-icon>
+              <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.approve">Approve</span>
+          </button>
+      </div></div>
       <div class="card mt-3 mb-3" *ngIf="campaign.stats">
         <div class="card-header" jhiTranslate="campaignManagerApp.campaign.monitoring"></div>
         <div class="card-body"  *ngIf="campaign.stats.msgCnt">
@@ -130,38 +149,110 @@
     </ngb-tab>
   </ngb-tabset>
 
+  <div class="card mt-3 mb-3" *ngIf="campaign.stats?.successStats && campaign.stats.successStats.length">
+    <div class="card-header bg-success text-white" jhiTranslate="campaignManagerApp.campaign.stats.successStats"></div>
+    <div class="card-body">
+      <div class="table-responsive"><table class="table table-striped">
+          <thead>
+            <tr>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let s of campaign.stats?.successStats">
+              <td>{{s._id}}</td>
+              <td>{{s.cnt}}</td>
+          </tr>
+          </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="card mt-3 mb-3" *ngIf="campaign.stats?.failedStats && campaign.stats.failedStats.length">
+    <div class="card-header bg-danger text-white" jhiTranslate="campaignManagerApp.campaign.stats.failedStats"></div>
+    <div class="card-body">
+      <div class="table-responsive"><table class="table table-striped">
+          <thead>
+            <tr>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let e of campaign.stats.failedStats">
+              <td>{{e._id}}</td>
+              <td>{{e.cnt}}</td>
+          </tr>
+          </tbody>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="card mt-3 mb-3" *ngIf="campaign.stats?.pendingStats && campaign.stats.pendingStats.length">
+    <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.stats.pendingStats"></div>
+    <div class="card-body" *ngIf="campaign.stats?.pendingStats">
+      <div class="table-responsive"><table class="table table-striped">
+          <thead>
+            <tr>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
+              <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of campaign.stats.pendingStats" class="bg-light">
+                <td>{{p._id}}</td>
+                <td>{{p.cnt}}</td>
+            </tr>
+          </tbody>
+      </table></div>
+    </div>
+  </div>
+
+
+  <div class="row">
+      <button type="submit"
+              (click)="previousState()"
+              class="btn btn-info">
+          <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+      </button>
+
+      <button type="button"
+              [routerLink]="['/campaign', campaign.id, 'edit']"
+              class="btn btn-primary">
+          <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+      </button>
+  </div>
+
 
     </div>
 
     <div class="col-md-7">
 
       <div>
-          <h3 class="float-right">
+          <h3 class="text-right">
+              <span class="badge badge-pill badge-sm float-left badge-{{ 'campaignManagerApp.campaign.stateClass_' + campaign.state | translate}}">{{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}</span> 
               <span jhiTranslate="campaignManagerApp.sms.home.title">Sms</span>
           </h3>
-          <div class="btn-group">
-              <button type="submit" (click)="changeState(2)"
+          <hr>
+
+          <div class="clearfix"> <div class="btn-group float-right">
+              <button type="submit" (click)="exportMsisdn(-9, 'FAILED')"
+                      class="btn btn-warning btn-sm">
+                  <fa-icon icon="ban" ></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.exportFailed">Export Failed MSISDN</span>
+              </button>
+              <button type="submit" (click)="exportMsisdn(9, 'SUCCESS')"
                       class="btn btn-success btn-sm">
-                  <fa-icon [icon]="'play-circle'" ></fa-icon>
-                  <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.play">Play</span>
+                  <fa-icon icon="check" ></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.exportSuccess">Export Success MSISDN</span>
               </button>
-              <button type="submit" (click)="changeState(0)"
-                      class="btn btn-warning btn-sm">
-                  <fa-icon [icon]="'pause-circle'" ></fa-icon>
-                  <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.pause">Pause</span>
+              <button type="submit" (click)="exportMsisdn(0, 'PENDING')"
+                      class="btn btn-info btn-sm">
+                  <fa-icon icon="bell" ></fa-icon>
+                  <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.exportPending">Export Pending MSISDN</span>
               </button>
-              <button type="submit" (click)="changeState(-9)"
-                      class="btn btn-danger btn-sm">
-                  <fa-icon [icon]="'stop-circle'" ></fa-icon>
-                  <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.stop">Stop</span>
-              </button>
-              <button type="submit" (click)="changeState(1)"
-                      class="btn btn-warning btn-sm">
-                  <fa-icon [icon]="'check-circle'" ></fa-icon>
-                  <span class="d-none d-md-inline" jhiTranslate="campaignManagerApp.campaign.action.approve">Approve</span>
-              </button>
-          </div>
-          <jhi-alert></jhi-alert>
+          </div></div>
           <div class="table-responsive mt-4" *ngIf="sms">
               <table class="table table-striped table-bordered">
                   <thead>
@@ -175,7 +266,12 @@
                   <thead><tr>
                     <th><input class="form-control" type="text" id="field_destination" [(ngModel)]="searchModel.destination" /></th>
                     <th><input class="form-control" type="text" id="field_state" [(ngModel)]="searchModel.state" /></th>
-                    <th><input class="form-control" type="text" id="field_submitAt" [(ngModel)]="searchModel.submitAt" /></th>
+                    <th  class="input-group">
+                        <input class="form-control" type="hidden" name="field_submitAtDate" [(ngModel)]="searchModel.submitAt" ngbDatepicker #submitAtDate="ngbDatepicker">
+                          <button class="input-group-append btn btn-outline-secondary" (click)="submitAtDate.toggle()" type="button">
+                            <fa-icon icon="calendar"></fa-icon>
+                          </button>
+                    </th>
                     <th><div class="btn-group flex-btn-group-container">
                       <button type="button" class="btn btn-sm btn-info" (click)="search()">
                         <fa-icon icon="search"></fa-icon>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
@@ -209,81 +305,4 @@
           </div>
       </div>
     </div>
-</div>
-
-
-
-<div class="card mt-3 mb-3" *ngIf="campaign.stats?.successStats && campaign.stats.successStats.length">
-  <div class="card-header bg-success text-white" jhiTranslate="campaignManagerApp.campaign.stats.successStats"></div>
-  <div class="card-body">
-    <div class="table-responsive"><table class="table table-striped">
-        <thead>
-          <tr>
-            <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-            <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let s of campaign.stats?.successStats">
-            <td>{{s._id}}</td>
-            <td>{{s.cnt}}</td>
-        </tr>
-        </tbody>
-    </table></div>
-  </div>
-</div>
-
-<div class="card mt-3 mb-3" *ngIf="campaign.stats?.failedStats && campaign.stats.failedStats.length">
-  <div class="card-header bg-danger text-white" jhiTranslate="campaignManagerApp.campaign.stats.failedStats"></div>
-  <div class="card-body">
-    <div class="table-responsive"><table class="table table-striped">
-        <thead>
-          <tr>
-            <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-            <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let e of campaign.stats.failedStats">
-            <td>{{e._id}}</td>
-            <td>{{e.cnt}}</td>
-        </tr>
-        </tbody>
-    </table></div>
-  </div>
-</div>
-
-<div class="card mt-3 mb-3" *ngIf="campaign.stats?.pendingStats && campaign.stats.pendingStats.length">
-  <div class="card-header bg-info text-white" jhiTranslate="campaignManagerApp.campaign.stats.pendingStats"></div>
-  <div class="card-body" *ngIf="campaign.stats?.pendingStats">
-    <div class="table-responsive"><table class="table table-striped">
-        <thead>
-          <tr>
-            <th><span jhiTranslate="campaignManagerApp.dataFile.name">Name</span></th>
-            <th><span jhiTranslate="campaignManagerApp.dataFile.tags">Tags</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let p of campaign.stats.pendingStats" class="bg-light">
-              <td>{{p._id}}</td>
-              <td>{{p.cnt}}</td>
-          </tr>
-        </tbody>
-    </table></div>
-  </div>
-</div>
-
-
-<div class="row">
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/campaign', campaign.id, 'edit']"
-            class="btn btn-primary">
-        <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
 </div>

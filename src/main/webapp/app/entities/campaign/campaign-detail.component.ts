@@ -5,6 +5,7 @@ import { JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { ICampaign } from 'app/shared/model/campaign.model';
 import { CampaignService } from './campaign.service';
 import { JhiTrackerService } from 'app/core';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 import { HttpErrorResponse, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
 import { ISms } from 'app/shared/model/sms.model';
@@ -75,18 +76,21 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
     }
 
     loadAllSms() {
+        let params = Object.assign(
+            {
+                page: this.page - 1,
+                size: this.itemsPerPage,
+                sort: this.sort()
+            },
+            this.searchModel,
+            { campaignId: this.campaign.id }
+        );
+        if (this.searchModel.submitAt) {
+            params = Object.assign(params, { submitAt: this.searchModel.submitAt.utc().format() });
+        }
+        console.log(params);
         this.smsService
-            .query(
-                Object.assign(
-                    {
-                        page: this.page - 1,
-                        size: this.itemsPerPage,
-                        sort: this.sort()
-                    },
-                    this.searchModel,
-                    { campaignId: this.campaign.id }
-                )
-            )
+            .query(params)
             .subscribe(
                 (res: HttpResponse<ISms[]>) => this.paginateSms(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
@@ -139,21 +143,7 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
     }
 
     search() {
-        this.smsService
-            .query(
-                Object.assign(
-                    {
-                        page: this.page - 1,
-                        size: this.itemsPerPage,
-                        sort: this.sort()
-                    },
-                    this.searchModel
-                )
-            )
-            .subscribe(
-                (res: HttpResponse<ISms[]>) => this.paginateSms(res.body, res.headers),
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+        this.loadAllSms();
     }
 
     exportResult() {
@@ -171,5 +161,12 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
 
     round(a: number, b: number) {
         return Math.round(a * 100 / b);
+    }
+
+    exportMsisdn(state, filename) {
+        this.dataFileService.exportData('msisdn' + this.campaign.code + '-' + filename + '.csv', 'api/export/sms', {
+            campaignId: this.campaign.id,
+            state
+        });
     }
 }

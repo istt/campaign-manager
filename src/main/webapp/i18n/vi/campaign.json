@@ -78,10 +78,13 @@
                 "rateLimit": "SMS or USSD message broadcast per second"
             },
             "action": {
-              "play": "Play",
-              "pause": "Pause",
-              "stop": "Stop",
-              "approve": "Approve"
+              "play": "Chạy",
+              "pause": "Tạm dừng",
+              "stop": "Dừng",
+              "approve": "Duyệt",
+              "exportFailed": "Xuất DS Lỗi",
+              "exportPending": "Xuất DS Chờ",
+              "exportSuccess": "Xuất DS Đã gửi"
             }
         }
     }

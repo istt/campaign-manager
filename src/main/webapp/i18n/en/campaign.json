@@ -121,7 +121,10 @@
               "play": "Play",
               "pause": "Pause",
               "stop": "Stop",
-              "approve": "Approve"
+              "approve": "Approve",
+              "exportFailed": "Export Failed MSISDN",
+              "exportPending": "Export Pending MSISDN",
+              "exportSuccess": "Export Success MSISDN"
             }
         }
     }
