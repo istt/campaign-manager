@@ -3,9 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { JhiParseLinks, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ICampaign } from 'app/shared/model/campaign.model';
+import { CampaignService } from './campaign.service';
 import { JhiTrackerService } from 'app/core';
 
-import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
 import { ISms } from 'app/shared/model/sms.model';
 import { SmsService } from '../sms';
 import { ITEMS_PER_PAGE } from 'app/shared';
@@ -35,6 +36,7 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
     searchModel: ISms = {};
 
     constructor(
+        public campaignService: CampaignService,
         public smsService: SmsService,
         public dataFileService: DataFileService,
         private dataUtils: JhiDataUtils,
@@ -131,12 +133,6 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
     }
 
     // Extra functions
-    saveData() {
-        this.dataFileService
-            .saveData()
-            .subscribe(res => this.jhiAlertService.success('appApp.whitelist.save'), (err: HttpErrorResponse) => this.onError(err.message));
-    }
-
     searchReset() {
         this.searchModel = {};
         this.transition();
@@ -158,5 +154,22 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
                 (res: HttpResponse<ISms[]>) => this.paginateSms(res.body, res.headers),
                 (res: HttpErrorResponse) => this.onError(res.message)
             );
+    }
+
+    exportResult() {
+        this.dataFileService.exportData('msisdn.csv', 'api/export/sms', this.searchModel);
+    }
+
+    changeState(state) {
+        this.campaignService
+            .changeState(this.campaign.id, state)
+            .subscribe(
+                (res: HttpResponse<ICampaign>) => Object.assign(this.campaign, res.body),
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
+    }
+
+    round(a: number, b: number) {
+        return Math.round(a * 100 / b);
     }
 }

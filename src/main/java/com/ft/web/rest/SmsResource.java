@@ -9,6 +9,7 @@ import com.ft.web.rest.errors.BadRequestAlertException;
 import com.ft.web.rest.util.HeaderUtil;
 import com.ft.web.rest.util.PaginationUtil;
 import com.querydsl.core.types.Predicate;
+import com.ft.service.dto.DataFileDTO;
 import com.ft.service.dto.SmsDTO;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
@@ -177,4 +178,19 @@ public class SmsResource {
         List<Object> statistic = smsService.stats((SmsDTO) predicate);
         return ResponseEntity.ok().body(statistic);
     }
+
+    /**
+     * GET  /data-files/:id : get the "id" dataFile.
+     *
+     * @param id the id of the dataFileDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the dataFileDTO, or with status 404 (Not Found)
+     */
+    @GetMapping("/export/sms")
+    @Timed
+    public ResponseEntity<DataFileDTO> exportSms(@QuerydslPredicate(root = Sms.class) Predicate predicate) {
+        DataFileDTO dataFileDTO = smsService.export(predicate);
+        return ResponseEntity.ok().body(dataFileDTO);
+    }
+
+
 }

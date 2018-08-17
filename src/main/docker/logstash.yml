@@ -1,0 +1,10 @@
+version: '2'
+services:
+  logstash:
+    image: docker.elastic.co/logstash/logstash:6.3.2
+    volumes:
+       - ./logstash/pipeline:/usr/share/logstash/pipeline
+       - ./logstash/config:/usr/share/logstash/config
+    ports:
+      - 5400:5400
+      - 5000:5000

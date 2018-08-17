@@ -2,6 +2,7 @@ package com.ft.service;
 
 import com.ft.domain.Sms;
 import com.ft.repository.SmsRepository;
+import com.ft.service.dto.DataFileDTO;
 import com.ft.service.dto.SmsDTO;
 import com.ft.service.mapper.SmsMapper;
 import com.querydsl.core.types.Predicate;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -89,5 +91,17 @@ public class SmsService {
 
 	public List<Object> stats(SmsDTO predicate) {
 		return smsRepository.stats(predicate);
+	}
+
+	public DataFileDTO export(Predicate predicate) {
+		DataFileDTO result = new DataFileDTO();
+		result.setDataContentType("text/csv");
+        String rs = "";
+		Iterator<Sms> smsIt = smsRepository.findAll(predicate).iterator();
+		while (smsIt.hasNext()) {
+			rs += smsIt.next().getDestination() + "\n";
+		}
+		result.setData(rs.getBytes());
+		return result;
 	}
 }

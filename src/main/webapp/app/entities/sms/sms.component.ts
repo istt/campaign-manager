@@ -153,12 +153,6 @@ export class SmsComponent implements OnInit, OnDestroy {
         this.dataFileService.exportData('sms');
     }
 
-    saveData() {
-        this.dataFileService
-            .saveData()
-            .subscribe(res => this.jhiAlertService.success('appApp.whitelist.save'), (err: HttpErrorResponse) => this.onError(err.message));
-    }
-
     searchReset() {
         this.searchModel = {};
         this.transition();

@@ -66,14 +66,11 @@ export class DataFileService {
         return SERVER_API_URL + (apiEndpoint ? apiEndpoint : this.importUrl);
     }
 
-    exportData(fileName: string, apiEndpoint?: string) {
+    exportData(fileName: string, apiEndpoint?: string, req?: any) {
+        const options = createRequestOption(req);
         this.http
-            .get(this.getExportUrl(apiEndpoint), { responseType: 'text' })
+            .get(this.getExportUrl(apiEndpoint), { params: options, responseType: 'text' })
             .subscribe(res => saveAs(new Blob([res], { type: 'text;charset=utf-8' }), fileName));
-    }
-
-    saveData() {
-        return this.http.post(this.getExportUrl(), { observe: 'response' });
     }
 
     // Send a PUT request to import endpoint to reload data from static file.

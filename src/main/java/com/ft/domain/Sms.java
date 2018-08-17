@@ -102,14 +102,14 @@ public class Sms implements Serializable {
      */
     @ApiModelProperty(value = "Last Submission payload")
     @Field("submit_request_payload")
-    private String submitRequestPayload;
+    private Object submitRequestPayload;
 
     /**
      * Last Result from submission
      */
     @ApiModelProperty(value = "Last Result from submission")
     @Field("submit_response_payload")
-    private String submitResponsePayload;
+    private Object submitResponsePayload;
 
     /**
      * Did remote endpoint response back?
@@ -123,7 +123,7 @@ public class Sms implements Serializable {
      */
     @ApiModelProperty(value = "Delivery Report payload")
     @Field("delivery_report_payload")
-    private String deliveryReportPayload;
+    private Object deliveryReportPayload;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public String getId() {
@@ -264,29 +264,29 @@ public class Sms implements Serializable {
         this.expiredAt = expiredAt;
     }
 
-    public String getSubmitRequestPayload() {
+    public Object getSubmitRequestPayload() {
         return submitRequestPayload;
     }
 
-    public Sms submitRequestPayload(String submitRequestPayload) {
+    public Sms submitRequestPayload(Object submitRequestPayload) {
         this.submitRequestPayload = submitRequestPayload;
         return this;
     }
 
-    public void setSubmitRequestPayload(String submitRequestPayload) {
+    public void setSubmitRequestPayload(Object submitRequestPayload) {
         this.submitRequestPayload = submitRequestPayload;
     }
 
-    public String getSubmitResponsePayload() {
+    public Object getSubmitResponsePayload() {
         return submitResponsePayload;
     }
 
-    public Sms submitResponsePayload(String submitResponsePayload) {
+    public Sms submitResponsePayload(Object submitResponsePayload) {
         this.submitResponsePayload = submitResponsePayload;
         return this;
     }
 
-    public void setSubmitResponsePayload(String submitResponsePayload) {
+    public void setSubmitResponsePayload(Object submitResponsePayload) {
         this.submitResponsePayload = submitResponsePayload;
     }
 
@@ -303,16 +303,16 @@ public class Sms implements Serializable {
         this.deliveredAt = deliveredAt;
     }
 
-    public String getDeliveryReportPayload() {
+    public Object getDeliveryReportPayload() {
         return deliveryReportPayload;
     }
 
-    public Sms deliveryReportPayload(String deliveryReportPayload) {
+    public Sms deliveryReportPayload(Object deliveryReportPayload) {
         this.deliveryReportPayload = deliveryReportPayload;
         return this;
     }
 
-    public void setDeliveryReportPayload(String deliveryReportPayload) {
+    public void setDeliveryReportPayload(Object deliveryReportPayload) {
         this.deliveryReportPayload = deliveryReportPayload;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

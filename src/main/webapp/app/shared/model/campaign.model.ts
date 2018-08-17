@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import * as moment from 'moment';
 
 export interface ICampaign {
     id?: string;
@@ -73,5 +74,7 @@ export class Campaign implements ICampaign {
         this.state = 1;
         this.workingHours = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
         this.workingWeekdays = [0, 1, 2, 3, 4, 5, 6];
+        this.startAt = moment();
+        this.expiredAt = moment().add(1, 'day');
     }
 }

@@ -31,13 +31,13 @@ public class SmsDTO implements Serializable {
 
     private ZonedDateTime expiredAt;
 
-    private String submitRequestPayload;
+    private Object submitRequestPayload;
 
-    private String submitResponsePayload;
+    private Object submitResponsePayload;
 
     private ZonedDateTime deliveredAt;
 
-    private String deliveryReportPayload;
+    private Object deliveryReportPayload;
 
     public String getId() {
         return id;
@@ -127,19 +127,19 @@ public class SmsDTO implements Serializable {
         this.expiredAt = expiredAt;
     }
 
-    public String getSubmitRequestPayload() {
+    public Object getSubmitRequestPayload() {
         return submitRequestPayload;
     }
 
-    public void setSubmitRequestPayload(String submitRequestPayload) {
+    public void setSubmitRequestPayload(Object submitRequestPayload) {
         this.submitRequestPayload = submitRequestPayload;
     }
 
-    public String getSubmitResponsePayload() {
+    public Object getSubmitResponsePayload() {
         return submitResponsePayload;
     }
 
-    public void setSubmitResponsePayload(String submitResponsePayload) {
+    public void setSubmitResponsePayload(Object submitResponsePayload) {
         this.submitResponsePayload = submitResponsePayload;
     }
 
@@ -151,11 +151,11 @@ public class SmsDTO implements Serializable {
         this.deliveredAt = deliveredAt;
     }
 
-    public String getDeliveryReportPayload() {
+    public Object getDeliveryReportPayload() {
         return deliveryReportPayload;
     }
 
-    public void setDeliveryReportPayload(String deliveryReportPayload) {
+    public void setDeliveryReportPayload(Object deliveryReportPayload) {
         this.deliveryReportPayload = deliveryReportPayload;
     }
 

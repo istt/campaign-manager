@@ -55,22 +55,38 @@
           </select>
       </div>
 </div></div>
-      <div class="row"><div class="col-md-6">
+      <div class="row"><div class="col-md-3">
       <div class="form-group">
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.startAt" for="field_startAt" [ngbTooltip]="'campaignManagerApp.campaign.help.startAt' | translate">Start At</label>
           <div class="d-flex">
-              <input id="field_startAt" type="datetime-local" class="form-control" name="startAt" [(ngModel)]="startAt"
-              />
+            <div class="input-group">
+              <input class="form-control" name="field_startAtDate" [(ngModel)]="campaign.startAt" ngbDatepicker #startAtDate="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="startAtDate.toggle()" type="button">
+                  <fa-icon icon="calendar"></fa-icon>
+                </button>
+              </div>
+            </div>
           </div>
       </div>
-    </div><div class="col-md-6">
+    </div><div class="col-md-3">
+      <ngb-timepicker [(ngModel)]="startAt" [meridian]="false" name="startAtTime" id="field_startAtTime" size="small"></ngb-timepicker>
+    </div><div class="col-md-3">
       <div class="form-group">
           <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.expiredAt" for="field_expiredAt">Expired At</label>
           <div class="d-flex">
-              <input id="field_expiredAt" type="datetime-local" class="form-control" name="expiredAt" [(ngModel)]="expiredAt"
-              />
+            <div class="input-group">
+              <input class="form-control" name="field_expiredAtDate" [(ngModel)]="campaign.expiredAt" ngbDatepicker #expiredAtDate="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" (click)="expiredAtDate.toggle()" type="button">
+                  <fa-icon icon="calendar"></fa-icon>
+                </button>
+              </div>
+            </div>
           </div>
       </div>
+    </div><div class="col-md-3">
+      <ngb-timepicker [(ngModel)]="expiredAt" [meridian]="false" name="expiredAtTime" id="expiredAtTime" size="small"></ngb-timepicker>
     </div></div>
 
 

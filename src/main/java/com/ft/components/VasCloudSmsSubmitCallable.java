@@ -2,9 +2,7 @@ package com.ft.components;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -58,42 +56,34 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
 
     private Bucket bucket;
 
-    public static Map<String, Bucket> bucketList = new ConcurrentHashMap<String, Bucket>();
-
     @Override
     public Long call() throws Exception {
-        long i = 0L; long successCnt = 0L; long errorCnt = 0L;
         VasCloudConfigurationDTO cfg = mapper.readValue(mapper.writeValueAsString(campaign.getCfg().get("VASCLOUD")), VasCloudConfigurationDTO.class);
-        if (cfg.getRateLimit() != null) {
-        	Bucket svcBucket = bucketList.get(cfg.getId());
-        	if (svcBucket == null ) {
-        		svcBucket = createBucket(cfg.getRateLimit());
-        		bucketList.put(cfg.getId(), svcBucket);
-        	}
-        	svcBucket.asScheduler().consume(smsList.size());
-        }
-        createBucket(campaign.getRateLimit());
+        Long rateLimit = cfg.getRateLimit();
+        if (rateLimit == null)
+        	rateLimit = campaign.getRateLimit();
+        else if (campaign.getRateLimit() != null)
+        	rateLimit = campaign.getRateLimit() < rateLimit ? campaign.getRateLimit() : rateLimit;
+
+        this.bucket = createBucket(rateLimit);
         for (Sms sms : smsList) {
         	log.debug("Gotta submit SMS: " + sms);
         	VasCloudMsgDTO request = createMsg(sms, cfg);
     	    try {
-    	    	if ((cfg.getRateLimit() == null) && (bucket != null)) bucket.asScheduler().consume(1);
+    	    	if (bucket != null) bucket.asScheduler().consume(1);
     	    	VasCloudMsgDTO response = restTemplate.postForObject(cfg.getEndPoint(), request, VasCloudMsgDTO.class);
     	    	sms
-    	    	.submitRequestPayload(request.toString())
-    	    	.submitResponsePayload(response.toString())
+    	    	.submitRequestPayload(request)
+    	    	.submitResponsePayload(response)
     	    	.submitAt(ZonedDateTime.now())
     	    	;
     	    	log.info("SMS VASCLOUD RESPONSE: " + response);
-    	    	i ++;
     	    	if ((response != null) && response.getCmd().get("error_id").equalsIgnoreCase("0")) {
-    	    		log.info("Successful submit!!!");
-    	    		successCnt ++;
+    	    		log.info("Submit OK: " + sms);
     	    		smsRepo.save(sms.state(9));
     	    	} else {
-    	    		log.error("Failed to submit SMS " + response.getCmd().get("error_id") + "|" + response.getCmd().get("error_desc"));
+    	    		log.error("Submit FAILED: " + response);
     	    		smsRepo.save(sms.state(-9));
-    	    		errorCnt ++;
     	    	}
     	    } catch (HttpStatusCodeException s){
     	    	log.error("Cannot send message: " + s.getRawStatusCode() + " " + s.getStatusText() + ":" + s.getResponseBodyAsString());
@@ -103,12 +93,14 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
                 log.error("Exception: " + request, e);
             }
         }
-        campaign.getStats().put("submitCnt", campaign.getStats().get("submitCnt") == null ? i : Long.parseLong(campaign.getStats().get("submitCnt").toString()) + i);
-        campaign.getStats().put("successCnt", campaign.getStats().get("successCnt") == null ? successCnt : Long.parseLong(campaign.getStats().get("successCnt").toString()) + successCnt);
-        campaign.getStats().put("failedCnt", campaign.getStats().get("failedCnt") == null ? errorCnt : Long.parseLong(campaign.getStats().get("failedCnt").toString()) + errorCnt);
+        long failedCnt = smsRepo.countByCampaignIdAndState(campaign.getId(), -9);
+        long successCnt = smsRepo.countByCampaignIdAndState(campaign.getId(), 9);
+    		campaign.getStats().put("failedCnt", failedCnt);
+    		campaign.getStats().put("successCnt", successCnt);
+    		campaign.getStats().put("submitCnt", successCnt + failedCnt);
         cpRepo.save(campaign);
         messagingTemplate.convertAndSend("/topic/campaign/" + campaign.getId(), campaign.getStats());
-        return i;
+        return successCnt + failedCnt;
     }
 
     public VasCloudMsgDTO createMsg(Sms sms, VasCloudConfigurationDTO cfg)  {

@@ -46,7 +46,7 @@ public class VasCloudSendSmsService {
      * TODO: Using message broker for modern pattern
      * @throws InterruptedException
      */
-    // @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 1000)
     public long submitPendingCampaign() throws InterruptedException {
     	int threads = 0;
     	CompletionService<Long> completionService = new ExecutorCompletionService<Long>(taskExecutor);

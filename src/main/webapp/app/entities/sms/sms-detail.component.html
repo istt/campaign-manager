@@ -47,11 +47,11 @@
                 </dd>
                 <dt><span jhiTranslate="campaignManagerApp.sms.submitRequestPayload" [ngbTooltip]="'campaignManagerApp.sms.help.submitRequestPayload' | translate">Submit Request Payload</span></dt>
                 <dd>
-                    <span>{{sms.submitRequestPayload}}</span>
+                    <pre><code>{{sms.submitRequestPayload | json }}</code></pre>
                 </dd>
                 <dt><span jhiTranslate="campaignManagerApp.sms.submitResponsePayload" [ngbTooltip]="'campaignManagerApp.sms.help.submitResponsePayload' | translate">Submit Response Payload</span></dt>
                 <dd>
-                    <span>{{sms.submitResponsePayload}}</span>
+                    <pre><code>{{sms.submitResponsePayload | json }}</code></pre>
                 </dd>
                 <dt><span jhiTranslate="campaignManagerApp.sms.deliveredAt" [ngbTooltip]="'campaignManagerApp.sms.help.deliveredAt' | translate">Delivered At</span></dt>
                 <dd>
@@ -59,7 +59,7 @@
                 </dd>
                 <dt><span jhiTranslate="campaignManagerApp.sms.deliveryReportPayload" [ngbTooltip]="'campaignManagerApp.sms.help.deliveryReportPayload' | translate">Delivery Report Payload</span></dt>
                 <dd>
-                    <span>{{sms.deliveryReportPayload}}</span>
+                    <pre><code>{{sms.deliveryReportPayload | json }}</code></pre>
                 </dd>
             </dl>
 

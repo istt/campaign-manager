@@ -85,12 +85,24 @@ export class CampaignUpdateComponent implements OnInit {
         window.history.back();
     }
 
+    // Save the campaign
     save() {
         this.isSaving = true;
         this.campaign.createdAt = moment(this.createdAt, DATE_TIME_FORMAT);
         this.campaign.approvedAt = moment(this.approvedAt, DATE_TIME_FORMAT);
-        this.campaign.startAt = moment(this.startAt, DATE_TIME_FORMAT);
-        this.campaign.expiredAt = moment(this.expiredAt, DATE_TIME_FORMAT);
+        // this.campaign.startAt = moment(this.startAt, DATE_TIME_FORMAT);
+        const startAtTime = this.startAt.split(':');
+        this.campaign.startAt = this.campaign.startAt
+            .local()
+            .set('hour', parseInt(startAtTime[0], 10))
+            .set('minute', parseInt(startAtTime[1], 10))
+            .set('second', parseInt(startAtTime[2], 10));
+        const expiredAtTime = this.expiredAt.split(':');
+        this.campaign.expiredAt = this.campaign.expiredAt
+            .local()
+            .set('hour', parseInt(expiredAtTime[0], 10))
+            .set('minute', parseInt(expiredAtTime[1], 10))
+            .set('second', parseInt(expiredAtTime[2], 10));
         this.campaign.code = this.campaign.name; /// OVERRIDE
         this.campaign.datafiles = Object.getOwnPropertyNames(this.dataFileService.checked)
             .map(id => (this.dataFileService.checked[id].checked ? this.dataFileService.checked[id] : false))
@@ -122,17 +134,19 @@ export class CampaignUpdateComponent implements OnInit {
         this._campaign = campaign;
         this.createdAt = moment(campaign.createdAt).format(DATE_TIME_FORMAT);
         this.approvedAt = moment(campaign.approvedAt).format(DATE_TIME_FORMAT);
-        this.startAt = moment(campaign.startAt).format(DATE_TIME_FORMAT);
-        this.expiredAt = moment(campaign.expiredAt).format(DATE_TIME_FORMAT);
+        this.startAt = campaign.startAt.local().format('HH:mm:ss');
+        this.expiredAt = campaign.expiredAt.local().format('HH:mm:ss');
     }
     // Vas Cloud configuration handle
     setVasCloudCfg(cfgId) {
-        this.vasCloudSvc.entity = this.vasCloudSvc.entities.filter(v => v.id === cfgId)[0];
-        this.campaign.cfg['VASCLOUD'] = this.vasCloudSvc.entity;
-        this.campaign.cpId = this.vasCloudSvc.entity.cpCode;
-        this.campaign.spId = this.vasCloudSvc.entity.serviceId;
-        this.campaign.shortCode = this.vasCloudSvc.entity.shortCode;
-        this.campaign.channel = 'VASCLOUD/SMSGW/' + this.vasCloudSvc.entity.serviceCode + '/' + this.vasCloudSvc.entity.packageCode;
+        if (this.vasCloudSvc.entities) {
+            this.vasCloudSvc.entity = this.vasCloudSvc.entities.filter(v => v.id === cfgId)[0];
+            this.campaign.cfg['VASCLOUD'] = this.vasCloudSvc.entity;
+            this.campaign.cpId = this.vasCloudSvc.entity.cpCode;
+            this.campaign.spId = this.vasCloudSvc.entity.serviceId;
+            this.campaign.shortCode = this.vasCloudSvc.entity.shortCode;
+            this.campaign.channel = 'VASCLOUD/SMSGW/' + this.vasCloudSvc.entity.serviceCode + '/' + this.vasCloudSvc.entity.packageCode;
+        }
     }
     // Data File handle
     loadAll() {

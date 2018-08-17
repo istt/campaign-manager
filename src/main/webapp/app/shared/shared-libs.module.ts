@@ -6,6 +6,7 @@ import { NgJhipsterModule } from 'ng-jhipster';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DatetimePopupModule } from 'ngx-bootstrap-datetime-popup';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         }),
         InfiniteScrollModule,
         CookieModule.forRoot(),
-        FontAwesomeModule
+        FontAwesomeModule,
+        DatetimePopupModule
     ],
     exports: [FormsModule, CommonModule, NgbModule, NgJhipsterModule, InfiniteScrollModule, FontAwesomeModule]
 })
