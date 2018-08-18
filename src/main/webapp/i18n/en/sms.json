@@ -3,18 +3,18 @@
     "campaignManagerApp": {
         "sms" : {
             "home": {
-                "title": "Sms",
-                "createLabel": "Create a new Sms",
-                "createOrEditLabel": "Create or edit a Sms"
+                "title": "SMS",
+                "createLabel": "Create a new SMS",
+                "createOrEditLabel": "Create or edit a SMS"
             },
-            "created": "A new Sms is created with identifier {{ param }}",
-            "updated": "A Sms is updated with identifier {{ param }}",
-            "deleted": "A Sms is deleted with identifier {{ param }}",
+            "created": "A new SMS is created with identifier {{ param }}",
+            "updated": "A SMS is updated with identifier {{ param }}",
+            "deleted": "A SMS is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Sms {{ id }}?"
+                "question": "Are you sure you want to delete SMS {{ id }}?"
             },
             "detail": {
-                "title": "Sms"
+                "title": "SMS"
             },
             "source": "Source",
             "destination": "Destination",

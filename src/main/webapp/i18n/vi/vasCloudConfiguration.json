@@ -3,18 +3,18 @@
     "campaignManagerApp": {
         "vasCloudConfiguration" : {
             "home": {
-                "title": "Vas Cloud Configurations",
-                "createLabel": "Thêm mới một Vas Cloud Configuration",
-                "createOrEditLabel": "Thêm mới hoặc cập nhật Vas Cloud Configuration"
+                "title": "Kết nối VAS Cloud",
+                "createLabel": "Thêm Kết nối",
+                "createOrEditLabel": "Thêm mới / Chỉnh sửa Kết nối"
             },
-            "created": "Một Vas Cloud Configuration mới được tạo với định danh {{ param }}",
-            "updated": "Một Vas Cloud Configuration cập nhật với định danh {{ param }}",
-            "deleted": "Một Vas Cloud Configuration đã xóa với định danh {{ param }}",
+            "created": "Một Kết nối VAS Cloud mới được tạo với định danh {{ param }}",
+            "updated": "Một Kết nối VAS Cloud cập nhật với định danh {{ param }}",
+            "deleted": "Một Kết nối VAS Cloud đã xóa với định danh {{ param }}",
             "delete": {
-                "question": "Bạn có chắc là muốn xóa Vas Cloud Configuration {{ id }}?"
+                "question": "Bạn có chắc là muốn xóa Kết nối VAS Cloud {{ id }}?"
             },
             "detail": {
-                "title": "Vas Cloud Configuration"
+                "title": "Kết nối VAS Cloud"
             },
             "endPoint": "End Point",
             "username": "Username",
@@ -25,7 +25,22 @@
             "rateLimit": "Rate Limit",
             "cpCode": "Cp Code",
             "cpCharge": "Cp Charge",
-            "serviceId": "Service Id"
+            "serviceId": "Service ID",
+            "action": {
+              "testSms": "Send a Test SMS"
+            },
+            "help": {
+              "endPoint": "URL gửi request tới SMS Gateway Proxy.",
+              "username": "Username trên VAS Cloud",
+              "password": "Password trên VAS Cloud",
+              "serviceCode": "Service Code",
+              "packageCode": "Package Code",
+              "shortCode": "Đầu số gửi tin",
+              "rateLimit": "TPS - Number of message should be submit per second",
+              "cpCode": "Mã CP",
+              "cpCharge": "Mã trừ cước của CP",
+              "serviceId": "Mã dịch vụ trên VAS Cloud"
+            }
         }
     }
 }

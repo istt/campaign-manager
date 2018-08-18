@@ -25,7 +25,22 @@
             "rateLimit": "Rate Limit",
             "cpCode": "CP Code",
             "cpCharge": "CP Charge",
-            "serviceId": "Service Id"
+            "serviceId": "Service ID",
+            "action": {
+              "testSms": "Send a Test SMS"
+            },
+            "help": {
+              "endPoint": "The URL of SMS Gateway Proxy to send SMS to.",
+              "username": "Username on VAS Cloud",
+              "password": "Password on VAS Cloud",
+              "serviceCode": "Service Code",
+              "packageCode": "Package Code",
+              "shortCode": "Short Code for sending SMS out",
+              "rateLimit": "TPS - Number of message should be submit per second",
+              "cpCode": "Content Provider Code",
+              "cpCharge": "Content Provider Charging Code",
+              "serviceId": "Service ID on VAS Cloud"
+            }
         }
     }
 }

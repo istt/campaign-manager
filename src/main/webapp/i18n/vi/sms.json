@@ -4,14 +4,14 @@
         "sms" : {
             "home": {
                 "title": "SMS",
-                "createLabel": "Thêm mới một Sms",
-                "createOrEditLabel": "Thêm mới hoặc cập nhật Sms"
+                "createLabel": "Thêm mới một SMS",
+                "createOrEditLabel": "Thêm mới hoặc cập nhật SMS"
             },
-            "created": "Một Sms mới được tạo với định danh {{ param }}",
-            "updated": "Một Sms cập nhật với định danh {{ param }}",
-            "deleted": "Một Sms đã xóa với định danh {{ param }}",
+            "created": "Một SMS mới được tạo với định danh {{ param }}",
+            "updated": "Một SMS cập nhật với định danh {{ param }}",
+            "deleted": "Một SMS đã xóa với định danh {{ param }}",
             "delete": {
-                "question": "Bạn có chắc là muốn xóa Sms {{ id }}?"
+                "question": "Bạn có chắc là muốn xóa SMS {{ id }}?"
             },
             "detail": {
                 "title": "SMS"

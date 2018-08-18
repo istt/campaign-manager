@@ -38,10 +38,10 @@
               <th class="input-group"><input class="form-control" type="datetime-local" id="field_startAt" [(ngModel)]="searchModel.startAt" /> <input class="form-control" type="datetime-local" id="field_expiredAt" [(ngModel)]="searchModel.expiredAt" /></th>
               <th class="text-right"><div class="btn-group flex-btn-group-container">
                 <button type="button" class="btn btn-info" (click)="search()">
-                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
+                  <fa-icon icon="search"></fa-icon> <span jhiTranslate="entity.action.search"> Search</span>
                 </button>
                 <button type="button" class="btn btn-default" (click)="searchReset()">
-                  <span class="fa fa-search"></span>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
+                  <fa-icon icon="sync"></fa-icon> <span jhiTranslate="entity.action.reset">Reset</span>
                 </button>
               </div></th>
             </tr></thead>
