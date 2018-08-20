@@ -67,6 +67,10 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
 
         this.bucket = createBucket(rateLimit);
         for (Sms sms : smsList) {
+        	if (Thread.currentThread().isInterrupted()) {
+                // Cannot use InterruptedException since it's checked
+                throw new RuntimeException();
+            }
         	log.debug("Gotta submit SMS: " + sms);
         	VasCloudMsgDTO request = createMsg(sms, cfg);
     	    try {
@@ -89,6 +93,9 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
     	    	log.error("Cannot send message: " + s.getRawStatusCode() + " " + s.getStatusText() + ":" + s.getResponseBodyAsString());
     	    } catch (ResourceAccessException e) {
     			log.error("FAILED TO CONNECT TO ENDPOINT: " + e.getMessage());
+    	    } catch (RuntimeException | InterruptedException s) {
+    	    	log.debug("Processing Interrupted. Exiting");
+    	    	throw s;
             } catch (Exception e) {
                 log.error("Exception: " + request, e);
             }
@@ -98,8 +105,9 @@ public class VasCloudSmsSubmitCallable implements Callable<Long> {
     		campaign.getStats().put("failedCnt", failedCnt);
     		campaign.getStats().put("successCnt", successCnt);
     		campaign.getStats().put("submitCnt", successCnt + failedCnt);
-        cpRepo.save(campaign);
+		campaign = cpRepo.save(campaign);
         messagingTemplate.convertAndSend("/topic/campaign/" + campaign.getId(), campaign.getStats());
+        messagingTemplate.convertAndSend("/topic/campaign", campaign);
         return successCnt + failedCnt;
     }
 

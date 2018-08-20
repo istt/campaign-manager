@@ -1,7 +1,12 @@
 package com.ft.service;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionService;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorCompletionService;
@@ -41,6 +46,8 @@ public class VasCloudSendSmsService {
     @Autowired
     ApplicationContext applicationContext;
 
+    public static Map<String, Future<Long>> runningThreads = new ConcurrentHashMap<String, Future<Long>>();
+
     /**
      * Deliver SMS Response to customer every 10 seconds
      * TODO: Using message broker for modern pattern
@@ -48,7 +55,6 @@ public class VasCloudSendSmsService {
      */
     @Scheduled(fixedDelay = 1000)
     public long submitPendingCampaign() throws InterruptedException {
-    	int threads = 0;
     	CompletionService<Long> completionService = new ExecutorCompletionService<Long>(taskExecutor);
     	Pageable pageable = PageRequest.of(0, 1000);
     	for (Campaign cp : cpRepo.findAllByState(2)) {
@@ -65,32 +71,35 @@ public class VasCloudSendSmsService {
     			VasCloudSmsSubmitCallable sendSmsTask = applicationContext.getBean(VasCloudSmsSubmitCallable.class);
     			sendSmsTask.setSmsList(tobeSubmit);
     			sendSmsTask.setCampaign(cp);
-    			completionService.submit(sendSmsTask);
-    			threads++;
+    			runningThreads.put(cp.getId(), completionService.submit(sendSmsTask));
     		}
     	}
     	Future<Long> completedFuture;
         long submitCnt = 0L;
-        while (threads > 0) {
-            // block until a callable completes
-            completedFuture = completionService.take();
-            threads --;
-
-            // get the Widget, if the Callable was able to create it
+        Iterator<Entry<String, Future<Long>>> iterate = runningThreads.entrySet().iterator();
+        while (iterate.hasNext()) {
+        	Entry<String, Future<Long>> entry = iterate.next();
+        	completedFuture = entry.getValue();
+    		// get the Widget, if the Callable was able to create it
             try {
             	Long res = completedFuture.get();
                 if (completedFuture.isDone()) {
                         submitCnt += res;
-                        log.info("=== ONE THREAD COMPLETED: " + threads + " REQUEST SEND: " + res);
+                        iterate.remove();
+                        log.info("=== ONE THREAD COMPLETED: Campaign #" + entry.getKey() + " REQUEST SEND: " + res);
                 } else {
                         log.error("=== WHY THREAD IS NOT DONE HERE ===" );
                 }
-            } catch (ExecutionException e) {
-                log.error("== CANNOT RUN RENEW TASK", e);
+            } catch (ExecutionException | CancellationException e) {
+                log.error("== CANNOT RUN SEND SMS TASK", e);
+                iterate.remove();
                 continue;
             }
         }
-
     	return submitCnt;
     }
+
+	public void stopCampaign(String id) {
+		if (runningThreads.get(id) != null) runningThreads.get(id).cancel(true);
+	}
 }

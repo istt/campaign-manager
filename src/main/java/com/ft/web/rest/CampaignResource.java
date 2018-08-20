@@ -7,6 +7,7 @@ import com.ft.domain.Campaign;
 import com.ft.repository.SmsRepository;
 import com.ft.security.SecurityUtils;
 import com.ft.service.CampaignService;
+import com.ft.service.VasCloudSendSmsService;
 import com.ft.web.rest.errors.BadRequestAlertException;
 import com.ft.web.rest.util.HeaderUtil;
 import com.ft.web.rest.util.PaginationUtil;
@@ -172,6 +173,9 @@ public class CampaignResource {
     @Autowired
     ObjectMapper mapper;
 
+    @Autowired
+    VasCloudSendSmsService smsSendingService;
+
     /**
      * GET  /campaigns/:id/import : get the "id" campaign.
      *
@@ -190,10 +194,14 @@ public class CampaignResource {
         	log.debug("Exists DTO: " + dto);
         	CampaignDTO campaignDTO = mapper.readerForUpdating(dto).readValue(mapper.writeValueAsString(overrideDTO));
         	log.debug("Merging props: " + dto);
-        	if ((campaignDTO.getState() != dto.getState()) && (campaignDTO.getState() == 1)) {
-            	campaignDTO.setApprovedAt(ZonedDateTime.now());
-                campaignDTO.setApprovedBy(SecurityUtils.getCurrentUserLogin().get());
+        	if (campaignDTO.getState() != dto.getState()) {
+        		if (campaignDTO.getState() == 1) {
+        			campaignDTO.setApprovedAt(ZonedDateTime.now());
+        			campaignDTO.setApprovedBy(SecurityUtils.getCurrentUserLogin().get());
+        		}
             }
+        	if (campaignDTO.getState() == -9)  // Admin stop the campaign...
+    			smsSendingService.stopCampaign(id);
             campaignDTO.setShortMsg(InflectorUtil.transliterate(campaignDTO.getShortMsg()));
         	CampaignDTO result = campaignService.save(campaignDTO);
         	return ResponseEntity.ok()

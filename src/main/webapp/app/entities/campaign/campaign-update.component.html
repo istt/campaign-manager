@@ -18,7 +18,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="campaignManagerApp.campaign.cfg" for="field_cfg_VASCLOUD" [ngbTooltip]="'campaignManagerApp.campaign.help.cfg' | translate">Configuration</label>
             <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)" required>
-              <option *ngFor="let i of vasCloudSvc.entities" [value]="i.id">{{i.serviceCode}} / {{i.packageCode}}</option>
+              <option *ngFor="let i of vasCloudSvc.entities" [value]="i.id">{{i.shortCode}} -- {{i.serviceCode}} / {{i.packageCode}}</option>
             </select>
             <div [hidden]="!(editForm.controls.cfg?.dirty && editForm.controls.cfg?.invalid)">
                 <small class="form-text text-danger"

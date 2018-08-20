@@ -12,6 +12,9 @@ import { CampaignService } from './campaign.service';
 
 import { IVasCloudConfiguration } from 'app/shared/model/vas-cloud-configuration.model';
 import { VasCloudConfigurationService } from '../vas-cloud-configuration';
+// Realtime monitoring support
+import { JhiTrackerService } from 'app/core';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 
 @Component({
     selector: 'jhi-campaign',
@@ -33,6 +36,7 @@ export class CampaignComponent implements OnInit, OnDestroy {
     previousPage: any;
     reverse: any;
     searchModel: ICampaign = {};
+    stats: any = {};
 
     constructor(
         public vasCloudSvc: VasCloudConfigurationService,
@@ -43,7 +47,8 @@ export class CampaignComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private dataUtils: JhiDataUtils,
         private router: Router,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private trackerService: JhiTrackerService
     ) {
         this.itemsPerPage = ITEMS_PER_PAGE;
         this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -52,6 +57,10 @@ export class CampaignComponent implements OnInit, OnDestroy {
             this.reverse = data.pagingParams.ascending;
             this.predicate = data.pagingParams.predicate;
         });
+        this.trackerService.subscribe('/topic/campaign');
+        this.trackerService
+            .receive()
+            .subscribe((updCp: ICampaign) => (this.campaigns = this.campaigns.map(v => (updCp.id === v.id ? updCp : v))));
     }
 
     loadAll() {
@@ -108,6 +117,7 @@ export class CampaignComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
+        this.trackerService.unsubscribe();
     }
 
     trackId(index: number, item: ICampaign) {

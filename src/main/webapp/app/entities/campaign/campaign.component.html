@@ -5,7 +5,7 @@
     </div>
     <select #fieldCampaignCfg class="form-control" name="cfg" id="field_cfg_VASCLOUD" [(ngModel)]="vasCloudSvc.selected" (change)="setVasCloudCfg(fieldCampaignCfg.value)" >
       <option [value]="undefined">--- {{ 'campaignManagerApp.campaign.cfg' | translate }} ---</option>
-      <option *ngFor="let i of vasCloudSvc.entities" [value]="i.serviceCode">{{i.serviceCode}} / {{i.packageCode}}</option>
+      <option *ngFor="let i of vasCloudSvc.entities" [value]="i.serviceCode">{{i.shortCode}} - {{i.serviceCode}} / {{i.packageCode}}</option>
     </select>
     <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-campaign" [routerLink]="['/campaign/new']">
         <fa-icon [icon]="'plus'"></fa-icon>
@@ -59,7 +59,7 @@
                     <span class="badge float-right badge-{{ 'campaignManagerApp.campaign.stateClass_' + campaign.state | translate}}">{{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}</span>
                     {{campaign.startAt | date:'short'}} - {{campaign.expiredAt | date:'short'}}
                   </p>
-                  <p *ngIf="campaign.stats.submitCnt && campaign.stats.msgCnt"><ngb-progressbar showValue="true" type="info" [value]="campaign.stats.submitCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
+                  <p *ngIf="campaign.stats.submitCnt && campaign.stats.msgCnt" [ngbTooltip]="campaign.stats.submitCnt + ' / ' + campaign.stats.msgCnt"><ngb-progressbar showValue="true" type="info" [value]="campaign.stats.submitCnt" [max]="campaign.stats.msgCnt"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></p>
                 </td>
                 <td class="text-right">
                   <div class="btn-group my-1">

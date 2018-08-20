@@ -34,17 +34,17 @@
             <tr *ngIf="campaign.stats.submitCnt">
               <th>Submit</th>
               <td>{{ campaign.stats.submitCnt | number }}</td>
-              <td><ngb-progressbar height="40px" showValue="true" type="info" [value]="round(campaign.stats.submitCnt, campaign.stats.msgCnt)"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></td>
+              <td [ngbTooltip]="campaign.stats.submitCnt + ' / ' + campaign.stats.msgCnt"><ngb-progressbar height="40px" showValue="true" type="info" [value]="round(campaign.stats.submitCnt, campaign.stats.msgCnt)"> {{campaign.stats.submitCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></td>
             </tr>
             <tr *ngIf="campaign.stats.successCnt">
               <th>Success</th>
               <td class="text-success">{{ campaign.stats.successCnt | number }}</td>
-              <td><ngb-progressbar height="40px" showValue="true" type="success" [value]="round(campaign.stats.successCnt, campaign.stats.submitCnt)"> {{campaign.stats.successCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></td>
+              <td [ngbTooltip]="campaign.stats.successCnt + ' / ' + campaign.stats.submitCnt"><ngb-progressbar height="40px" showValue="true" type="success" [value]="round(campaign.stats.successCnt, campaign.stats.submitCnt)"> {{campaign.stats.successCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></td>
             </tr>
             <tr *ngIf="campaign.stats.failedCnt">
               <th>Failed</th>
               <td class="text-danger">{{ campaign.stats.failedCnt | number }}</td>
-              <td><ngb-progressbar height="40px" showValue="true" type="warning" [value]="round(campaign.stats.failedCnt, campaign.stats.submitCnt)"> {{campaign.stats.failedCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></td>
+              <td [ngbTooltip]="campaign.stats.failedCnt + ' / ' + campaign.stats.submitCnt"><ngb-progressbar height="40px" showValue="true" type="warning" [value]="round(campaign.stats.failedCnt, campaign.stats.submitCnt)"> {{campaign.stats.failedCnt}} / {{ campaign.stats.msgCnt }} </ngb-progressbar></td>
             </tr>
           </table>
         </div>
@@ -209,20 +209,20 @@
     </div>
   </div>
 
+  <button type="submit"
+          (click)="previousState()"
+          class="btn btn-info">
+      <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+  </button>
 
-  <div class="row">
-      <button type="submit"
-              (click)="previousState()"
-              class="btn btn-info">
-          <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-      </button>
+  <button type="button"
+          [routerLink]="['/campaign', campaign.id, 'edit']"
+          class="btn btn-primary float-right">
+      <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+  </button>
 
-      <button type="button"
-              [routerLink]="['/campaign', campaign.id, 'edit']"
-              class="btn btn-primary">
-          <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-      </button>
-  </div>
+
+
 
 
     </div>
@@ -231,7 +231,7 @@
 
       <div>
           <h3 class="text-right">
-              <span class="badge badge-pill badge-sm float-left badge-{{ 'campaignManagerApp.campaign.stateClass_' + campaign.state | translate}}">{{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}</span> 
+              <span class="badge badge-pill badge-sm float-left badge-{{ 'campaignManagerApp.campaign.stateClass_' + campaign.state | translate}}">{{ 'campaignManagerApp.campaign.state_' + campaign.state | translate}}</span>
               <span jhiTranslate="campaignManagerApp.sms.home.title">Sms</span>
           </h3>
           <hr>
@@ -277,10 +277,7 @@
                         <fa-icon icon="search"></fa-icon>&nbsp;<span jhiTranslate="entity.action.search"> Search</span>
                       </button>
                       <button type="button" class="btn btn-sm btn-default" (click)="searchReset()">
-                        <fa-icon icon="recycle"></fa-icon>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
-                      </button>
-                      <button type="button" class="btn btn-sm btn-success" (click)="exportResult()">
-                        <fa-icon icon="export"></fa-icon>&nbsp;<span jhiTranslate="entity.action.export"> Export</span>
+                        <fa-icon icon="sync"></fa-icon>&nbsp;<span jhiTranslate="entity.action.reset"> Reset</span>
                       </button>
                     </div></th>
                   </tr></thead>

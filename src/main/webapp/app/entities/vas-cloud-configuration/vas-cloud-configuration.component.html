@@ -29,6 +29,7 @@
             <thead>
             <tr>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.serviceCode">Service Code</span> / <span jhiTranslate="campaignManagerApp.vasCloudConfiguration.packageCode">Package Code</span></th>
+            <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.shortCode">Short Code</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.username">Username</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.password">Password</span></th>
             <th><span jhiTranslate="campaignManagerApp.vasCloudConfiguration.cpCode">Cp Code</span></th>
@@ -40,6 +41,7 @@
             <tbody>
             <tr *ngFor="let vasCloudConfiguration of vasCloudConfigurations ;trackBy: trackId">
                 <td><a [routerLink]="['/vas-cloud-configuration', vasCloudConfiguration.id, 'view' ]">{{vasCloudConfiguration.serviceCode}} / {{vasCloudConfiguration.packageCode}}</a></td>
+                <td>{{vasCloudConfiguration.shortCode}}</td>
                 <td>{{vasCloudConfiguration.username}}</td>
                 <td>{{vasCloudConfiguration.password}}</td>
                 <td>{{vasCloudConfiguration.cpCode}}</td>

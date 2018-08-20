@@ -146,10 +146,6 @@ export class CampaignDetailComponent implements OnInit, OnDestroy {
         this.loadAllSms();
     }
 
-    exportResult() {
-        this.dataFileService.exportData('msisdn.csv', 'api/export/sms', this.searchModel);
-    }
-
     changeState(state) {
         this.campaignService
             .changeState(this.campaign.id, state)
