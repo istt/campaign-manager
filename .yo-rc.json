@@ -9,18 +9,18 @@
     "serviceDiscoveryType": false,
     "authenticationType": "jwt",
     "uaaBaseName": "../uaa",
-    "cacheProvider": "no",
+    "cacheProvider": "hazelcast",
     "enableHibernateCache": false,
     "websocket": "spring-websocket",
     "databaseType": "mongodb",
     "devDatabaseType": "mongodb",
     "prodDatabaseType": "mongodb",
     "searchEngine": false,
-    "enableSwaggerCodegen": false,
+    "enableSwaggerCodegen": "true",
     "messageBroker": false,
     "buildTool": "maven",
     "useSass": false,
-    "clientPackageManager": "yarn",
+    "clientPackageManager": "npm",
     "testFrameworks": [],
     "enableTranslation": true,
     "nativeLanguage": "en",
@@ -30,10 +30,7 @@
     ],
     "clientFramework": "angularX",
     "jhiPrefix": "jhi",
-    "herokuDeployType": "jar",
-    "herokuAppName": "hohuymedia-campaign-manager"
-  },
-  "git-provider": "GitHub",
-  "git-company": "istt",
-  "repository-name": "campaign-manager"
+    "jhipsterVersion": "5.6.1",
+    "jwtSecretKey": "MGEzMDAzYzEwMGI5OGZjNThiNGVkMjk1YjE0MDMwOGVlNTc0YzdjZDk3ZWJkMzE3MDc3NTI3ZWQyZTEzZjMwOTc5NjVkNmMyMjdkY2YxZjg1ZjI1ZTc0ZTE4MDgxOTQ0YjJmMWFjNDc0MzQ2ODJiYzE0NTcwZWUzMWJiMGI2NTQ="
+  }
 }

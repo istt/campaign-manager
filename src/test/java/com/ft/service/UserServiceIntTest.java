@@ -151,6 +151,7 @@ public class UserServiceIntTest {
             .isTrue();
     }
 
+
     @Test
     public void testRemoveNotActivatedUsers() {
 

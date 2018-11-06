@@ -11,7 +11,7 @@
                 "notfound": "<strong>Địa chỉ email chưa được đăng ký!</strong> Vui lòng kiểm tra lại."
             }
         },
-        "finish" : {
+        "finish": {
             "title": "Đặt lại mật khẩu",
             "form": {
                 "button": "Kiểm tra mật khẩu mới"
@@ -24,5 +24,4 @@
             }
         }
     }
-
 }
