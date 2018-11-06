@@ -1,7 +1,7 @@
 {
     "home": {
-        "title": "HOHUY MEDIA",
-        "subtitle": "CAMPAIGN MANAGEMENT PORTAL",
+        "title": "CAMPAIGN MANAGER",
+        "subtitle": "ADMINISTRATION PORTAL",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         }

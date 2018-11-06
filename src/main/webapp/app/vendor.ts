@@ -1,4 +1,4 @@
-/* after changing this file run 'yarn run webpack:build' */
+/* after changing this file run 'npm run webpack:build' */
 /* tslint:disable */
 import '../content/css/vendor.css';
 
@@ -8,6 +8,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
     faUser,
     faSort,
+    faSortUp,
+    faSortDown,
     faSync,
     faEye,
     faBan,
@@ -53,12 +55,17 @@ import {
     faStopCircle,
     faPauseCircle,
     faCheckCircle,
-    faPaperPlane
+    faPaperPlane,
+    faComments,
+    faComment,
+    faCommentAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 // Adds the SVG icon to the library so you can use it in your page
 library.add(faUser);
 library.add(faSort);
+library.add(faSortUp);
+library.add(faSortDown);
 library.add(faSync);
 library.add(faEye);
 library.add(faBan);
@@ -105,5 +112,7 @@ library.add(faStopCircle);
 library.add(faPauseCircle);
 library.add(faCheckCircle);
 library.add(faPaperPlane);
-
+library.add(faComments);
+library.add(faComment);
+library.add(faCommentAlt);
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

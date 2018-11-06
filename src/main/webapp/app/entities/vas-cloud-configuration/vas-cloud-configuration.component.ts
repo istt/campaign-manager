@@ -111,9 +111,10 @@ export class VasCloudConfigurationComponent implements OnInit, OnDestroy {
             if (file_1.type.match(/text/i)) {
                 const fileReader = new FileReader();
                 fileReader.onload = e => {
-                    this.dataFileService.entity.dataCsvPreview = fileReader.result; // first line
+                    this.dataFileService.entity.dataCsvPreview = fileReader.result.toString(); // first line
                     // console.log('First line', this.dataFile.dataCsvPreview);
                     this.dataFileService.entity.dataCsvHeaders = fileReader.result
+                        .toString()
                         .split('\n')
                         .shift() // Extract first line
                         .split(/[;|,]/)

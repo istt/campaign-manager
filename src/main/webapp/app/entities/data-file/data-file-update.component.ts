@@ -50,9 +50,10 @@ export class DataFileUpdateComponent implements OnInit {
             if (file_1.type.match(/text/i)) {
                 const fileReader = new FileReader();
                 fileReader.onload = e => {
-                    this.dataFile.dataCsvPreview = fileReader.result; // first line
+                    this.dataFile.dataCsvPreview = fileReader.result.toString(); // first line
                     // console.log('First line', this.dataFile.dataCsvPreview);
                     this.dataFile.dataCsvHeaders = fileReader.result
+                        .toString()
                         .split('\n')
                         .shift() // Extract first line
                         .split(/[;|,]/)
