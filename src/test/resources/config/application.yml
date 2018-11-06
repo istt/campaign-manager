@@ -17,6 +17,8 @@
 spring:
     application:
         name: CampaignManager
+    cache:
+        type: simple
     data:
         mongodb:
             host: localhost
@@ -31,15 +33,11 @@ spring:
             enabled: false
     thymeleaf:
         mode: HTML
-        
+
 
 server:
     port: 10344
     address: localhost
-
-info:
-    project:
-        version: #project.version#
 
 # ===================================================================
 # JHipster specific properties
@@ -65,7 +63,8 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: f4988e0de9b53ddc62d48765c54f48c2867f1f6a
+                # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
+                base64-secret: MGEzMDAzYzEwMGI5OGZjNThiNGVkMjk1YjE0MDMwOGVlNTc0YzdjZDk3ZWJkMzE3MDc3NTI3ZWQyZTEzZjMwOTc5NjVkNmMyMjdkY2YxZjg1ZjI1ZTc0ZTE4MDgxOTQ0YjJmMWFjNDc0MzQ2ODJiYzE0NTcwZWUzMWJiMGI2NTQ=
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
